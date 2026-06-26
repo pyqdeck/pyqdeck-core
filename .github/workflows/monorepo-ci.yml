@@ -91,7 +91,7 @@ jobs:
           cache-dependency-path: backend/pnpm-lock.yaml
 
       - name: Cache MongoDB binaries
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ~/.cache/mongodb-binaries
           key: ${{ runner.os }}-mongodb-binaries
