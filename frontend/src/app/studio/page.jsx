@@ -4,7 +4,6 @@ import { getApiServer } from '@/lib/api-server';
 import { VelocityChart } from './_components/velocity-chart';
 import { PopularityChart } from './_components/popularity-chart';
 import { PendingPapers } from './_components/pending-papers';
-import { AiGenerationQueue } from './_components/ai-generation-queue';
 import { MetricCard } from './_components/metric-card';
 
 export default async function StudioPage() {
@@ -37,7 +36,6 @@ export default async function StudioPage() {
 
   const queues = dashboardData?.queues || {
     pendingPapers: [],
-    aiGeneration: [],
   };
 
   return (
@@ -85,10 +83,7 @@ export default async function StudioPage() {
         <PopularityChart data={charts.subjectPopularity} />
       </div>
 
-      <div className="grid gap-6 xl:grid-cols-2">
-        <PendingPapers papers={queues.pendingPapers} />
-        <AiGenerationQueue questions={queues.aiGeneration} />
-      </div>
+      <PendingPapers papers={queues.pendingPapers} />
     </div>
   );
 }

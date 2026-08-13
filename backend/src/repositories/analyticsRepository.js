@@ -53,14 +53,6 @@ class AnalyticsRepository {
   }
 
   /**
-   * Get latest questions that might need solutions (AI Generation Queue)
-   * @param {number} limit
-   */
-  async getRecentQuestionsWithoutSolutions(limit = 5) {
-    return Question.find().sort({ createdAt: -1 }).limit(limit).lean();
-  }
-
-  /**
    * Calculate subject popularity by grouping papers by their subject offerings
    */
   async getSubjectPopularity() {

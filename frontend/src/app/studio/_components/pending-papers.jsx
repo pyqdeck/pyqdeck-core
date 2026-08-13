@@ -3,17 +3,29 @@
 import * as React from 'react';
 import { PendingPapersView } from './pending-papers-view';
 import { toast } from 'sonner';
+import { useApi } from '@/hooks/use-api';
 
-export function PendingPapers({ papers, loading }) {
-  const handleApprove = (paper) => {
-    toast.success(`Approved paper: ${paper.title}`);
-    // API logic will go here
+export function PendingPapers({ papers: initialPapers, loading }) {
+  const api = useApi();
+  const [papers, setPapers] = React.useState(initialPapers || []);
+
+  React.useEffect(() => {
+    setPapers(initialPapers || []);
+  }, [initialPapers]);
+
+  const updateStatus = async (paper, status, verb) => {
+    try {
+      await api.papers.updatePaperStatus(paper._id, { status });
+      setPapers((prev) => prev.filter((p) => p._id !== paper._id));
+      toast.success(`${verb} paper: ${paper.title}`);
+    } catch (error) {
+      console.error(`Failed to ${status} paper:`, error);
+      toast.error(`Could not ${status} "${paper.title}". Please try again.`);
+    }
   };
 
-  const handleReject = (paper) => {
-    toast.error(`Rejected paper: ${paper.title}`);
-    // API logic will go here
-  };
+  const handleApprove = (paper) => updateStatus(paper, 'approved', 'Approved');
+  const handleReject = (paper) => updateStatus(paper, 'rejected', 'Rejected');
 
   return (
     <PendingPapersView

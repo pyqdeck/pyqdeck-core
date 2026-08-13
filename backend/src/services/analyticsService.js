@@ -16,12 +16,10 @@ class AnalyticsService {
         totalBranches,
       ],
       recentPendingPapers,
-      aiSolutionQueue,
       subjectPopularity,
     ] = await Promise.all([
       analyticsRepository.getGlobalCounts(),
       analyticsRepository.getRecentPendingPapers(5),
-      analyticsRepository.getRecentQuestionsWithoutSolutions(5),
       analyticsRepository.getSubjectPopularity(),
     ]);
 
@@ -47,7 +45,6 @@ class AnalyticsService {
       },
       queues: {
         pendingPapers: recentPendingPapers,
-        aiGeneration: aiSolutionQueue,
       },
     };
   }

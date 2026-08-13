@@ -159,35 +159,6 @@ describe('analyticsRepository', () => {
     });
   });
 
-  describe('getRecentQuestionsWithoutSolutions', () => {
-    it('should return recent questions limited to given number', async () => {
-      await Question.create([
-        {
-          text: 'Q1',
-          slug: 'q1',
-          type: 'short',
-          createdAt: new Date('2023-01-01'),
-        },
-        {
-          text: 'Q2',
-          slug: 'q2',
-          type: 'short',
-          createdAt: new Date('2023-01-02'),
-        },
-      ]);
-      const questions =
-        await analyticsRepository.getRecentQuestionsWithoutSolutions(1);
-      expect(questions).toHaveLength(1);
-      expect(questions[0].text).toBe('Q2');
-    });
-
-    it('should default limit to 5 if not provided', async () => {
-      const questions =
-        await analyticsRepository.getRecentQuestionsWithoutSolutions();
-      expect(questions).toHaveLength(0);
-    });
-  });
-
   describe('getSubjectPopularity', () => {
     it('should calculate subject popularity by grouping papers by subject offerings', async () => {
       const subject1 = await Subject.create({

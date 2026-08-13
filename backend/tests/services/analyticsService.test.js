@@ -6,7 +6,6 @@ vi.mock('../../src/repositories/analyticsRepository.js', () => ({
   default: {
     getGlobalCounts: vi.fn(),
     getRecentPendingPapers: vi.fn(),
-    getRecentQuestionsWithoutSolutions: vi.fn(),
     getSubjectPopularity: vi.fn(),
     getPaperUploadsByDay: vi.fn(),
   },
@@ -26,9 +25,6 @@ describe('analyticsService', () => {
       analyticsRepository.getRecentPendingPapers.mockResolvedValue([
         { title: 'Pending Paper 1' },
       ]);
-      analyticsRepository.getRecentQuestionsWithoutSolutions.mockResolvedValue([
-        { text: 'Q without sol' },
-      ]);
       analyticsRepository.getSubjectPopularity.mockResolvedValue([
         { subject: 'Math', count: 10 },
       ]);
@@ -45,9 +41,6 @@ describe('analyticsService', () => {
       expect(analyticsRepository.getRecentPendingPapers).toHaveBeenCalledWith(
         5
       );
-      expect(
-        analyticsRepository.getRecentQuestionsWithoutSolutions
-      ).toHaveBeenCalledWith(5);
       expect(analyticsRepository.getSubjectPopularity).toHaveBeenCalled();
       expect(analyticsRepository.getPaperUploadsByDay).toHaveBeenCalled();
 
@@ -68,7 +61,6 @@ describe('analyticsService', () => {
       expect(result.queues.pendingPapers).toEqual([
         { title: 'Pending Paper 1' },
       ]);
-      expect(result.queues.aiGeneration).toEqual([{ text: 'Q without sol' }]);
       expect(result.charts.subjectPopularity).toEqual([
         { subject: 'Math', count: 10 },
       ]);
