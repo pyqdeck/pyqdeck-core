@@ -1,0 +1,1 @@
+import{n as e,s as t}from"./chunk-CzyJ72yW.js";import{Br as n,o as r,s as i}from"./iframe-Dj9kFMWJ.js";function a({className:e,...t}){return(0,o.jsx)(`div`,{"data-slot":`skeleton`,className:r(`bg-muted animate-pulse rounded-md`,e),...t})}var o,s=e((()=>{o=t(n(),1),i(),a.__docgenInfo={description:``,methods:[],displayName:`Skeleton`}}));export{s as n,a as t};
