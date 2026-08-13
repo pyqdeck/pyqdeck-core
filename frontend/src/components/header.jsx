@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 
-import { Menu, Sparkles, LayoutDashboard } from 'lucide-react';
+import { Menu, Sparkles, LayoutDashboard, Bookmark } from 'lucide-react';
 
 import {
   ClerkLoaded,
@@ -20,6 +20,10 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Separator } from '@/components/ui/separator';
 
 const navLinks = [
+  {
+    name: 'Browse Papers',
+    href: '/browse',
+  },
   {
     name: 'Features',
     href: '/#features',
@@ -90,6 +94,13 @@ export function Header() {
               </div>
             ) : (
               <div className="flex items-center gap-3">
+                <Link href="/browse/bookmarks">
+                  <Button variant="ghost" className="gap-2 rounded-full">
+                    <Bookmark className="size-4" />
+                    Bookmarks
+                  </Button>
+                </Link>
+
                 <Link href="/dashboard">
                   <Button variant="ghost" className="gap-2 rounded-full">
                     <LayoutDashboard className="size-4" />

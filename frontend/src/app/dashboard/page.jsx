@@ -8,11 +8,14 @@ export default function DashboardComingSoonPage() {
           Student Dashboard
         </p>
 
-        <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Coming Soon 🚀</h2>
+        <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
+          Start Practicing
+        </h2>
 
         <p className="text-muted-foreground mt-3 max-w-2xl text-base sm:text-lg">
-          We&apos;re building a personalized dashboard where you can track syllabus coverage,
-          bookmark important papers, and get smart recommendations for what to study next.
+          Browse past year papers by university, branch, and semester. A
+          personalized dashboard with progress tracking and smart
+          recommendations is still coming soon.
         </p>
 
         <div className="mt-6 grid gap-3 sm:grid-cols-2">
@@ -33,16 +36,16 @@ export default function DashboardComingSoonPage() {
 
         <div className="mt-8 flex flex-wrap gap-3">
           <Link
-            href="/"
+            href="/browse"
             className="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex items-center rounded-md px-4 py-2 text-sm font-medium transition"
           >
-            Back to Home
+            Browse Papers
           </Link>
           <Link
-            href="/waitlist"
+            href="/browse/bookmarks"
             className="border-input bg-background hover:bg-accent hover:text-accent-foreground inline-flex items-center rounded-md border px-4 py-2 text-sm font-medium transition"
           >
-            Join Waitlist
+            My Bookmarks
           </Link>
         </div>
       </div>
