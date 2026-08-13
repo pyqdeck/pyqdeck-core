@@ -29,7 +29,7 @@ export function UniversityForm({ form, idPrefix = '' }) {
               id={`${idPrefix}${field.name}`}
               aria-invalid={fieldState.invalid}
               placeholder="University of Mumbai"
-              className="border-2 focus-visible:ring-0"
+              className="border focus-visible:ring-0"
             />
             <FieldError errors={[fieldState.error]} />
           </Field>
@@ -50,7 +50,7 @@ export function UniversityForm({ form, idPrefix = '' }) {
                 id={`${idPrefix}${field.name}`}
                 aria-invalid={fieldState.invalid}
                 placeholder="e.g. MU"
-                className="border-2 focus-visible:ring-0"
+                className="border focus-visible:ring-0"
               />
               <FieldError errors={[fieldState.error]} />
             </Field>
@@ -69,7 +69,7 @@ export function UniversityForm({ form, idPrefix = '' }) {
                 id={`${idPrefix}${field.name}`}
                 aria-invalid={fieldState.invalid}
                 placeholder="mumbai-university"
-                className="border-2 focus-visible:ring-0"
+                className="border focus-visible:ring-0"
               />
               <FieldError errors={[fieldState.error]} />
             </Field>
@@ -91,7 +91,7 @@ export function UniversityForm({ form, idPrefix = '' }) {
                 id={`${idPrefix}${field.name}`}
                 aria-invalid={fieldState.invalid}
                 placeholder="Maharashtra"
-                className="border-2 focus-visible:ring-0"
+                className="border focus-visible:ring-0"
               />
               <FieldError errors={[fieldState.error]} />
             </Field>
@@ -109,7 +109,7 @@ export function UniversityForm({ form, idPrefix = '' }) {
                 {...field}
                 id={`${idPrefix}${field.name}`}
                 aria-invalid={fieldState.invalid}
-                className="border-2 focus-visible:ring-0"
+                className="border focus-visible:ring-0"
               />
               <FieldError errors={[fieldState.error]} />
             </Field>
@@ -130,7 +130,7 @@ export function UniversityForm({ form, idPrefix = '' }) {
               id={`${idPrefix}${field.name}`}
               aria-invalid={fieldState.invalid}
               placeholder="https://mu.ac.in"
-              className="border-2 focus-visible:ring-0"
+              className="border focus-visible:ring-0"
             />
             <FieldError errors={[fieldState.error]} />
           </Field>
@@ -149,7 +149,7 @@ export function UniversityForm({ form, idPrefix = '' }) {
               </FieldLabel>
               <div className="flex items-start gap-4">
                 {logoUrl && (
-                  <div className="flex size-20 shrink-0 items-center justify-center overflow-hidden rounded-xl border-2 bg-white p-2">
+                  <div className="flex size-20 shrink-0 items-center justify-center overflow-hidden rounded-xl border bg-white p-2">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={logoUrl}
@@ -167,7 +167,7 @@ export function UniversityForm({ form, idPrefix = '' }) {
                     id={`${idPrefix}${field.name}`}
                     aria-invalid={fieldState.invalid}
                     placeholder="https://example.com/logo.png"
-                    className="border-2 focus-visible:ring-0"
+                    className="border focus-visible:ring-0"
                   />
                   <FieldDescription>
                     Public URL for the institution&apos;s official logo.
@@ -186,7 +186,7 @@ export function UniversityForm({ form, idPrefix = '' }) {
         render={({ field }) => (
           <Field
             orientation="horizontal"
-            className="bg-muted/5 hover:bg-muted/10 items-center justify-between rounded-xl border-2 p-4 transition-colors"
+            className="bg-muted/5 hover:bg-muted/10 items-center justify-between rounded-xl border p-4 transition-colors"
           >
             <div className="space-y-1">
               <FieldLabel
@@ -222,7 +222,7 @@ export function UniversityForm({ form, idPrefix = '' }) {
               id={`${idPrefix}${field.name}`}
               aria-invalid={fieldState.invalid}
               placeholder="Brief overview of the institution..."
-              className="min-h-[80px] border-2 focus-visible:ring-0"
+              className="min-h-[80px] border focus-visible:ring-0"
             />
             <FieldError errors={[fieldState.error]} />
           </Field>

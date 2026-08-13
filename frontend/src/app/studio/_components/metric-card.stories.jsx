@@ -25,13 +25,13 @@ const meta = {
       control: false,
       description: 'Lucide icon component to display',
     },
-    colorClass: {
-      control: 'text',
-      description: 'Tailwind text color class for the icon',
-    },
-    bgClass: {
-      control: 'text',
-      description: 'Tailwind background color class for the icon container',
+    tone: {
+      control: 'select',
+      options: ['neutral', 'warning'],
+      description: 'Visual tone of the icon container',
+      table: {
+        defaultValue: { summary: 'neutral' },
+      },
     },
     loading: {
       control: 'boolean',
@@ -51,8 +51,7 @@ export const UsersMetric = {
     value: '12,847',
     subLabel: 'Active students this month',
     icon: Users,
-    colorClass: 'text-primary',
-    bgClass: 'bg-primary/10',
+    tone: 'neutral',
     loading: false,
   },
 };
@@ -63,8 +62,7 @@ export const PapersMetric = {
     value: '4,520',
     subLabel: 'Across 12 universities',
     icon: FileText,
-    colorClass: 'text-info',
-    bgClass: 'bg-info/10',
+    tone: 'neutral',
     loading: false,
   },
 };
@@ -75,8 +73,7 @@ export const AcademicsMetric = {
     value: '18',
     subLabel: 'Supporting 450+ subjects',
     icon: GraduationCap,
-    colorClass: 'text-success',
-    bgClass: 'bg-success/10',
+    tone: 'neutral',
     loading: false,
   },
 };
@@ -87,8 +84,7 @@ export const PendingMetric = {
     value: '24',
     subLabel: 'Requires immediate attention',
     icon: Clock,
-    colorClass: 'text-warning',
-    bgClass: 'bg-warning/10',
+    tone: 'warning',
     loading: false,
   },
 };

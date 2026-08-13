@@ -58,32 +58,25 @@ export default async function StudioPage() {
           value={metrics.users.toLocaleString()}
           subLabel="Registered users on the platform"
           icon={Users}
-          colorClass="text-purple-600 dark:text-purple-400"
-          bgClass="bg-purple-100 dark:bg-purple-900/30"
         />
         <MetricCard
           title="Papers & Questions"
           value={metrics.papers.total.toLocaleString()}
           subLabel={`Contains ${metrics.questions.toLocaleString()} questions`}
           icon={FileText}
-          colorClass="text-blue-600 dark:text-blue-400"
-          bgClass="bg-blue-100 dark:bg-blue-900/30"
         />
         <MetricCard
           title="Academics"
           value={metrics.academics.universities.toLocaleString()}
           subLabel={`Supporting ${metrics.academics.branches.toLocaleString()} branches`}
           icon={GraduationCap}
-          colorClass="text-green-600 dark:text-green-400"
-          bgClass="bg-green-100 dark:bg-green-900/30"
         />
         <MetricCard
           title="Pending Reviews"
           value={metrics.papers.pending.toLocaleString()}
           subLabel="Papers require your attention"
           icon={Clock}
-          colorClass="text-orange-600 dark:text-orange-400"
-          bgClass="bg-orange-100 dark:bg-orange-900/30"
+          tone="warning"
         />
       </div>
 

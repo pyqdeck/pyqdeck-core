@@ -33,7 +33,7 @@ export function EditSyllabusDialogView({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="border-2 shadow-none sm:max-w-[500px]">
+      <DialogContent className="border shadow-none sm:max-w-[500px]">
         <DialogHeader>
           <div className="mb-2 flex items-center gap-3">
             <div className="bg-primary/10 text-primary rounded-lg p-2">
@@ -60,7 +60,7 @@ export function EditSyllabusDialogView({
                 <Textarea
                   {...field}
                   placeholder="Enter a detailed overview of this syllabus..."
-                  className="font-roboto focus-visible:ring-primary/50 min-h-[120px] border-2 text-sm"
+                  className="font-roboto focus-visible:ring-primary/50 min-h-[120px] border text-sm"
                 />
               )}
             />
@@ -71,7 +71,7 @@ export function EditSyllabusDialogView({
             )}
           </div>
 
-          <div className="flex flex-row items-center justify-between rounded-lg border-2 p-4">
+          <div className="flex flex-row items-center justify-between rounded-lg border p-4">
             <div className="space-y-0.5">
               <Label className="font-roboto text-sm font-bold">
                 Active Status
@@ -96,7 +96,7 @@ export function EditSyllabusDialogView({
             <Button
               type="button"
               variant="outline"
-              className="font-roboto border-2 font-bold"
+              className="font-roboto border font-bold"
               onClick={() => onOpenChange(false)}
             >
               Cancel

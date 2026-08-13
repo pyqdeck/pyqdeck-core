@@ -30,7 +30,7 @@ export function EditBranchDialogView({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="border-2 shadow-none sm:max-w-[450px]">
+      <DialogContent className="border shadow-none sm:max-w-[450px]">
         <DialogHeader>
           <DialogTitle className="font-roboto text-xl font-bold">
             Edit Branch
@@ -52,7 +52,7 @@ export function EditBranchDialogView({
                   {...field}
                   id="edit-name"
                   placeholder="e.g. Computer Engineering"
-                  className="font-roboto border-2 focus-visible:ring-0"
+                  className="font-roboto border focus-visible:ring-0"
                 />
               )}
             />
@@ -76,7 +76,7 @@ export function EditBranchDialogView({
                     {...field}
                     id="edit-shortName"
                     placeholder="e.g. COMP"
-                    className="font-roboto border-2 focus-visible:ring-0"
+                    className="font-roboto border focus-visible:ring-0"
                   />
                 )}
               />
@@ -101,7 +101,7 @@ export function EditBranchDialogView({
                     {...field}
                     id="edit-branchCode"
                     placeholder="e.g. 07"
-                    className="font-roboto border-2 focus-visible:ring-0"
+                    className="font-roboto border focus-visible:ring-0"
                   />
                 )}
               />
@@ -120,7 +120,7 @@ export function EditBranchDialogView({
                   {...field}
                   id="edit-slug"
                   placeholder="e.g. computer-engineering"
-                  className="font-roboto border-2 focus-visible:ring-0"
+                  className="font-roboto border focus-visible:ring-0"
                 />
               )}
             />
@@ -135,7 +135,7 @@ export function EditBranchDialogView({
             <Button
               type="submit"
               disabled={isSubmitting}
-              className="font-roboto w-full border-2 font-bold shadow-none"
+              className="font-roboto w-full border font-bold shadow-none"
             >
               {isSubmitting ? 'Saving Changes...' : 'Save Changes'}
             </Button>

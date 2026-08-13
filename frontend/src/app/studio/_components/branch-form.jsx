@@ -39,11 +39,11 @@ export function BranchForm({
               <Select onValueChange={field.onChange} value={field.value}>
                 <SelectTrigger
                   id={`${idPrefix}${field.name}`}
-                  className="border-2 focus:ring-0"
+                  className="border focus:ring-0"
                 >
                   <SelectValue placeholder="Select a university" />
                 </SelectTrigger>
-                <SelectContent className="border-2 shadow-none">
+                <SelectContent className="border shadow-none">
                   {universities.map((uni) => (
                     <SelectItem key={uni.id} value={uni.id}>
                       {uni.name} ({uni.shortName})
@@ -70,7 +70,7 @@ export function BranchForm({
               id={`${idPrefix}${field.name}`}
               aria-invalid={fieldState.invalid}
               placeholder="e.g. Computer Science & Engineering"
-              className="border-2 focus-visible:ring-0"
+              className="border focus-visible:ring-0"
             />
             <FieldError errors={[fieldState.error]} />
           </Field>
@@ -91,7 +91,7 @@ export function BranchForm({
                 id={`${idPrefix}${field.name}`}
                 aria-invalid={fieldState.invalid}
                 placeholder="e.g. CSE"
-                className="border-2 focus-visible:ring-0"
+                className="border focus-visible:ring-0"
               />
               <FieldError errors={[fieldState.error]} />
             </Field>
@@ -110,7 +110,7 @@ export function BranchForm({
                 id={`${idPrefix}${field.name}`}
                 aria-invalid={fieldState.invalid}
                 placeholder="e.g. 05"
-                className="border-2 focus-visible:ring-0"
+                className="border focus-visible:ring-0"
               />
               <FieldError errors={[fieldState.error]} />
             </Field>
@@ -131,7 +131,7 @@ export function BranchForm({
               id={`${idPrefix}${field.name}`}
               aria-invalid={fieldState.invalid}
               placeholder="e.g. computer-science"
-              className="border-2 focus-visible:ring-0"
+              className="border focus-visible:ring-0"
             />
             <FieldDescription>
               Unique identifier for URLs. Auto-generated if left blank.
@@ -147,7 +147,7 @@ export function BranchForm({
         render={({ field }) => (
           <Field
             orientation="horizontal"
-            className="bg-muted/5 hover:bg-muted/10 items-center justify-between rounded-xl border-2 p-4 transition-colors"
+            className="bg-muted/5 hover:bg-muted/10 items-center justify-between rounded-xl border p-4 transition-colors"
           >
             <div className="space-y-1">
               <FieldLabel

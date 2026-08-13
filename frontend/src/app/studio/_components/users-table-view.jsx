@@ -96,7 +96,7 @@ function RoleBadge({ role }) {
 function UserDetailDialog({ user, stats, isLoadingStats, onClose }) {
   return (
     <Dialog open={!!user} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="font-roboto border-2 shadow-none sm:max-w-md">
+      <DialogContent className="font-roboto border shadow-none sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="font-roboto text-lg font-bold">
             User Profile
@@ -107,7 +107,7 @@ function UserDetailDialog({ user, stats, isLoadingStats, onClose }) {
           <div className="flex flex-col gap-5">
             {/* Identity */}
             <div className="flex items-center gap-4">
-              <Avatar className="border-muted bg-muted/50 h-16 w-16 rounded-full border-2">
+              <Avatar className="border-muted bg-muted/50 h-16 w-16 rounded-full border">
                 <AvatarImage
                   src={user.avatarUrl}
                   alt={user.name}
@@ -194,7 +194,7 @@ function UserDetailDialog({ user, stats, isLoadingStats, onClose }) {
                 </div>
               ) : (
                 <div className="grid grid-cols-2 gap-3">
-                  <div className="bg-muted/40 flex flex-col items-center gap-1 rounded-lg border-2 py-3">
+                  <div className="bg-muted/40 flex flex-col items-center gap-1 rounded-lg border py-3">
                     <Bookmark className="text-muted-foreground h-4 w-4" />
                     <span className="text-foreground font-roboto text-2xl font-bold">
                       {stats?.bookmarksCount ?? '—'}
@@ -203,7 +203,7 @@ function UserDetailDialog({ user, stats, isLoadingStats, onClose }) {
                       Bookmarks
                     </span>
                   </div>
-                  <div className="bg-muted/40 flex flex-col items-center gap-1 rounded-lg border-2 py-3">
+                  <div className="bg-muted/40 flex flex-col items-center gap-1 rounded-lg border py-3">
                     <FileText className="text-muted-foreground h-4 w-4" />
                     <span className="text-foreground font-roboto text-2xl font-bold">
                       {stats?.solutionsCount ?? '—'}
@@ -285,7 +285,7 @@ export function UsersTableView({
               variant={currentRole === tab.value ? 'default' : 'outline'}
               size="sm"
               className={cn(
-                'font-roboto h-8 rounded-full border-2 px-3.5 text-xs font-bold',
+                'font-roboto h-8 rounded-full border px-3.5 text-xs font-bold',
                 currentRole !== tab.value &&
                   'text-muted-foreground hover:text-foreground'
               )}
@@ -303,7 +303,7 @@ export function UsersTableView({
             variant={showingBanned ? 'destructive' : 'outline'}
             size="sm"
             className={cn(
-              'font-roboto h-8 rounded-full border-2 px-3.5 text-xs font-bold',
+              'font-roboto h-8 rounded-full border px-3.5 text-xs font-bold',
               !showingBanned && 'text-muted-foreground hover:text-foreground'
             )}
           >
@@ -313,11 +313,11 @@ export function UsersTableView({
         </Link>
       </div>
 
-      <Card className="border-border/50 overflow-hidden border-2 p-0 shadow-none">
+      <Card className="border-border/50 overflow-hidden border p-0 shadow-none">
         <CardContent className="p-0">
           <Table>
             <TableHeader>
-              <TableRow className="bg-muted/30 border-b-2 hover:bg-transparent">
+              <TableRow className="bg-muted/30 border-b hover:bg-transparent">
                 <TableHead className="text-foreground font-roboto h-12 w-[400px] px-6 font-bold">
                   User Identity
                 </TableHead>
@@ -380,7 +380,7 @@ export function UsersTableView({
                     <TableCell className="px-6 py-3">
                       <div className="flex items-center gap-4">
                         <div className="relative shrink-0">
-                          <Avatar className="border-muted bg-muted/50 h-12 w-12 rounded-full border-2">
+                          <Avatar className="border-muted bg-muted/50 h-12 w-12 rounded-full border">
                             <AvatarImage
                               src={user.avatarUrl}
                               alt={user.name}
@@ -391,7 +391,7 @@ export function UsersTableView({
                             </AvatarFallback>
                           </Avatar>
                           {user.isActive === false && (
-                            <div className="bg-destructive absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full border-2 border-white">
+                            <div className="bg-destructive absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full border border-white">
                               <Ban className="h-2 w-2 text-white" />
                             </div>
                           )}
@@ -458,7 +458,7 @@ export function UsersTableView({
                         <DropdownMenuTrigger asChild>
                           <Button
                             variant="ghost"
-                            className="hover:bg-muted/50 h-9 w-9 border-2 p-0 transition-colors"
+                            className="hover:bg-muted/50 h-9 w-9 border p-0 transition-colors"
                             disabled={isUpdating || user.isMe}
                           >
                             <span className="sr-only">Open menu</span>
@@ -467,7 +467,7 @@ export function UsersTableView({
                         </DropdownMenuTrigger>
                         <DropdownMenuContent
                           align="end"
-                          className="font-roboto w-56 border-2 p-2 shadow-none"
+                          className="font-roboto w-56 border p-2 shadow-none"
                         >
                           <DropdownMenuLabel className="text-muted-foreground px-2 py-1.5 text-xs font-semibold tracking-wider uppercase">
                             Permissions
@@ -525,7 +525,7 @@ export function UsersTableView({
         </CardContent>
 
         {pagination && pagination.pages >= 1 && (
-          <CardFooter className="border-t-2">
+          <CardFooter className="border-t">
             {pagination.pages > 1 && (
               <Pagination className="mx-0 w-auto justify-start">
                 <PaginationContent>
@@ -535,7 +535,7 @@ export function UsersTableView({
                         page: Math.max(1, pagination.page - 1),
                       })}
                       className={cn(
-                        'border-2 font-bold',
+                        'border font-bold',
                         pagination.page === 1 &&
                           'pointer-events-none opacity-50'
                       )}
@@ -555,7 +555,7 @@ export function UsersTableView({
                           <PaginationLink
                             href={buildHref({ page: pageNumber })}
                             isActive={pageNumber === pagination.page}
-                            className="font-roboto border-2 font-bold"
+                            className="font-roboto border font-bold"
                           >
                             {pageNumber}
                           </PaginationLink>
@@ -581,7 +581,7 @@ export function UsersTableView({
                         page: Math.min(pagination.pages, pagination.page + 1),
                       })}
                       className={cn(
-                        'border-2 font-bold',
+                        'border font-bold',
                         pagination.page === pagination.pages &&
                           'pointer-events-none opacity-50'
                       )}
@@ -617,14 +617,14 @@ export function UsersTableView({
                   <Button
                     variant="outline"
                     size="sm"
-                    className="font-roboto h-8 border-2 font-bold"
+                    className="font-roboto h-8 border font-bold"
                   >
                     {pagination.limit} / page
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent
                   align="end"
-                  className="font-roboto border-2 p-1 shadow-none"
+                  className="font-roboto border p-1 shadow-none"
                 >
                   {PAGE_SIZES.map((size) => (
                     <DropdownMenuItem key={size} asChild>

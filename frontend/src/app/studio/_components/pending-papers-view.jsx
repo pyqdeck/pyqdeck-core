@@ -69,7 +69,7 @@ export function PendingPapersView({ papers, onApprove, onReject, loading }) {
 
   if (loading) {
     return (
-      <Card className="border-border/50 hover:border-warning/20 border-2 shadow-none transition-all">
+      <Card className="border-border/50 hover:border-warning/20 border shadow-none transition-all">
         {header}
         <CardContent className="p-0">
           <Table>
@@ -121,7 +121,7 @@ export function PendingPapersView({ papers, onApprove, onReject, loading }) {
 
   if (!papers || papers.length === 0) {
     return (
-      <Card className="border-border/50 hover:border-warning/20 border-2 shadow-none transition-all">
+      <Card className="border-border/50 hover:border-warning/20 border shadow-none transition-all">
         {header}
         <CardContent className="py-12">
           <Empty className="border-none shadow-none">
@@ -146,7 +146,7 @@ export function PendingPapersView({ papers, onApprove, onReject, loading }) {
   }
 
   return (
-    <Card className="border-border/50 hover:border-warning/20 border-2 shadow-none transition-all">
+    <Card className="border-border/50 hover:border-warning/20 border shadow-none transition-all">
       {header}
       <CardContent className="p-0">
         <Table>
@@ -217,7 +217,7 @@ export function PendingPapersView({ papers, onApprove, onReject, loading }) {
                         <span className="sr-only">Open menu</span>
                       </Button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" className="w-48 shadow-xl">
+                    <DropdownMenuContent align="end" className="w-48">
                       <DropdownMenuLabel className="font-roboto">
                         Moderation Actions
                       </DropdownMenuLabel>

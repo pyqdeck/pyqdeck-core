@@ -14,7 +14,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 export function SearchGapsView({ gaps = [], loading = false }) {
   return (
-    <Card className="border-border/50 border-2 shadow-none">
+    <Card className="border-border/50 border shadow-none">
       <CardHeader className="flex flex-row items-center gap-3">
         <div className="bg-warning/10 dark:bg-warning/10 rounded-full p-2">
           <Search className="text-warning h-5 w-5" />

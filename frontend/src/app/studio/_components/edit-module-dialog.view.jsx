@@ -32,7 +32,7 @@ export function EditModuleDialogView({ form, onSubmit, open, onOpenChange }) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="border-2 pb-0 shadow-none sm:max-w-[500px]">
+      <DialogContent className="border pb-0 shadow-none sm:max-w-[500px]">
         <DialogHeader>
           <div className="mb-2 flex items-center gap-3">
             <div className="bg-primary/10 text-primary rounded-lg p-2">
@@ -61,7 +61,7 @@ export function EditModuleDialogView({ form, onSubmit, open, onOpenChange }) {
                       {...field}
                       type="number"
                       min="1"
-                      className="font-roboto border-2 focus-visible:ring-0"
+                      className="font-roboto border focus-visible:ring-0"
                       onChange={(e) =>
                         field.onChange(parseInt(e.target.value) || 0)
                       }
@@ -85,7 +85,7 @@ export function EditModuleDialogView({ form, onSubmit, open, onOpenChange }) {
                       type="number"
                       min="0"
                       max="100"
-                      className="font-roboto border-2 focus-visible:ring-0"
+                      className="font-roboto border focus-visible:ring-0"
                       onChange={(e) =>
                         field.onChange(parseFloat(e.target.value) || 0)
                       }
@@ -107,7 +107,7 @@ export function EditModuleDialogView({ form, onSubmit, open, onOpenChange }) {
                 render={({ field }) => (
                   <Input
                     {...field}
-                    className="font-roboto border-2 focus-visible:ring-0"
+                    className="font-roboto border focus-visible:ring-0"
                     aria-invalid={!!errors.title}
                   />
                 )}
@@ -125,7 +125,7 @@ export function EditModuleDialogView({ form, onSubmit, open, onOpenChange }) {
                 render={({ field }) => (
                   <Input
                     {...field}
-                    className="font-roboto border-2 focus-visible:ring-0"
+                    className="font-roboto border focus-visible:ring-0"
                     aria-invalid={!!errors.coMapping}
                   />
                 )}
@@ -143,7 +143,7 @@ export function EditModuleDialogView({ form, onSubmit, open, onOpenChange }) {
                 render={({ field }) => (
                   <Textarea
                     {...field}
-                    className="font-roboto min-h-[100px] resize-none border-2 focus-visible:ring-0"
+                    className="font-roboto min-h-[100px] resize-none border focus-visible:ring-0"
                     aria-invalid={!!errors.description}
                   />
                 )}
@@ -156,7 +156,7 @@ export function EditModuleDialogView({ form, onSubmit, open, onOpenChange }) {
             <Button
               type="submit"
               disabled={isSubmitting}
-              className="font-roboto bg-primary hover:bg-primary/90 h-11 w-full border-2 font-bold shadow-none"
+              className="font-roboto bg-primary hover:bg-primary/90 h-11 w-full border font-bold shadow-none"
             >
               {isSubmitting ? 'Saving...' : 'Update Module'}
             </Button>

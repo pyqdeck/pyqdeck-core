@@ -55,7 +55,7 @@ export function SubjectsTableView({
 }) {
   if (loading) {
     return (
-      <Card className="border-border/50 border-2 p-0 shadow-none! outline-none!">
+      <Card className="border-border/50 border p-0 shadow-none! outline-none!">
         <CardHeader className="">
           <Skeleton className="mb-2 h-8 w-48" />
           <Skeleton className="h-4 w-64" />
@@ -213,7 +213,7 @@ export function SubjectsTableView({
 
                       <DropdownMenuContent
                         align="end"
-                        className="border-border/50 bg-popover w-56 rounded-2xl border p-2 shadow-xl"
+                        className="border-border/50 bg-popover w-56 rounded-2xl border p-2"
                       >
                         <DropdownMenuLabel className="text-muted-foreground px-2 py-1.5 text-xs font-medium">
                           Manage Subject

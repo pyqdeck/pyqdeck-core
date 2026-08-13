@@ -24,12 +24,12 @@ export function AddUniversityDialogView({
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetTrigger asChild>
         {trigger || (
-          <Button className="font-roboto h-10 border-2 font-semibold">
+          <Button className="font-roboto h-10 border font-semibold">
             <Plus className="mr-2 h-4 w-4" /> Add University
           </Button>
         )}
       </SheetTrigger>
-      <SheetContent className="font-roboto flex flex-col gap-0 overflow-hidden border-l-2 p-0 shadow-none sm:max-w-[500px]">
+      <SheetContent className="font-roboto flex flex-col gap-0 overflow-hidden border-l p-0 shadow-none sm:max-w-[500px]">
         <SheetHeader className="bg-muted/5 border-b p-6">
           <SheetTitle className="text-2xl font-black tracking-tight">
             Add New University
@@ -56,7 +56,7 @@ export function AddUniversityDialogView({
             type="button"
             variant="outline"
             onClick={() => onOpenChange(false)}
-            className="flex-1 border-2 font-bold"
+            className="flex-1 border font-bold"
           >
             Cancel
           </Button>

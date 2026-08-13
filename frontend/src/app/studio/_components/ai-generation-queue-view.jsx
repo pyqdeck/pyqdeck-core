@@ -60,7 +60,7 @@ export function AiGenerationQueueView({
 
   if (!questions || questions.length === 0) {
     return (
-      <Card className="border-border/50 hover:border-primary/20 border-2 shadow-none transition-all">
+      <Card className="border-border/50 hover:border-primary/20 border shadow-none transition-all">
         {header}
         <CardContent className="py-12">
           <Empty className="border-none shadow-none">
@@ -86,7 +86,7 @@ export function AiGenerationQueueView({
   }
 
   return (
-    <Card className="border-border/50 hover:border-primary/20 border-2 shadow-none transition-all">
+    <Card className="border-border/50 hover:border-primary/20 border shadow-none transition-all">
       {header}
       <CardContent className="p-0">
         <Table>

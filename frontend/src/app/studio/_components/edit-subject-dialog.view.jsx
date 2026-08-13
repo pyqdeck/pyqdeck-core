@@ -35,7 +35,7 @@ export function EditSubjectDialogView({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="border-2 shadow-none sm:max-w-[500px]">
+      <DialogContent className="border shadow-none sm:max-w-[500px]">
         <DialogHeader>
           <div className="mb-2 flex items-center gap-3">
             <div className="bg-warning/10 text-warning rounded-lg p-2">
@@ -62,7 +62,7 @@ export function EditSubjectDialogView({
                   {...field}
                   id="edit-name"
                   placeholder="e.g. Data Structures and Algorithms"
-                  className="font-roboto border-2 focus-visible:ring-0"
+                  className="font-roboto border focus-visible:ring-0"
                 />
               )}
             />
@@ -86,7 +86,7 @@ export function EditSubjectDialogView({
                     {...field}
                     id="edit-shortName"
                     placeholder="e.g. DSA"
-                    className="font-roboto border-2 focus-visible:ring-0"
+                    className="font-roboto border focus-visible:ring-0"
                   />
                 )}
               />
@@ -106,7 +106,7 @@ export function EditSubjectDialogView({
                     {...field}
                     id="edit-subjectCode"
                     placeholder="e.g. CS301"
-                    className="font-roboto border-2 focus-visible:ring-0"
+                    className="font-roboto border focus-visible:ring-0"
                   />
                 )}
               />
@@ -128,7 +128,7 @@ export function EditSubjectDialogView({
                     type="number"
                     min="0"
                     placeholder="e.g. 4"
-                    className="font-roboto border-2 focus-visible:ring-0"
+                    className="font-roboto border focus-visible:ring-0"
                     onChange={(e) =>
                       field.onChange(parseFloat(e.target.value) || 0)
                     }
@@ -169,7 +169,7 @@ export function EditSubjectDialogView({
                   {...field}
                   id="edit-description"
                   placeholder="Describe the subject objectives and curriculum scope..."
-                  className="font-roboto min-h-[100px] resize-none border-2 focus-visible:ring-0"
+                  className="font-roboto min-h-[100px] resize-none border focus-visible:ring-0"
                 />
               )}
             />
@@ -179,7 +179,7 @@ export function EditSubjectDialogView({
             <Button
               type="submit"
               disabled={isSubmitting}
-              className="font-roboto bg-warning hover:bg-warning/90 w-full border-2 font-bold shadow-none"
+              className="font-roboto bg-warning hover:bg-warning/90 w-full border font-bold shadow-none"
             >
               {isSubmitting ? 'Updating...' : 'Save Changes'}
             </Button>

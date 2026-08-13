@@ -31,7 +31,7 @@ export function AddBranchDialogView({
         <SheetTrigger asChild>
           <Button
             variant="none"
-            className="font-roboto hover:bg-primary hover:text-primary-foreground flex w-full items-center justify-start gap-2 border-2 px-4 py-2 font-bold shadow-none transition-colors"
+            className="font-roboto hover:bg-primary hover:text-primary-foreground flex w-full items-center justify-start gap-2 border px-4 py-2 font-bold shadow-none transition-colors"
           >
             <Plus className="h-4 w-4" />
             <span>Add Branch</span>
@@ -67,7 +67,7 @@ export function AddBranchDialogView({
             type="submit"
             form="add-branch-form"
             disabled={isSubmitting}
-            className="font-roboto w-full border-2 font-bold shadow-none"
+            className="font-roboto w-full border font-bold shadow-none"
           >
             {isSubmitting ? 'Creating Branch...' : 'Create Branch'}
           </Button>

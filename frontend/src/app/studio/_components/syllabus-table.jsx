@@ -94,7 +94,7 @@ export function SyllabusTable({
         open={!!deletingModule}
         onOpenChange={(open) => !open && setDeletingModule(null)}
       >
-        <AlertDialogContent className="border-border/50 border-2 shadow-none sm:max-w-[425px]">
+        <AlertDialogContent className="border-border/50 border shadow-none sm:max-w-[425px]">
           <AlertDialogHeader>
             <AlertDialogTitle className="font-roboto text-xl font-bold">
               Delete Module?
@@ -105,7 +105,7 @@ export function SyllabusTable({
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter className="mt-2">
-            <AlertDialogCancel className="font-roboto h-10 border-2 font-bold">
+            <AlertDialogCancel className="font-roboto h-10 border font-bold">
               Cancel
             </AlertDialogCancel>
             <AlertDialogAction
@@ -123,7 +123,7 @@ export function SyllabusTable({
         open={!!deletingTopic}
         onOpenChange={(open) => !open && setDeletingTopic(null)}
       >
-        <AlertDialogContent className="border-border/50 border-2 shadow-none sm:max-w-[425px]">
+        <AlertDialogContent className="border-border/50 border shadow-none sm:max-w-[425px]">
           <AlertDialogHeader>
             <AlertDialogTitle className="font-roboto text-xl font-bold">
               Remove Topic?
@@ -134,7 +134,7 @@ export function SyllabusTable({
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter className="mt-2">
-            <AlertDialogCancel className="font-roboto h-10 border-2 font-bold">
+            <AlertDialogCancel className="font-roboto h-10 border font-bold">
               Cancel
             </AlertDialogCancel>
             <AlertDialogAction

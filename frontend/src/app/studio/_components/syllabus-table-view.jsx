@@ -88,8 +88,8 @@ export function SyllabusTableView({
   const syllabusId = syllabus?.id || syllabus?._id;
 
   return (
-    <Card className="border-border/50 overflow-hidden border-2 p-0 shadow-none">
-      <CardHeader className="bg-muted/30 border-b-2 px-6 py-6">
+    <Card className="border-border/50 overflow-hidden border p-0 shadow-none">
+      <CardHeader className="bg-muted/30 border-b px-6 py-6">
         <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
           <div className="space-y-1">
             <div className="flex items-center gap-3">
@@ -190,7 +190,7 @@ export function SyllabusTableView({
         <div className="overflow-x-auto">
           <Table className="min-w-[600px]">
             <TableHeader>
-              <TableRow className="bg-muted/50 border-b-2 hover:bg-transparent">
+              <TableRow className="bg-muted/50 border-b hover:bg-transparent">
                 <TableHead className="text-foreground font-roboto h-12 px-6 font-bold tracking-tight">
                   Module / Topic Hierarchy
                 </TableHead>
@@ -311,7 +311,7 @@ export function SyllabusTableView({
                               <Button
                                 variant="ghost"
                                 size="icon"
-                                className="hover:bg-muted size-9 rounded-xl border-2 transition-colors"
+                                className="hover:bg-muted size-9 rounded-xl border transition-colors"
                               >
                                 <MoreVertical className="size-4" />
                               </Button>
@@ -356,7 +356,7 @@ export function SyllabusTableView({
                             key={topicId}
                             className={cn(
                               'group hover:bg-muted/10 border-b transition-colors',
-                              isLast && 'border-muted/50 border-b-2'
+                              isLast && 'border-muted/50 border-b'
                             )}
                           >
                             <TableCell className="py-3 pr-6 pl-16">
@@ -440,7 +440,7 @@ export function SyllabusTableView({
         </div>
       </CardContent>
       {pagination && pagination.pages > 1 && (
-        <CardFooter className="flex-col items-start gap-4 border-t-2 pt-6 sm:flex-row sm:items-center">
+        <CardFooter className="flex-col items-start gap-4 border-t pt-6 sm:flex-row sm:items-center">
           <Pagination className="mx-0 w-auto justify-start">
             <PaginationContent>
               <PaginationItem>
@@ -453,7 +453,7 @@ export function SyllabusTableView({
                   className={
                     pagination.current === 1
                       ? 'pointer-events-none opacity-50'
-                      : 'border-2'
+                      : 'border'
                   }
                 />
               </PaginationItem>
@@ -471,7 +471,7 @@ export function SyllabusTableView({
                       <PaginationLink
                         href={`?page=${pageNumber}`}
                         isActive={pageNumber === pagination.current}
-                        className="font-roboto border-2 font-bold"
+                        className="font-roboto border font-bold"
                       >
                         {pageNumber}
                       </PaginationLink>
@@ -503,7 +503,7 @@ export function SyllabusTableView({
                   className={
                     pagination.current === pagination.pages
                       ? 'pointer-events-none opacity-50'
-                      : 'border-2'
+                      : 'border'
                   }
                 />
               </PaginationItem>

@@ -68,11 +68,11 @@ export function UniversitiesTableView({
 
   if (loading) {
     return (
-      <Card className="border-border/50 overflow-hidden border-2 py-0 shadow-none">
+      <Card className="border-border/50 overflow-hidden border py-0 shadow-none">
         <CardContent className="p-0">
           <Table>
             <TableHeader>
-              <TableRow className="bg-muted/30 border-b-2 hover:bg-transparent">
+              <TableRow className="bg-muted/30 border-b hover:bg-transparent">
                 <TableHead className="text-foreground font-roboto h-12 px-6 font-bold">
                   Institution
                 </TableHead>
@@ -121,11 +121,11 @@ export function UniversitiesTableView({
   }
 
   return (
-    <Card className="border-border/50 overflow-hidden border-2 py-0 shadow-none">
+    <Card className="border-border/50 overflow-hidden border py-0 shadow-none">
       <CardContent className="overflow-x-auto p-0">
         <Table className="min-w-[500px]">
           <TableHeader>
-            <TableRow className="bg-muted/30 border-b-2 hover:bg-transparent">
+            <TableRow className="bg-muted/30 border-b hover:bg-transparent">
               <TableHead className="text-foreground font-roboto h-12 px-6 font-bold">
                 Institution
               </TableHead>
@@ -164,7 +164,7 @@ export function UniversitiesTableView({
                       <Button
                         variant="outline"
                         onClick={clearSearch}
-                        className="mt-2 border-2"
+                        className="mt-2 border"
                       >
                         Clear Search
                       </Button>
@@ -177,7 +177,7 @@ export function UniversitiesTableView({
                 <TableRow key={uni.id} className="group border-b">
                   <TableCell className="px-6 py-4">
                     <div className="flex items-center gap-4">
-                      <Avatar className="border-muted bg-muted/50 size-12 rounded-lg border-2 after:rounded-lg">
+                      <Avatar className="border-muted bg-muted/50 size-12 rounded-lg border after:rounded-lg">
                         <AvatarImage
                           src={uni.logo}
                           alt={uni.name}
@@ -240,7 +240,7 @@ export function UniversitiesTableView({
                       trigger={
                         <Button
                           variant="ghost"
-                          className="hover:bg-muted/50 size-9 border-2 p-0 transition-colors"
+                          className="hover:bg-muted/50 size-9 border p-0 transition-colors"
                         >
                           <span className="sr-only">Open menu</span>
                           <MoreVertical className="size-4" />
@@ -316,7 +316,7 @@ export function UniversitiesTableView({
         </Table>
       </CardContent>
       {pagination && pagination.pages > 1 && (
-        <CardFooter className="flex-col items-start gap-4 border-t-2 pt-6 sm:flex-row sm:items-center">
+        <CardFooter className="flex-col items-start gap-4 border-t pt-6 sm:flex-row sm:items-center">
           <Pagination className="mx-0 w-auto justify-start">
             <PaginationContent>
               <PaginationItem>
@@ -329,7 +329,7 @@ export function UniversitiesTableView({
                   className={
                     pagination.current === 1
                       ? 'pointer-events-none opacity-50'
-                      : 'border-2'
+                      : 'border'
                   }
                 />
               </PaginationItem>
@@ -348,7 +348,7 @@ export function UniversitiesTableView({
                       <PaginationLink
                         href={`?page=${pageNumber}`}
                         isActive={pageNumber === pagination.current}
-                        className="font-roboto border-2 font-bold"
+                        className="font-roboto border font-bold"
                       >
                         {pageNumber}
                       </PaginationLink>
@@ -380,7 +380,7 @@ export function UniversitiesTableView({
                   className={
                     pagination.current === pagination.pages
                       ? 'pointer-events-none opacity-50'
-                      : 'border-2'
+                      : 'border'
                   }
                 />
               </PaginationItem>

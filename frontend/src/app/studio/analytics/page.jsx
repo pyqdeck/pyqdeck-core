@@ -90,32 +90,24 @@ export default function AnalyticsPage() {
           value="45.2k"
           subLabel="+20.1% from last month"
           icon={Eye}
-          colorClass="text-blue-600"
-          bgClass="bg-blue-100 dark:bg-blue-900/30"
         />
         <MetricCard
           title="Active Users"
           value="2,350"
           subLabel="+180.1% from last month"
           icon={Users}
-          colorClass="text-purple-600"
-          bgClass="bg-purple-100 dark:bg-purple-900/30"
         />
         <MetricCard
           title="Search Success"
           value="84%"
           subLabel="+4% from last month"
           icon={Search}
-          colorClass="text-emerald-600"
-          bgClass="bg-emerald-100 dark:bg-emerald-900/30"
         />
         <MetricCard
           title="Extraction Rate"
           value="98.2%"
           subLabel="+0.2% from last month"
           icon={Target}
-          colorClass="text-amber-600"
-          bgClass="bg-amber-100 dark:bg-amber-900/30"
         />
       </div>
 

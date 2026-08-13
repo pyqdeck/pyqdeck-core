@@ -52,7 +52,7 @@ export function BranchesTableView({
   const search = searchParams.get('search') || '';
   if (loading) {
     return (
-      <Card className="border-border/50 overflow-hidden border-2 p-0 shadow-none">
+      <Card className="border-border/50 overflow-hidden border p-0 shadow-none">
         <CardContent className="p-0">
           <Table>
             <TableHeader>
@@ -96,11 +96,11 @@ export function BranchesTableView({
   }
 
   return (
-    <Card className="border-border/50 overflow-hidden border-2 p-0 shadow-none">
+    <Card className="border-border/50 overflow-hidden border p-0 shadow-none">
       <CardContent className="overflow-x-auto p-0">
         <Table className="min-w-[560px]">
           <TableHeader>
-            <TableRow className="bg-muted/30 border-b-2 hover:bg-transparent">
+            <TableRow className="bg-muted/30 border-b hover:bg-transparent">
               <TableHead className="font-roboto text-foreground h-12 px-6 font-bold tracking-wider uppercase">
                 Branch
               </TableHead>
@@ -152,7 +152,7 @@ export function BranchesTableView({
                   <TableCell className="hidden sm:table-cell">
                     <Badge
                       variant="outline"
-                      className="font-roboto border-2 font-bold uppercase"
+                      className="font-roboto border font-bold uppercase"
                     >
                       {branch.shortName}
                     </Badge>
@@ -190,7 +190,7 @@ export function BranchesTableView({
                   <TableCell>
                     <Badge
                       variant={branch.isActive ? 'success' : 'secondary'}
-                      className={`font-roboto border-2 font-bold ${
+                      className={`font-roboto border font-bold ${
                         branch.isActive
                           ? 'bg-success/10 text-success hover:bg-success/10 dark:bg-success/10 dark:text-success'
                           : 'bg-muted text-muted-foreground'
@@ -204,7 +204,7 @@ export function BranchesTableView({
                       <DropdownMenuTrigger asChild>
                         <Button
                           variant="ghost"
-                          className="hover:bg-muted/50 h-9 w-9 rounded-md border-2 p-0 transition-colors"
+                          className="hover:bg-muted/50 h-9 w-9 rounded-md border p-0 transition-colors"
                         >
                           <MoreVertical className="h-4 w-4" />
                           <span className="sr-only">Open menu</span>
@@ -212,7 +212,7 @@ export function BranchesTableView({
                       </DropdownMenuTrigger>
                       <DropdownMenuContent
                         align="end"
-                        className="font-roboto w-56 border-2 p-2 shadow-none"
+                        className="font-roboto w-56 border p-2 shadow-none"
                       >
                         <DropdownMenuLabel className="text-muted-foreground px-2 py-1.5 text-xs font-semibold tracking-wider uppercase">
                           Branch Actions
@@ -257,7 +257,7 @@ export function BranchesTableView({
         </Table>
       </CardContent>
       {pagination && pagination.pages > 1 && (
-        <CardFooter className="flex-col items-start gap-4 border-t-2 pt-6 sm:flex-row sm:items-center">
+        <CardFooter className="flex-col items-start gap-4 border-t pt-6 sm:flex-row sm:items-center">
           <Pagination className="mx-0 w-auto justify-start">
             <PaginationContent>
               <PaginationItem>
@@ -270,7 +270,7 @@ export function BranchesTableView({
                   className={
                     pagination.current === 1
                       ? 'pointer-events-none opacity-50'
-                      : 'border-2'
+                      : 'border'
                   }
                 />
               </PaginationItem>
@@ -288,7 +288,7 @@ export function BranchesTableView({
                       <PaginationLink
                         href={`?page=${pageNumber}`}
                         isActive={pageNumber === pagination.current}
-                        className="font-roboto border-2 font-bold"
+                        className="font-roboto border font-bold"
                       >
                         {pageNumber}
                       </PaginationLink>
@@ -318,7 +318,7 @@ export function BranchesTableView({
                   className={
                     pagination.current === pagination.pages
                       ? 'pointer-events-none opacity-50'
-                      : 'border-2'
+                      : 'border'
                   }
                 />
               </PaginationItem>

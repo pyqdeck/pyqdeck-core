@@ -205,7 +205,7 @@ export function SyllabusManagement({
           size="sm"
           onClick={() => handleOfferingChange(null)}
           className={cn(
-            'font-roboto h-8 rounded-full border-2 px-3.5 text-xs font-bold transition-all',
+            'font-roboto h-8 rounded-full border px-3.5 text-xs font-bold transition-all',
             currentOfferingId && 'text-muted-foreground hover:text-foreground'
           )}
         >
@@ -221,7 +221,7 @@ export function SyllabusManagement({
               size="sm"
               onClick={() => handleOfferingChange(id)}
               className={cn(
-                'font-roboto h-8 shrink-0 rounded-full border-2 px-3.5 text-xs font-bold transition-all',
+                'font-roboto h-8 shrink-0 rounded-full border px-3.5 text-xs font-bold transition-all',
                 !isActive && 'text-muted-foreground hover:text-foreground'
               )}
             >
@@ -245,7 +245,7 @@ export function SyllabusManagement({
             onTopicDelete={handleTopicDelete}
           />
         ) : (
-          <div className="border-border/50 bg-muted/5 flex flex-col items-center justify-center gap-4 rounded-3xl border-2 border-dashed py-20">
+          <div className="border-border/50 bg-muted/5 flex flex-col items-center justify-center gap-4 rounded-3xl border border-dashed py-20">
             <div className="bg-muted text-muted-foreground flex h-16 w-16 items-center justify-center rounded-2xl">
               <Plus className="h-8 w-8" />
             </div>
@@ -261,7 +261,7 @@ export function SyllabusManagement({
             <Button
               onClick={handleInitializeSyllabus}
               disabled={loading}
-              className="font-roboto h-10 border-2 font-bold"
+              className="font-roboto h-10 border font-bold"
             >
               {loading ? (
                 <RefreshCcw className="mr-2 h-4 w-4 animate-spin" />
@@ -273,7 +273,7 @@ export function SyllabusManagement({
           </div>
         )
       ) : (
-        <div className="border-border/50 bg-muted/5 flex flex-col items-center justify-center gap-4 rounded-3xl border-2 border-dashed py-20">
+        <div className="border-border/50 bg-muted/5 flex flex-col items-center justify-center gap-4 rounded-3xl border border-dashed py-20">
           <div className="bg-muted text-muted-foreground flex h-16 w-16 items-center justify-center rounded-2xl">
             <Settings2 className="h-8 w-8" />
           </div>

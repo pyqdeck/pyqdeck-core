@@ -115,7 +115,7 @@ function ResizableSheetContent({ children, className, ...props }) {
       {...props}
       style={{ width, maxWidth: '100vw' }}
       className={cn(
-        'flex h-full flex-col gap-0 overflow-hidden border-l p-0 shadow-2xl',
+        'flex h-full flex-col gap-0 overflow-hidden border-l p-0 shadow-sm',
         '[&]:sm:max-w-none',
         className
       )}
@@ -315,7 +315,7 @@ export function ImportBranchesView({
                       onDragLeave={handleDragLeave}
                       onDrop={handleDrop}
                       className={cn(
-                        'flex w-full max-w-sm flex-col items-center justify-center gap-4 rounded-2xl border-2 border-dashed p-8 transition-all sm:p-10',
+                        'flex w-full max-w-sm flex-col items-center justify-center gap-4 rounded-2xl border border-dashed p-8 transition-all sm:p-10',
                         isDragging
                           ? 'border-primary bg-primary/5 scale-[1.02]'
                           : 'border-muted-foreground/20 hover:border-primary/50 hover:bg-muted/30'
@@ -342,7 +342,7 @@ export function ImportBranchesView({
                       <Button
                         asChild
                         variant="outline"
-                        className="mt-2 border-2 font-bold"
+                        className="mt-2 border font-bold"
                       >
                         <label htmlFor="csv-upload" className="cursor-pointer">
                           Select File
@@ -358,7 +358,7 @@ export function ImportBranchesView({
                     <div className="relative">
                       <Textarea
                         placeholder="Paste your CSV content here (including header row)..."
-                        className="bg-muted/10 h-[380px] w-full resize-none border-2 p-4 font-mono text-xs focus-visible:ring-0"
+                        className="bg-muted/10 h-[380px] w-full resize-none border p-4 font-mono text-xs focus-visible:ring-0"
                         value={pastedText}
                         onChange={(e) => onPastedTextChange(e.target.value)}
                       />
@@ -377,7 +377,7 @@ export function ImportBranchesView({
                       <Button
                         variant="outline"
                         onClick={() => onOpenChange(false)}
-                        className="min-w-[100px] border-2 font-bold"
+                        className="min-w-[100px] border font-bold"
                       >
                         Cancel
                       </Button>
@@ -420,7 +420,7 @@ export function ImportBranchesView({
                   <div className="shrink-0 px-4 py-3 sm:px-6">
                     <Alert
                       variant="destructive"
-                      className="bg-destructive/5 border-2"
+                      className="bg-destructive/5 border"
                     >
                       <AlertCircle className="size-4" />
                       <AlertTitle className="font-bold">
@@ -523,7 +523,7 @@ export function ImportBranchesView({
               <Button
                 variant="outline"
                 onClick={() => onOpenChange(false)}
-                className="h-10 border-2 font-bold"
+                className="h-10 border font-bold"
               >
                 Cancel
               </Button>
@@ -568,7 +568,7 @@ export function ImportBranchesView({
             <Button
               variant="outline"
               onClick={() => setEditingIndex(null)}
-              className="border-2 font-bold"
+              className="border font-bold"
             >
               Cancel
             </Button>

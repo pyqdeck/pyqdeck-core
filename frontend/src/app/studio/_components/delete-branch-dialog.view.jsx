@@ -22,7 +22,7 @@ export function DeleteBranchDialogView({
 }) {
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
-      <AlertDialogContent className="border-2 shadow-none">
+      <AlertDialogContent className="border shadow-none">
         <AlertDialogHeader>
           <div className="bg-destructive/10 mb-4 flex h-12 w-12 items-center justify-center rounded-full">
             <AlertTriangle className="text-destructive h-6 w-6" />
@@ -38,7 +38,7 @@ export function DeleteBranchDialogView({
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel className="font-roboto border-2 font-bold shadow-none">
+          <AlertDialogCancel className="font-roboto border font-bold shadow-none">
             Cancel
           </AlertDialogCancel>
           <AlertDialogAction
@@ -47,7 +47,7 @@ export function DeleteBranchDialogView({
               onDelete?.();
             }}
             disabled={loading}
-            className="bg-destructive text-destructive-foreground font-roboto hover:bg-destructive/90 border-2 border-transparent font-bold shadow-none"
+            className="bg-destructive text-destructive-foreground font-roboto hover:bg-destructive/90 border border-transparent font-bold shadow-none"
           >
             {loading ? 'Deleting...' : 'Delete Branch'}
           </AlertDialogAction>

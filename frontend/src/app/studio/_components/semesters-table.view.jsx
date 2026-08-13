@@ -49,11 +49,11 @@ export function SemestersTableView({
 
   if (loading) {
     return (
-      <Card className="border-border/50 overflow-hidden border-2 p-0 shadow-none">
+      <Card className="border-border/50 overflow-hidden border p-0 shadow-none">
         <CardContent className="overflow-x-auto p-0">
           <Table className="min-w-[480px]">
             <TableHeader>
-              <TableRow className="bg-muted/30 border-b-2 hover:bg-transparent">
+              <TableRow className="bg-muted/30 border-b hover:bg-transparent">
                 <TableHead className="font-roboto text-foreground h-12 w-[200px] px-6 font-bold tracking-wider uppercase">
                   Semester
                 </TableHead>
@@ -105,11 +105,11 @@ export function SemestersTableView({
   }
 
   return (
-    <Card className="border-border/50 overflow-hidden border-2 p-0 shadow-none">
+    <Card className="border-border/50 overflow-hidden border p-0 shadow-none">
       <CardContent className="overflow-x-auto p-0">
         <Table className="min-w-[480px]">
           <TableHeader>
-            <TableRow className="bg-muted/30 border-b-2 hover:bg-transparent">
+            <TableRow className="bg-muted/30 border-b hover:bg-transparent">
               <TableHead className="font-roboto text-foreground h-12 w-[200px] px-6 font-bold tracking-wider uppercase">
                 Semester
               </TableHead>
@@ -147,7 +147,7 @@ export function SemestersTableView({
                 >
                   <TableCell className="px-6 py-3">
                     <div className="flex items-center gap-3">
-                      <div className="border-info/20 bg-info/5 text-info dark:border-info/30 dark:bg-info/10 dark:text-info flex h-9 w-9 items-center justify-center rounded-lg border-2">
+                      <div className="border-info/20 bg-info/5 text-info dark:border-info/30 dark:bg-info/10 dark:text-info flex h-9 w-9 items-center justify-center rounded-lg border">
                         <span className="font-roboto text-sm font-bold">
                           {sem.number}
                         </span>
@@ -192,14 +192,14 @@ export function SemestersTableView({
                       <DropdownMenuTrigger asChild>
                         <Button
                           variant="ghost"
-                          className="hover:bg-muted/50 h-9 w-9 border-2 p-0 transition-colors"
+                          className="hover:bg-muted/50 h-9 w-9 border p-0 transition-colors"
                         >
                           <MoreVertical className="h-4 w-4" />
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent
                         align="end"
-                        className="font-roboto w-56 border-2 p-2 shadow-none"
+                        className="font-roboto w-56 border p-2 shadow-none"
                       >
                         <DropdownMenuLabel className="text-muted-foreground px-2 py-1.5 text-xs font-semibold tracking-wider uppercase">
                           Semester Actions
@@ -244,7 +244,7 @@ export function SemestersTableView({
         </Table>
       </CardContent>
       {pagination && pagination.pages > 1 && (
-        <CardFooter className="flex-col items-start gap-4 border-t-2 pt-6 sm:flex-row sm:items-center">
+        <CardFooter className="flex-col items-start gap-4 border-t pt-6 sm:flex-row sm:items-center">
           <Pagination className="mx-0 w-auto justify-start">
             <PaginationContent>
               <PaginationItem>
@@ -257,7 +257,7 @@ export function SemestersTableView({
                   className={
                     pagination.current === 1
                       ? 'pointer-events-none opacity-50'
-                      : 'border-2'
+                      : 'border'
                   }
                 />
               </PaginationItem>
@@ -275,7 +275,7 @@ export function SemestersTableView({
                       <PaginationLink
                         href={`?page=${pageNumber}`}
                         isActive={pageNumber === pagination.current}
-                        className="font-roboto border-2 font-bold"
+                        className="font-roboto border font-bold"
                       >
                         {pageNumber}
                       </PaginationLink>
@@ -305,7 +305,7 @@ export function SemestersTableView({
                   className={
                     pagination.current === pagination.pages
                       ? 'pointer-events-none opacity-50'
-                      : 'border-2'
+                      : 'border'
                   }
                 />
               </PaginationItem>

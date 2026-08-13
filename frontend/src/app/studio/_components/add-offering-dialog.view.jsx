@@ -62,12 +62,12 @@ export function AddOfferingDialogView({
     <Dialog open={open} onOpenChange={onOpenChange}>
       {trigger && (
         <DialogTrigger asChild>
-          <Button className="font-roboto bg-primary hover:bg-primary/90 border-2 font-bold shadow-none">
+          <Button className="font-roboto bg-primary hover:bg-primary/90 border font-bold shadow-none">
             <Plus className="h-4 w-4" /> New Offering
           </Button>
         </DialogTrigger>
       )}
-      <DialogContent className="border-2 shadow-none sm:max-w-[550px]">
+      <DialogContent className="border shadow-none sm:max-w-[550px]">
         <DialogHeader>
           <div className="mb-2 flex items-center gap-3">
             <div className="bg-primary/10 text-primary rounded-lg p-2">
@@ -96,10 +96,10 @@ export function AddOfferingDialogView({
                 control={control}
                 render={({ field }) => (
                   <Select onValueChange={field.onChange} value={field.value}>
-                    <SelectTrigger className="font-roboto w-full border-2 focus:ring-0">
+                    <SelectTrigger className="font-roboto w-full border focus:ring-0">
                       <SelectValue placeholder="Select University" />
                     </SelectTrigger>
-                    <SelectContent className="border-2 shadow-none">
+                    <SelectContent className="border shadow-none">
                       {universities.map((uni) => (
                         <SelectItem
                           key={uni.id}
@@ -130,10 +130,10 @@ export function AddOfferingDialogView({
                     value={field.value}
                     disabled={!selectedUniId}
                   >
-                    <SelectTrigger className="font-roboto w-full border-2 focus:ring-0">
+                    <SelectTrigger className="font-roboto w-full border focus:ring-0">
                       <SelectValue placeholder="Select Branch" />
                     </SelectTrigger>
-                    <SelectContent className="border-2 shadow-none">
+                    <SelectContent className="border shadow-none">
                       {filteredBranches.map((branch) => (
                         <SelectItem
                           key={branch.id}
@@ -167,10 +167,10 @@ export function AddOfferingDialogView({
                     value={field.value}
                     disabled={!selectedBranchId}
                   >
-                    <SelectTrigger className="font-roboto w-full border-2 focus:ring-0">
+                    <SelectTrigger className="font-roboto w-full border focus:ring-0">
                       <SelectValue placeholder="Select Semester" />
                     </SelectTrigger>
-                    <SelectContent className="border-2 shadow-none">
+                    <SelectContent className="border shadow-none">
                       {filteredSemesters.map((sem) => (
                         <SelectItem
                           key={sem.id}
@@ -197,10 +197,10 @@ export function AddOfferingDialogView({
                 control={control}
                 render={({ field }) => (
                   <Select onValueChange={field.onChange} value={field.value}>
-                    <SelectTrigger className="font-roboto w-full border-2 focus:ring-0">
+                    <SelectTrigger className="font-roboto w-full border focus:ring-0">
                       <SelectValue placeholder="Select Subject" />
                     </SelectTrigger>
-                    <SelectContent className="border-2 shadow-none">
+                    <SelectContent className="border shadow-none">
                       {subjects.map((sub) => (
                         <SelectItem
                           key={sub.id}
@@ -233,7 +233,7 @@ export function AddOfferingDialogView({
                     {...field}
                     id="regulation"
                     placeholder="e.g. R2022"
-                    className="font-roboto border-2 focus-visible:ring-0"
+                    className="font-roboto border focus-visible:ring-0"
                   />
                 )}
               />
@@ -253,7 +253,7 @@ export function AddOfferingDialogView({
                     {...field}
                     id="academicYear"
                     placeholder="e.g. 2023-24"
-                    className="font-roboto border-2 focus-visible:ring-0"
+                    className="font-roboto border focus-visible:ring-0"
                   />
                 )}
               />
@@ -264,7 +264,7 @@ export function AddOfferingDialogView({
             <Button
               type="submit"
               disabled={isSubmitting}
-              className="font-roboto bg-primary hover:bg-primary/90 w-full border-2 font-bold shadow-none"
+              className="font-roboto bg-primary hover:bg-primary/90 w-full border font-bold shadow-none"
             >
               {isSubmitting ? 'Deploying...' : 'Confirm Offering'}
             </Button>

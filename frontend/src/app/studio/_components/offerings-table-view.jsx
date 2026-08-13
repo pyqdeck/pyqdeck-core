@@ -55,7 +55,7 @@ export function OfferingsTableView({
 }) {
   if (loading) {
     return (
-      <Card className="border-border/50 border-2 p-0 shadow-none">
+      <Card className="border-border/50 border p-0 shadow-none">
         <CardHeader className="pb-3">
           <Skeleton className="mb-2 h-8 w-48" />
           <Skeleton className="h-4 w-64" />
@@ -99,11 +99,11 @@ export function OfferingsTableView({
   }
 
   return (
-    <Card className="border-border/50 border-2 p-0 shadow-none">
+    <Card className="border-border/50 border p-0 shadow-none">
       <CardContent className="overflow-x-auto p-0">
         <Table className="min-w-[480px]">
           <TableHeader>
-            <TableRow className="text-muted-foreground border-b-2 text-xs font-bold tracking-wider uppercase hover:bg-transparent">
+            <TableRow className="text-muted-foreground border-b text-xs font-bold tracking-wider uppercase hover:bg-transparent">
               <TableHead className="text-foreground w-[300px] font-bold">
                 Subject Offering
               </TableHead>
@@ -141,7 +141,7 @@ export function OfferingsTableView({
                 >
                   <TableCell className="py-4">
                     <div className="flex items-center gap-3">
-                      <div className="border-success/20 bg-success/5 text-success dark:border-success/30 dark:bg-success/10 dark:text-success flex h-10 w-10 items-center justify-center rounded-xl border-2 transition-transform group-hover:scale-110">
+                      <div className="border-success/20 bg-success/5 text-success dark:border-success/30 dark:bg-success/10 dark:text-success flex h-10 w-10 items-center justify-center rounded-xl border transition-transform group-hover:scale-110">
                         <BookOpen className="h-5 w-5" />
                       </div>
                       <div className="flex min-w-0 flex-col">
@@ -181,7 +181,7 @@ export function OfferingsTableView({
                   <TableCell className="hidden sm:table-cell">
                     <Badge
                       variant="outline"
-                      className="bg-muted/30 border-primary/20 text-primary dark:border-primary/30 dark:text-primary border-2 font-mono font-bold"
+                      className="bg-muted/30 border-primary/20 text-primary dark:border-primary/30 dark:text-primary border font-mono font-bold"
                     >
                       {offering.regulation || 'General'}
                     </Badge>
@@ -197,14 +197,14 @@ export function OfferingsTableView({
                       <DropdownMenuTrigger asChild>
                         <Button
                           variant="ghost"
-                          className="hover:bg-muted/50 h-9 w-9 rounded-md border-2 p-0 transition-colors"
+                          className="hover:bg-muted/50 h-9 w-9 rounded-md border p-0 transition-colors"
                         >
                           <MoreVertical className="h-4 w-4" />
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent
                         align="end"
-                        className="font-roboto w-56 border-2 p-2 shadow-none"
+                        className="font-roboto w-56 border p-2 shadow-none"
                       >
                         <DropdownMenuLabel className="text-muted-foreground px-2 py-1.5 text-[10px] font-bold tracking-widest uppercase">
                           Offering Controls
@@ -238,7 +238,7 @@ export function OfferingsTableView({
         </Table>
       </CardContent>
       {pagination && pagination.pages > 1 && (
-        <CardFooter className="flex-col items-start gap-4 border-t-2 pt-6 sm:flex-row sm:items-center">
+        <CardFooter className="flex-col items-start gap-4 border-t pt-6 sm:flex-row sm:items-center">
           <Pagination className="mx-0 w-auto justify-start">
             <PaginationContent>
               <PaginationItem>
@@ -251,7 +251,7 @@ export function OfferingsTableView({
                   className={
                     pagination.current === 1
                       ? 'pointer-events-none opacity-50'
-                      : 'border-2'
+                      : 'border'
                   }
                 />
               </PaginationItem>
@@ -269,7 +269,7 @@ export function OfferingsTableView({
                       <PaginationLink
                         href={`?page=${pageNumber}`}
                         isActive={pageNumber === pagination.current}
-                        className="font-roboto border-2 font-bold"
+                        className="font-roboto border font-bold"
                       >
                         {pageNumber}
                       </PaginationLink>
@@ -289,7 +289,7 @@ export function OfferingsTableView({
                   className={
                     pagination.current === pagination.pages
                       ? 'pointer-events-none opacity-50'
-                      : 'border-2'
+                      : 'border'
                   }
                 />
               </PaginationItem>

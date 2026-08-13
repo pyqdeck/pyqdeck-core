@@ -30,7 +30,7 @@ export function EditSemesterDialogView({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="border-2 shadow-none sm:max-w-[450px]">
+      <DialogContent className="border shadow-none sm:max-w-[450px]">
         <DialogHeader>
           <DialogTitle className="font-roboto text-xl font-bold">
             Edit Semester
@@ -53,7 +53,7 @@ export function EditSemesterDialogView({
                     {...field}
                     id="edit-number"
                     type="number"
-                    className="font-roboto border-2 focus-visible:ring-0"
+                    className="font-roboto border focus-visible:ring-0"
                   />
                 )}
               />
@@ -74,7 +74,7 @@ export function EditSemesterDialogView({
                   <Input
                     {...field}
                     id="edit-slug"
-                    className="font-roboto border-2 focus-visible:ring-0"
+                    className="font-roboto border focus-visible:ring-0"
                   />
                 )}
               />
@@ -97,7 +97,7 @@ export function EditSemesterDialogView({
                 <Input
                   {...field}
                   id="edit-title"
-                  className="font-roboto border-2 focus-visible:ring-0"
+                  className="font-roboto border focus-visible:ring-0"
                 />
               )}
             />
@@ -107,7 +107,7 @@ export function EditSemesterDialogView({
             <Button
               type="submit"
               disabled={isSubmitting}
-              className="font-roboto w-full border-2 font-bold shadow-none"
+              className="font-roboto w-full border font-bold shadow-none"
             >
               {isSubmitting ? 'Saving Changes...' : 'Save Changes'}
             </Button>

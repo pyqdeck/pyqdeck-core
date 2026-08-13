@@ -6,10 +6,14 @@ export function MetricCardView({
   value,
   subLabel,
   icon: Icon,
-  colorClass,
-  bgClass,
+  tone = 'neutral',
   loading = false,
 }) {
+  const toneClasses =
+    tone === 'warning'
+      ? 'bg-warning/10 text-warning'
+      : 'bg-muted text-muted-foreground';
+
   return (
     <Card shadow="none">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -17,8 +21,8 @@ export function MetricCardView({
           {loading ? (
             <Skeleton className="h-9 w-9 rounded-lg" />
           ) : (
-            <div className={`rounded-lg p-2 ${bgClass}`}>
-              <Icon className={`h-5 w-5 ${colorClass}`} />
+            <div className={`rounded-lg p-2 ${toneClasses}`}>
+              <Icon className="h-5 w-5" />
             </div>
           )}
           <CardTitle className="text-muted-foreground text-sm font-medium">

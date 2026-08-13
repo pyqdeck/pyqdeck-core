@@ -35,7 +35,7 @@ export function TrafficChartView({ data, loading = false }) {
   const chartData = React.useMemo(() => data || [], [data]);
 
   return (
-    <Card className="border-border/50 border-2 shadow-none">
+    <Card className="border-border/50 border shadow-none">
       <CardHeader className="flex flex-row items-center gap-3">
         <div className="bg-info/10 dark:bg-info/10 rounded-full p-2">
           <TrendingUp className="text-info h-5 w-5" />

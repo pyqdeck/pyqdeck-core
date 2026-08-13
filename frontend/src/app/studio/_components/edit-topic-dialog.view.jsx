@@ -31,7 +31,7 @@ export function EditTopicDialogView({ form, onSubmit, open, onOpenChange }) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="border-2 shadow-none sm:max-w-[450px]">
+      <DialogContent className="border shadow-none sm:max-w-[450px]">
         <DialogHeader>
           <div className="mb-2 flex items-center gap-3">
             <div className="bg-primary/10 text-primary rounded-lg p-2">
@@ -59,7 +59,7 @@ export function EditTopicDialogView({ form, onSubmit, open, onOpenChange }) {
                     render={({ field }) => (
                       <Input
                         {...field}
-                        className="font-roboto border-2 focus-visible:ring-0"
+                        className="font-roboto border focus-visible:ring-0"
                         aria-invalid={!!errors.title}
                       />
                     )}
@@ -77,7 +77,7 @@ export function EditTopicDialogView({ form, onSubmit, open, onOpenChange }) {
                     <Input
                       {...field}
                       type="number"
-                      className="font-roboto border-2 text-center focus-visible:ring-0"
+                      className="font-roboto border text-center focus-visible:ring-0"
                       onChange={(e) =>
                         field.onChange(parseInt(e.target.value) || 0)
                       }
@@ -99,7 +99,7 @@ export function EditTopicDialogView({ form, onSubmit, open, onOpenChange }) {
                 render={({ field }) => (
                   <Textarea
                     {...field}
-                    className="font-roboto min-h-[80px] resize-none border-2 focus-visible:ring-0"
+                    className="font-roboto min-h-[80px] resize-none border focus-visible:ring-0"
                     aria-invalid={!!errors.description}
                   />
                 )}
@@ -112,7 +112,7 @@ export function EditTopicDialogView({ form, onSubmit, open, onOpenChange }) {
             <Button
               type="submit"
               disabled={isSubmitting}
-              className="font-roboto bg-primary hover:bg-primary/90 h-11 w-full border-2 font-bold shadow-none"
+              className="font-roboto bg-primary hover:bg-primary/90 h-11 w-full border font-bold shadow-none"
             >
               {isSubmitting ? 'Saving...' : 'Update Topic'}
             </Button>

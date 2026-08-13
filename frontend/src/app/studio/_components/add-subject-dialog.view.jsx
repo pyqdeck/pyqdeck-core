@@ -37,14 +37,14 @@ export function AddSubjectDialogView({
         <DialogTrigger asChild>
           <Button
             variant="none"
-            className="font-roboto hover:bg-primary hover:text-primary-foreground flex w-full items-center justify-start gap-2 border-2 px-3 py-2 font-bold shadow-none transition-colors"
+            className="font-roboto hover:bg-primary hover:text-primary-foreground flex w-full items-center justify-start gap-2 border px-3 py-2 font-bold shadow-none transition-colors"
           >
             <Plus className="h-4 w-4" />
             <span>Add Subject</span>
           </Button>
         </DialogTrigger>
       )}
-      <DialogContent className="border-2 shadow-none sm:max-w-[500px]">
+      <DialogContent className="border shadow-none sm:max-w-[500px]">
         <DialogHeader>
           <div className="mb-2 flex items-center gap-3">
             <div className="bg-primary/10 text-primary rounded-lg p-2">
@@ -71,7 +71,7 @@ export function AddSubjectDialogView({
                   {...field}
                   id="name"
                   placeholder="e.g. Data Structures and Algorithms"
-                  className="font-roboto border-2 focus-visible:ring-0"
+                  className="font-roboto border focus-visible:ring-0"
                 />
               )}
             />
@@ -95,7 +95,7 @@ export function AddSubjectDialogView({
                     {...field}
                     id="shortName"
                     placeholder="e.g. DSA"
-                    className="font-roboto border-2 focus-visible:ring-0"
+                    className="font-roboto border focus-visible:ring-0"
                   />
                 )}
               />
@@ -112,7 +112,7 @@ export function AddSubjectDialogView({
                     {...field}
                     id="subjectCode"
                     placeholder="e.g. CS301"
-                    className="font-roboto border-2 focus-visible:ring-0"
+                    className="font-roboto border focus-visible:ring-0"
                   />
                 )}
               />
@@ -134,7 +134,7 @@ export function AddSubjectDialogView({
                     type="number"
                     min="0"
                     placeholder="e.g. 4"
-                    className="font-roboto border-2 focus-visible:ring-0"
+                    className="font-roboto border focus-visible:ring-0"
                     onChange={(e) =>
                       field.onChange(parseFloat(e.target.value) || 0)
                     }
@@ -154,7 +154,7 @@ export function AddSubjectDialogView({
                     {...field}
                     id="slug"
                     placeholder="e.g. data-structures"
-                    className="font-roboto border-2 focus-visible:ring-0"
+                    className="font-roboto border focus-visible:ring-0"
                   />
                 )}
               />
@@ -178,7 +178,7 @@ export function AddSubjectDialogView({
                   {...field}
                   id="description"
                   placeholder="Describe the subject objectives and curriculum scope..."
-                  className="font-roboto min-h-[100px] resize-none border-2 focus-visible:ring-0"
+                  className="font-roboto min-h-[100px] resize-none border focus-visible:ring-0"
                 />
               )}
             />
@@ -188,7 +188,7 @@ export function AddSubjectDialogView({
             <Button
               type="submit"
               disabled={isSubmitting}
-              className="font-roboto bg-primary hover:bg-primary/90 w-full border-2 font-bold shadow-none"
+              className="font-roboto bg-primary hover:bg-primary/90 w-full border font-bold shadow-none"
             >
               {isSubmitting ? 'Registering...' : 'Register Subject'}
             </Button>

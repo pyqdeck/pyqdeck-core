@@ -45,14 +45,14 @@ export function AddSemesterDialogView({
           <Button
             size="sm"
             variant="none"
-            className="font-roboto hover:bg-primary hover:text-primary-foreground flex w-full items-center justify-start gap-2 border-2 px-3 py-2 font-bold shadow-none transition-colors"
+            className="font-roboto hover:bg-primary hover:text-primary-foreground flex w-full items-center justify-start gap-2 border px-3 py-2 font-bold shadow-none transition-colors"
           >
             <Plus className="h-4 w-4" />
             <span>Add Semester</span>
           </Button>
         </DialogTrigger>
       )}
-      <DialogContent className="border-2 shadow-none sm:max-w-[450px]">
+      <DialogContent className="border shadow-none sm:max-w-[450px]">
         <DialogHeader>
           <DialogTitle className="font-roboto text-xl font-bold">
             Initialize Semester
@@ -71,10 +71,10 @@ export function AddSemesterDialogView({
               control={control}
               render={({ field }) => (
                 <Select onValueChange={field.onChange} value={field.value}>
-                  <SelectTrigger className="font-roboto w-full border-2 focus:ring-0">
+                  <SelectTrigger className="font-roboto w-full border focus:ring-0">
                     <SelectValue placeholder="Select a branch" />
                   </SelectTrigger>
-                  <SelectContent className="border-2 shadow-none">
+                  <SelectContent className="border shadow-none">
                     {branches.map((branch) => (
                       <SelectItem
                         key={branch.id}
@@ -111,7 +111,7 @@ export function AddSemesterDialogView({
                     min="1"
                     max="10"
                     placeholder="e.g. 5"
-                    className="font-roboto border-2 focus-visible:ring-0"
+                    className="font-roboto border focus-visible:ring-0"
                   />
                 )}
               />
@@ -133,7 +133,7 @@ export function AddSemesterDialogView({
                     {...field}
                     id="slug"
                     placeholder="semester-5"
-                    className="font-roboto border-2 focus-visible:ring-0"
+                    className="font-roboto border focus-visible:ring-0"
                   />
                 )}
               />
@@ -157,7 +157,7 @@ export function AddSemesterDialogView({
                   {...field}
                   id="title"
                   placeholder="e.g. Semester 5 (Final Year)"
-                  className="font-roboto border-2 focus-visible:ring-0"
+                  className="font-roboto border focus-visible:ring-0"
                 />
               )}
             />
@@ -167,7 +167,7 @@ export function AddSemesterDialogView({
             <Button
               type="submit"
               disabled={isSubmitting}
-              className="font-roboto w-full border-2 font-bold shadow-none"
+              className="font-roboto w-full border font-bold shadow-none"
             >
               {isSubmitting ? 'Creating Semester...' : 'Create Semester'}
             </Button>

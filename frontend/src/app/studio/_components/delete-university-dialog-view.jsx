@@ -21,7 +21,7 @@ export function DeleteUniversityDialogView({
 }) {
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
-      <AlertDialogContent className="font-roboto border-2 shadow-none">
+      <AlertDialogContent className="font-roboto border shadow-none">
         <AlertDialogHeader>
           <AlertDialogTitle className="text-xl font-bold">
             Are you absolutely sure?
@@ -35,7 +35,7 @@ export function DeleteUniversityDialogView({
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel className="border-2 font-bold">
+          <AlertDialogCancel className="border font-bold">
             Cancel
           </AlertDialogCancel>
           <AlertDialogAction

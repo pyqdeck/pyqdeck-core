@@ -51,7 +51,7 @@ export function StudioSearch({
       <Search className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
       <Input
         placeholder={placeholder}
-        className="font-roboto border-2 pl-9 focus-visible:ring-0"
+        className="font-roboto border pl-9 focus-visible:ring-0"
         value={value}
         onChange={(e) => setValue(e.target.value)}
       />

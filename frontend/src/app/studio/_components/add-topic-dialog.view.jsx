@@ -51,10 +51,10 @@ export function AddTopicDialogView({
           </Button>
         </DialogTrigger>
       )}
-      <DialogContent className="overflow-hidden border-2 bg-white p-0 shadow-xl sm:max-w-[480px] dark:bg-zinc-950">
-        <DialogHeader className="bg-primary/5 dark:bg-primary/10 border-b-2 px-6 pt-6 pb-4">
+      <DialogContent className="overflow-hidden border bg-white p-0 shadow-sm sm:max-w-[480px] dark:bg-zinc-950">
+        <DialogHeader className="bg-primary/5 dark:bg-primary/10 border-b px-6 pt-6 pb-4">
           <div className="flex items-center gap-4">
-            <div className="bg-primary shadow-primary/20 flex h-12 w-12 items-center justify-center rounded-xl text-white shadow-md dark:shadow-none">
+            <div className="bg-primary flex h-12 w-12 items-center justify-center rounded-xl text-white">
               <BookOpen className="h-6 w-6" />
             </div>
             <div className="space-y-1">
@@ -85,7 +85,7 @@ export function AddTopicDialogView({
                         <Input
                           {...field}
                           placeholder="e.g. Backpropagation Algorithm"
-                          className="font-roboto focus-visible:border-primary focus-visible:ring-primary/20 h-12 border-2 bg-white text-base font-semibold shadow-sm dark:bg-zinc-900"
+                          className="font-roboto focus-visible:border-primary focus-visible:ring-primary/20 h-12 border bg-white text-base font-semibold shadow-sm dark:bg-zinc-900"
                           aria-invalid={!!errors.title}
                         />
                       )}
@@ -106,7 +106,7 @@ export function AddTopicDialogView({
                         <Input
                           {...field}
                           type="number"
-                          className="font-roboto focus-visible:border-success focus-visible:ring-success/20 h-12 border-2 bg-white text-center text-lg font-bold shadow-sm dark:bg-zinc-900"
+                          className="font-roboto focus-visible:border-success focus-visible:ring-success/20 h-12 border bg-white text-center text-lg font-bold shadow-sm dark:bg-zinc-900"
                           onChange={(e) =>
                             field.onChange(parseInt(e.target.value) || 0)
                           }
@@ -130,7 +130,7 @@ export function AddTopicDialogView({
                     <Textarea
                       {...field}
                       placeholder="Brief overview of the topic contents..."
-                      className="font-roboto focus-visible:border-success focus-visible:ring-success/20 min-h-[100px] resize-none border-2 bg-white text-sm shadow-sm dark:bg-zinc-900"
+                      className="font-roboto focus-visible:border-success focus-visible:ring-success/20 min-h-[100px] resize-none border bg-white text-sm shadow-sm dark:bg-zinc-900"
                       aria-invalid={!!errors.description}
                     />
                   )}
@@ -140,17 +140,17 @@ export function AddTopicDialogView({
             </FieldGroup>
           </div>
 
-          <DialogFooter className="bg-muted/20 border-t-2 px-6 py-4">
+          <DialogFooter className="bg-muted/20 border-t px-6 py-4">
             <Button
               type="submit"
               disabled={isSubmitting}
-              className="font-roboto bg-success shadow-success/20 hover:bg-success/90 hover:shadow-success/40 h-12 w-full border-2 text-base font-black tracking-wider text-white uppercase shadow-lg transition-all active:scale-[0.98] dark:shadow-none"
+              className="font-roboto bg-success hover:bg-success/90 h-12 w-full border text-base font-bold text-white shadow-none"
             >
               {isSubmitting ? (
-                'Registering Topic...'
+                'Registering topic…'
               ) : (
                 <>
-                  <Plus className="mr-2 h-5 w-5" /> Register Learning Topic
+                  <Plus className="mr-2 h-5 w-5" /> Register learning topic
                 </>
               )}
             </Button>
