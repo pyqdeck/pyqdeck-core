@@ -3,10 +3,6 @@
 import { useState } from 'react';
 import { QuestionCard } from '@/components/browse/question-card';
 
-/**
- * Bookmarked questions have no paper context, so QuestionCard renders
- * without the solutions section here (see its `paperId` doc comment).
- */
 export function BookmarksList({ initialItems }) {
   const [items, setItems] = useState(initialItems);
 

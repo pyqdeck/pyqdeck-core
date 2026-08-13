@@ -105,23 +105,21 @@ describe('UserRepository', () => {
   describe('getStats and getStatsByClerkId', () => {
     it('should return default stats if no data exists', async () => {
       const stats = await userRepository.getStats('507f1f77bcf86cd799439011');
-      expect(stats).toEqual({ bookmarksCount: 0, solutionsCount: 0 });
+      expect(stats).toEqual({ bookmarksCount: 0 });
     });
 
     it('should return stats for a user', async () => {
       const user = await userRepository.create(userData);
-      // Since we don't have bookmarks/solutions created in this test, it will return 0
+      // Since we don't have bookmarks created in this test, it will return 0
       // but it verifies the aggregation pipeline runs without error
       const stats = await userRepository.getStats(user._id);
       expect(stats).toHaveProperty('bookmarksCount');
-      expect(stats).toHaveProperty('solutionsCount');
     });
 
     it('should return stats by clerkId', async () => {
       await userRepository.create(userData);
       const stats = await userRepository.getStatsByClerkId(userData.clerkId);
       expect(stats).toHaveProperty('bookmarksCount');
-      expect(stats).toHaveProperty('solutionsCount');
     });
   });
 

@@ -38,7 +38,6 @@ describe('userController', () => {
     it('should return user info and stats', async () => {
       userService.getUserStats.mockResolvedValue({
         bookmarksCount: 5,
-        solutionsCount: 10,
       });
 
       await userController.getMe(req, res, next);
@@ -51,7 +50,6 @@ describe('userController', () => {
             user: req.dbUser,
             stats: {
               bookmarksCount: 5,
-              solutionsCount: 10,
             },
           },
         })
@@ -92,7 +90,7 @@ describe('userController', () => {
       req.params.clerkId = 'target_user';
       userService.getUserByClerkId.mockResolvedValue({
         user: { clerkId: 'target_user' },
-        stats: { bookmarksCount: 0, solutionsCount: 0 },
+        stats: { bookmarksCount: 0 },
       });
 
       await userController.getUserById(req, res, next);

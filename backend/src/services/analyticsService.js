@@ -11,7 +11,6 @@ class AnalyticsService {
         totalPapers,
         pendingPapersCount,
         totalQuestions,
-        totalSolutions,
         totalUniversities,
         totalBranches,
       ],
@@ -33,7 +32,6 @@ class AnalyticsService {
           pending: pendingPapersCount,
         },
         questions: totalQuestions,
-        solutions: totalSolutions,
         academics: {
           universities: totalUniversities,
           branches: totalBranches,

@@ -22,7 +22,7 @@ router.use(requireAuthentication);
  *     parameters:
  *       - in: query
  *         name: type
- *         schema: { type: string, enum: [question, paper, solution] }
+ *         schema: { type: string, enum: [question, paper] }
  *       - in: query
  *         name: page
  *         schema: { type: integer, default: 1 }

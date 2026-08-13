@@ -20,7 +20,7 @@ describe('analyticsService', () => {
     it('should aggregate and format all studio overview data', async () => {
       // Mock repository returns
       analyticsRepository.getGlobalCounts.mockResolvedValue([
-        100, 50, 5, 200, 150, 10, 20,
+        100, 50, 5, 200, 10, 20,
       ]);
       analyticsRepository.getRecentPendingPapers.mockResolvedValue([
         { title: 'Pending Paper 1' },
@@ -51,7 +51,6 @@ describe('analyticsService', () => {
           pending: 5,
         },
         questions: 200,
-        solutions: 150,
         academics: {
           universities: 10,
           branches: 20,

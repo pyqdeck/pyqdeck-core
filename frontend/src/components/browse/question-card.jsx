@@ -7,78 +7,11 @@ import { getCoursifyAskUrl } from '@/lib/coursify';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Spinner } from '@/components/ui/spinner';
-import {
-  Bookmark,
-  BookmarkCheck,
-  ChevronDown,
-  ThumbsUp,
-  ThumbsDown,
-  Sparkles,
-} from 'lucide-react';
+import { Bookmark, BookmarkCheck, Sparkles } from 'lucide-react';
 import { toast } from 'sonner';
 
-function SolutionCard({ solution, onVote }) {
-  const [voting, setVoting] = useState(false);
-
-  const handleVote = async (type) => {
-    setVoting(true);
-    try {
-      await onVote(solution.id, type);
-    } finally {
-      setVoting(false);
-    }
-  };
-
-  return (
-    <div className="rounded-lg border p-3">
-      <div className="mb-2 flex items-center gap-2">
-        <Badge variant="secondary" className="capitalize">
-          {solution.type}
-        </Badge>
-        {solution.isVerified && <Badge>Verified</Badge>}
-      </div>
-      <p className="whitespace-pre-wrap text-sm">{solution.content}</p>
-      {solution.latexContent && (
-        <pre className="bg-muted mt-2 overflow-x-auto rounded p-2 text-xs">
-          {solution.latexContent}
-        </pre>
-      )}
-      <div className="mt-3 flex items-center gap-3">
-        <Button
-          variant="ghost"
-          size="sm"
-          className="h-7 gap-1 px-2"
-          disabled={voting}
-          onClick={() => handleVote('up')}
-        >
-          <ThumbsUp className="size-3.5" />
-          {solution.upvotes ?? 0}
-        </Button>
-        <Button
-          variant="ghost"
-          size="sm"
-          className="h-7 gap-1 px-2"
-          disabled={voting}
-          onClick={() => handleVote('down')}
-        >
-          <ThumbsDown className="size-3.5" />
-          {solution.downvotes ?? 0}
-        </Button>
-      </div>
-    </div>
-  );
-}
-
-/**
- * Renders a question with bookmark + (optionally) solutions.
- * Pass `paperId` to enable fetching solutions — the backend only exposes
- * solutions in the context of a paper, so standalone question views (search,
- * bookmarks) can't show them yet.
- */
 export function QuestionCard({
   question,
-  paperId,
   initialBookmarked = false,
   onBookmarkChange,
 }) {
@@ -87,10 +20,6 @@ export function QuestionCard({
 
   const [bookmarked, setBookmarked] = useState(initialBookmarked);
   const [bookmarkLoading, setBookmarkLoading] = useState(false);
-
-  const [solutionsOpen, setSolutionsOpen] = useState(false);
-  const [solutionsLoading, setSolutionsLoading] = useState(false);
-  const [solutions, setSolutions] = useState(null);
 
   const handleToggleBookmark = async () => {
     setBookmarkLoading(true);
@@ -114,55 +43,9 @@ export function QuestionCard({
     }
   };
 
-  const handleToggleSolutions = async () => {
-    const nextOpen = !solutionsOpen;
-    setSolutionsOpen(nextOpen);
-    if (nextOpen && solutions === null && paperId) {
-      setSolutionsLoading(true);
-      try {
-        const res = await api.papers.listSolutionsForPaperQuestion(
-          paperId,
-          question.id,
-          { limit: 20 }
-        );
-        setSolutions(res.data?.data?.items || []);
-      } catch (error) {
-        console.error('Failed to fetch solutions:', error);
-        setSolutions([]);
-      } finally {
-        setSolutionsLoading(false);
-      }
-    }
-  };
-
   const handleAskAI = () => {
     window.open(getCoursifyAskUrl(question.text), '_blank', 'noopener,noreferrer');
     toast.info('Opening Coursify in a new tab…');
-  };
-
-  const handleVote = async (solutionId, type) => {
-    if (!isSignedIn) {
-      toast.error('Sign in to vote on solutions.');
-      return;
-    }
-    try {
-      const res = await api.solutions.voteOnSolution(solutionId, { type });
-      const data = res.data?.data;
-      setSolutions((prev) =>
-        prev.map((solution) =>
-          solution.id === solutionId
-            ? {
-                ...solution,
-                upvotes: data?.upvotes ?? solution.upvotes,
-                downvotes: data?.downvotes ?? solution.downvotes,
-              }
-            : solution
-        )
-      );
-    } catch (error) {
-      console.error('Failed to vote:', error);
-      toast.error('Could not record your vote.');
-    }
   };
 
   return (
@@ -227,7 +110,7 @@ export function QuestionCard({
           </div>
         )}
 
-        <div className="mt-4 flex flex-wrap items-center gap-2 border-t pt-3">
+        <div className="mt-4 border-t pt-3">
           <Button
             variant="secondary"
             size="sm"
@@ -237,47 +120,7 @@ export function QuestionCard({
             <Sparkles className="size-4" />
             Ask AI
           </Button>
-
-          {paperId && (
-            <Button
-              variant="ghost"
-              size="sm"
-              className="gap-1.5"
-              onClick={handleToggleSolutions}
-            >
-              <ChevronDown
-                className={`size-4 transition-transform ${solutionsOpen ? 'rotate-180' : ''}`}
-              />
-              {solutionsOpen ? 'Hide solutions' : 'View solutions'}
-            </Button>
-          )}
         </div>
-
-        {paperId && (
-          <div>
-            {solutionsOpen && (
-              <div className="mt-3 space-y-3">
-                {solutionsLoading ? (
-                  <div className="flex items-center gap-2 text-sm">
-                    <Spinner className="size-4" /> Loading solutions…
-                  </div>
-                ) : solutions?.length > 0 ? (
-                  solutions.map((solution) => (
-                    <SolutionCard
-                      key={solution.id}
-                      solution={solution}
-                      onVote={handleVote}
-                    />
-                  ))
-                ) : (
-                  <p className="text-muted-foreground text-sm">
-                    No solutions yet for this question.
-                  </p>
-                )}
-              </div>
-            )}
-          </div>
-        )}
       </CardContent>
     </Card>
   );

@@ -133,7 +133,7 @@ describe('UserService', () => {
     it('should return user and stats', async () => {
       const clerkId = 'user_1';
       const user = { id: 'db_1', clerkId };
-      const stats = { bookmarksCount: 1, solutionsCount: 2 };
+      const stats = { bookmarksCount: 1 };
 
       userRepository.findByClerkId.mockResolvedValue(user);
       userRepository.getStatsByClerkId.mockResolvedValue(stats);

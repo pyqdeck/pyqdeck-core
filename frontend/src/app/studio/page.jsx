@@ -25,7 +25,6 @@ export default async function StudioPage() {
     users: 0,
     papers: { total: 0, pending: 0 },
     questions: 0,
-    solutions: 0,
     academics: { universities: 0, branches: 0 },
   };
 

@@ -28,12 +28,6 @@ export {
   MappedBy,
   questionSyllabusMapZodSchema,
 } from './QuestionSyllabusMap.js';
-export {
-  Solution,
-  SolutionType,
-  SolutionStatus,
-  solutionZodSchema,
-} from './Solution.js';
 export { Upload, uploadZodSchema } from './Upload.js';
 export { Bookmark, BookmarkTargetType, bookmarkZodSchema } from './Bookmark.js';
 export {

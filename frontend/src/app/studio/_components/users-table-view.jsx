@@ -14,7 +14,6 @@ import {
   Ban,
   ShieldOff,
   Bookmark,
-  FileText,
 } from 'lucide-react';
 import Link from 'next/link';
 import { useSearchParams, usePathname } from 'next/navigation';
@@ -188,30 +187,16 @@ function UserDetailDialog({ user, stats, isLoadingStats, onClose }) {
                 Activity
               </span>
               {isLoadingStats ? (
-                <div className="grid grid-cols-2 gap-3">
-                  <Skeleton className="h-16 rounded-lg" />
-                  <Skeleton className="h-16 rounded-lg" />
-                </div>
+                <Skeleton className="h-16 rounded-lg" />
               ) : (
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="bg-muted/40 flex flex-col items-center gap-1 rounded-lg border py-3">
-                    <Bookmark className="text-muted-foreground h-4 w-4" />
-                    <span className="text-foreground font-roboto text-2xl font-bold">
-                      {stats?.bookmarksCount ?? '—'}
-                    </span>
-                    <span className="text-muted-foreground font-roboto text-[10px] font-semibold tracking-wider uppercase">
-                      Bookmarks
-                    </span>
-                  </div>
-                  <div className="bg-muted/40 flex flex-col items-center gap-1 rounded-lg border py-3">
-                    <FileText className="text-muted-foreground h-4 w-4" />
-                    <span className="text-foreground font-roboto text-2xl font-bold">
-                      {stats?.solutionsCount ?? '—'}
-                    </span>
-                    <span className="text-muted-foreground font-roboto text-[10px] font-semibold tracking-wider uppercase">
-                      Solutions
-                    </span>
-                  </div>
+                <div className="bg-muted/40 flex flex-col items-center gap-1 rounded-lg border py-3">
+                  <Bookmark className="text-muted-foreground h-4 w-4" />
+                  <span className="text-foreground font-roboto text-2xl font-bold">
+                    {stats?.bookmarksCount ?? '—'}
+                  </span>
+                  <span className="text-muted-foreground font-roboto text-[10px] font-semibold tracking-wider uppercase">
+                    Bookmarks
+                  </span>
                 </div>
               )}
             </div>

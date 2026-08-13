@@ -3,7 +3,6 @@ import analyticsRepository from '../../src/repositories/analyticsRepository.js';
 import { User, UserRole } from '../../src/models/User.js';
 import { Paper } from '../../src/models/Paper.js';
 import { Question } from '../../src/models/Question.js';
-import { Solution } from '../../src/models/Solution.js';
 import { University } from '../../src/models/University.js';
 import { Branch } from '../../src/models/Branch.js';
 import { SubjectOffering } from '../../src/models/SubjectOffering.js';
@@ -15,7 +14,6 @@ describe('analyticsRepository', () => {
     await User.deleteMany({});
     await Paper.deleteMany({});
     await Question.deleteMany({});
-    await Solution.deleteMany({});
     await University.deleteMany({});
     await Branch.deleteMany({});
     await SubjectOffering.deleteMany({});
@@ -31,7 +29,7 @@ describe('analyticsRepository', () => {
         role: UserRole.STUDENT,
       });
       const counts = await analyticsRepository.getGlobalCounts();
-      expect(counts).toEqual([1, 0, 0, 0, 0, 0, 0]);
+      expect(counts).toEqual([1, 0, 0, 0, 0, 0]);
     });
   });
 

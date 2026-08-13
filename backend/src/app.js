@@ -28,7 +28,6 @@ import branchRoutes from './routes/branches.js';
 import semesterRoutes from './routes/semesters.js';
 import subjectOfferingRoutes from './routes/subjectOfferings.js';
 import questionRoutes from './routes/questions.js';
-import solutionRoutes from './routes/solutions.js';
 import paperQuestionRoutes from './routes/paperQuestions.js';
 import bookmarkRoutes from './routes/bookmarks.js';
 import userRoutes from './routes/users.js';
@@ -87,7 +86,6 @@ app.use('/api/v1/branches/:branchId/semesters', semesterRoutes); // Nested route
 app.use('/api/v1/subjects', subjectRoutes);
 app.use('/api/v1/subject-offerings', subjectOfferingRoutes);
 app.use('/api/v1/questions', questionRoutes);
-app.use('/api/v1/solutions', solutionRoutes);
 app.use('/api/v1/papers', paperRoutes);
 app.use('/api/v1/papers/:paperId/questions', paperQuestionRoutes);
 app.use('/api/v1/bookmarks', bookmarkRoutes);

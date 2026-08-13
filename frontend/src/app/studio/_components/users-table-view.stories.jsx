@@ -66,7 +66,7 @@ const meta = {
       table: {
         type: {
           summary: 'object',
-          detail: '{ bookmarksCount: number, solutionsCount: number }',
+          detail: '{ bookmarksCount: number }',
         },
       },
     },
@@ -204,7 +204,6 @@ export const UserDetailOpen = {
     selectedUser: mockUsers[1],
     userStats: {
       bookmarksCount: 24,
-      solutionsCount: 12,
     },
     isLoadingStats: false,
   },

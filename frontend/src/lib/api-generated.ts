@@ -48,7 +48,7 @@ export interface Bookmark {
    */
   userId: string;
   /** @example "question" */
-  targetType: "question" | "paper" | "solution";
+  targetType: "question" | "paper";
   /**
    * ID of the bookmarked document
    * @example "65a12345b67890cdef123456"
@@ -309,61 +309,6 @@ export interface Semester {
   slug: string;
   /** @example "Semester 5" */
   title?: string;
-  /** @format date-time */
-  createdAt?: string;
-  /** @format date-time */
-  updatedAt?: string;
-}
-
-export interface Solution {
-  /** @example "65a12345b67890cdef444444" */
-  id?: string;
-  /**
-   * Reference to Question
-   * @example "65a12345b67890cdef123456"
-   */
-  questionId: string;
-  /**
-   * Reference to User
-   * @example "65b98765a43210fedcba9876"
-   */
-  authorId: string;
-  /** @example "ai" */
-  type: "teacher" | "student" | "ai";
-  /**
-   * Plain text solution
-   * @example "The solution to this problem involves applying the first law of thermodynamics..."
-   */
-  content?: string;
-  /**
-   * LaTeX-formatted solution
-   * @example "E = mc^2"
-   */
-  latexContent?: string;
-  /** @example ["https://example.com/solution-diagram.png"] */
-  images?: string[];
-  /** @example ["https://youtube.com/watch?v=123"] */
-  videoLinks?: string[];
-  /**
-   * @default 0
-   * @example 42
-   */
-  upvotes?: number;
-  /**
-   * @default 0
-   * @example 2
-   */
-  downvotes?: number;
-  /**
-   * @default false
-   * @example true
-   */
-  isVerified?: boolean;
-  /**
-   * @default "pending"
-   * @example "approved"
-   */
-  status?: "draft" | "pending" | "approved" | "rejected";
   /** @format date-time */
   createdAt?: string;
   /** @format date-time */
@@ -860,7 +805,7 @@ export class Api<
  */
     listBookmarks: (
       query?: {
-        type?: "question" | "paper" | "solution";
+        type?: "question" | "paper";
         /** @default 1 */
         page?: number;
         /** @default 20 */
@@ -1812,84 +1757,6 @@ export class Api<
     /**
  * No description
  *
- * @tags PaperQuestions
- * @name ListSolutionsForPaperQuestion
- * @summary List solutions for a question in the context of a paper
- * @request GET:/papers/{paperId}/questions/{questionId}/solutions
- * @response `200` `(SuccessResponse & {
-    data?: {
-    items?: (Solution)[],
-    pagination?: Pagination,
-
-},
-
-})` Paginated solutions
- */
-    listSolutionsForPaperQuestion: (
-      paperId: string,
-      questionId: string,
-      query?: {
-        /** @default 1 */
-        page?: number;
-        /** @default 20 */
-        limit?: number;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<
-        SuccessResponse & {
-          data?: {
-            items?: Solution[];
-            pagination?: Pagination;
-          };
-        },
-        any
-      >({
-        path: `/papers/${paperId}/questions/${questionId}/solutions`,
-        method: "GET",
-        query: query,
-        format: "json",
-        ...params,
-      }),
-
-    /**
- * No description
- *
- * @tags PaperQuestions
- * @name CreateSolutionForPaperQuestion
- * @summary Post a new solution for this question (authenticated)
- * @request POST:/papers/{paperId}/questions/{questionId}/solutions
- * @secure
- * @response `201` `(SuccessResponse & {
-    data?: Solution,
-
-})` Solution created
- * @response `401` `Error`
- */
-    createSolutionForPaperQuestion: (
-      paperId: string,
-      questionId: string,
-      data: Solution,
-      params: RequestParams = {},
-    ) =>
-      this.request<
-        SuccessResponse & {
-          data?: Solution;
-        },
-        Error
-      >({
-        path: `/papers/${paperId}/questions/${questionId}/solutions`,
-        method: "POST",
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
- * No description
- *
  * @tags Papers
  * @name ListPapers
  * @summary List papers (public sees approved only)
@@ -2463,167 +2330,6 @@ export class Api<
       >({
         path: `/seo/sitemap-data`,
         method: "GET",
-        format: "json",
-        ...params,
-      }),
-  };
-  solutions = {
-    /**
- * No description
- *
- * @tags Solutions
- * @name GetSolutionById
- * @summary Get a solution by id
- * @request GET:/solutions/{id}
- * @response `200` `(SuccessResponse & {
-    data?: Solution,
-
-})` Solution
- * @response `404` `Error`
- */
-    getSolutionById: (id: string, params: RequestParams = {}) =>
-      this.request<
-        SuccessResponse & {
-          data?: Solution;
-        },
-        Error
-      >({
-        path: `/solutions/${id}`,
-        method: "GET",
-        format: "json",
-        ...params,
-      }),
-
-    /**
- * No description
- *
- * @tags Solutions
- * @name UpdateSolution
- * @summary Update solution content (author or permitted roles)
- * @request PATCH:/solutions/{id}
- * @secure
- * @response `200` `(SuccessResponse & {
-    data?: Solution,
-
-})` Updated
- * @response `401` `Error`
- * @response `404` `Error`
- */
-    updateSolution: (id: string, data: Solution, params: RequestParams = {}) =>
-      this.request<
-        SuccessResponse & {
-          data?: Solution;
-        },
-        Error
-      >({
-        path: `/solutions/${id}`,
-        method: "PATCH",
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Solutions
-     * @name DeleteSolution
-     * @summary Delete a solution (Admin only)
-     * @request DELETE:/solutions/{id}
-     * @secure
-     * @response `200` `void` Deleted
-     * @response `403` `Error`
-     * @response `404` `Error`
-     */
-    deleteSolution: (id: string, params: RequestParams = {}) =>
-      this.request<void, Error>({
-        path: `/solutions/${id}`,
-        method: "DELETE",
-        secure: true,
-        ...params,
-      }),
-
-    /**
- * No description
- *
- * @tags Solutions
- * @name UpdateSolutionStatus
- * @summary Approve or reject a solution (Admin only)
- * @request PATCH:/solutions/{id}/status
- * @secure
- * @response `200` `(SuccessResponse & {
-    data?: Solution,
-
-})` Status updated
- * @response `403` `Error`
- * @response `404` `Error`
- */
-    updateSolutionStatus: (
-      id: string,
-      data: {
-        status: "draft" | "pending" | "approved" | "rejected";
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<
-        SuccessResponse & {
-          data?: Solution;
-        },
-        Error
-      >({
-        path: `/solutions/${id}/status`,
-        method: "PATCH",
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
- * No description
- *
- * @tags Solutions
- * @name VoteOnSolution
- * @summary Upvote or downvote a solution
- * @request POST:/solutions/{id}/vote
- * @secure
- * @response `200` `(SuccessResponse & {
-    data?: {
-    upvotes?: number,
-    downvotes?: number,
-    userVote?: "up" | "down" | "none",
-
-},
-
-})` Vote recorded
- * @response `401` `Error`
- * @response `404` `Error`
- */
-    voteOnSolution: (
-      id: string,
-      data: {
-        type: "up" | "down";
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<
-        SuccessResponse & {
-          data?: {
-            upvotes?: number;
-            downvotes?: number;
-            userVote?: "up" | "down" | "none";
-          };
-        },
-        Error
-      >({
-        path: `/solutions/${id}/vote`,
-        method: "POST",
-        body: data,
-        secure: true,
-        type: ContentType.Json,
         format: "json",
         ...params,
       }),
@@ -3258,13 +2964,12 @@ export class Api<
     user?: User,
     stats?: {
     bookmarks?: number,
-    solutions?: number,
 
 },
 
 },
 
-})` User record and bookmark/solution counts
+})` User record and bookmark counts
  * @response `401` `Error`
  */
     getCurrentUser: (params: RequestParams = {}) =>
@@ -3274,7 +2979,6 @@ export class Api<
             user?: User;
             stats?: {
               bookmarks?: number;
-              solutions?: number;
             };
           };
         },
@@ -3354,7 +3058,6 @@ export class Api<
     user?: User,
     stats?: {
     bookmarksCount?: number,
-    solutionsCount?: number,
 
 },
 
@@ -3370,7 +3073,6 @@ export class Api<
             user?: User;
             stats?: {
               bookmarksCount?: number;
-              solutionsCount?: number;
             };
           };
         },

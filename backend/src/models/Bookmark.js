@@ -21,7 +21,7 @@ import { z } from 'zod';
  *           example: 65b98765a43210fedcba9876
  *         targetType:
  *           type: string
- *           enum: [question, paper, solution]
+ *           enum: [question, paper]
  *           example: question
  *         targetId:
  *           type: string
@@ -39,7 +39,7 @@ import { z } from 'zod';
  *           format: date-time
  */
 
-export const BookmarkTargetType = z.enum(['question', 'paper', 'solution']);
+export const BookmarkTargetType = z.enum(['question', 'paper']);
 
 const bookmarkSchema = new mongoose.Schema(
   {
@@ -50,7 +50,7 @@ const bookmarkSchema = new mongoose.Schema(
     },
     targetType: {
       type: String,
-      enum: ['question', 'paper', 'solution'],
+      enum: ['question', 'paper'],
       required: true,
     },
     targetId: {

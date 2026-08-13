@@ -14,7 +14,6 @@ export { paperRepository } from './paperRepository.js';
 export { questionRepository } from './questionRepository.js';
 export { questionPaperMapRepository } from './questionPaperMapRepository.js';
 export { questionSyllabusMapRepository } from './questionSyllabusMapRepository.js';
-export { solutionRepository } from './solutionRepository.js';
 export { uploadRepository } from './uploadRepository.js';
 export { bookmarkRepository } from './bookmarkRepository.js';
 export { platformConfigRepository } from './platformConfigRepository.js';

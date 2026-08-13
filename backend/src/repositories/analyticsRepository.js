@@ -1,7 +1,6 @@
 import { User } from '../models/User.js';
 import { Paper } from '../models/Paper.js';
 import { Question } from '../models/Question.js';
-import { Solution } from '../models/Solution.js';
 import { University } from '../models/University.js';
 import { Branch } from '../models/Branch.js';
 import { SubjectOffering } from '../models/SubjectOffering.js';
@@ -17,7 +16,6 @@ class AnalyticsRepository {
       Paper.countDocuments(),
       Paper.countDocuments({ status: 'pending' }),
       Question.countDocuments(),
-      Solution.countDocuments(),
       University.countDocuments(),
       Branch.countDocuments(),
     ]);

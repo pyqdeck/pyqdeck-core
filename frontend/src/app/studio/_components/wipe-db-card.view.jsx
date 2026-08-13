@@ -32,7 +32,7 @@ export function WipeDbCardView({ isWiping, onWipe }) {
           Wipe Database Content
         </CardTitle>
         <CardDescription>
-          Deletes all subjects, universities, papers, and solutions.
+          Deletes all subjects, universities, and papers.
           <br />
           <span className="text-destructive font-bold">
             User accounts and settings will be preserved.

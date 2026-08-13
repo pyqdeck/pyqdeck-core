@@ -19,7 +19,7 @@ const router = Router();
  *       - bearerAuth: []
  *     responses:
  *       200:
- *         description: User record and bookmark/solution counts
+ *         description: User record and bookmark counts
  *         content:
  *           application/json:
  *             schema:
@@ -36,7 +36,6 @@ const router = Router();
  *                           type: object
  *                           properties:
  *                             bookmarks: { type: integer }
- *                             solutions: { type: integer }
  *       401:
  *         $ref: '#/components/responses/Unauthorized'
  */
@@ -133,7 +132,6 @@ router.get(
  *                           type: object
  *                           properties:
  *                             bookmarksCount: { type: integer }
- *                             solutionsCount: { type: integer }
  *       404:
  *         $ref: '#/components/responses/NotFound'
  */

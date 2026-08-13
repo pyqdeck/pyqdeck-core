@@ -5,7 +5,7 @@ import { useUser } from '@clerk/nextjs';
 import { useApi } from '@/hooks/use-api';
 import { QuestionCard } from '@/components/browse/question-card';
 
-export function PaperQuestions({ paperId, questions }) {
+export function PaperQuestions({ questions }) {
   const { isSignedIn } = useUser();
   const api = useApi();
   const [bookmarkedIds, setBookmarkedIds] = useState(new Set());
@@ -42,7 +42,6 @@ export function PaperQuestions({ paperId, questions }) {
           <div className="flex-1">
             <QuestionCard
               question={question}
-              paperId={paperId}
               initialBookmarked={bookmarkedIds.has(question.id)}
             />
           </div>

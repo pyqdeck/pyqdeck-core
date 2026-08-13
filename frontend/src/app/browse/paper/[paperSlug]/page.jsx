@@ -106,7 +106,7 @@ export default async function PaperPage({ params }) {
           </EmptyHeader>
         </Empty>
       ) : (
-        <PaperQuestions paperId={paper.id} questions={questions} />
+        <PaperQuestions questions={questions} />
       )}
     </div>
   );

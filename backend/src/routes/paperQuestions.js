@@ -6,9 +6,7 @@ import {
 import { paginate } from '../middlewares/pagination.middleware.js';
 import { validateBody } from '../middlewares/validationMiddleware.js';
 import { questionZodSchema } from '../models/Question.js';
-import { solutionZodSchema } from '../models/Solution.js';
 import * as questionController from '../controllers/questionController.js';
-import * as solutionController from '../controllers/solutionController.js';
 
 const router = Router({ mergeParams: true }); // Access :paperId
 
@@ -141,100 +139,6 @@ router.post(
   requireAuthentication,
   isEditor,
   questionController.linkToPaper
-);
-
-/**
- * @openapi
- * /papers/{paperId}/questions/{questionId}/solutions:
- *   get:
- *     operationId: listSolutionsForPaperQuestion
- *     tags: [PaperQuestions]
- *     summary: List solutions for a question in the context of a paper
- *     parameters:
- *       - in: path
- *         name: paperId
- *         required: true
- *         schema: { type: string }
- *       - in: path
- *         name: questionId
- *         required: true
- *         schema: { type: string }
- *       - in: query
- *         name: page
- *         schema: { type: integer, default: 1 }
- *       - in: query
- *         name: limit
- *         schema: { type: integer, default: 20 }
- *     responses:
- *       200:
- *         description: Paginated solutions
- *         content:
- *           application/json:
- *             schema:
- *               allOf:
- *                 - $ref: '#/components/schemas/SuccessResponse'
- *                 - type: object
- *                   properties:
- *                     data:
- *                       type: object
- *                       properties:
- *                         items:
- *                           type: array
- *                           items:
- *                             $ref: '#/components/schemas/Solution'
- *                         pagination:
- *                           $ref: '#/components/schemas/Pagination'
- */
-router.get(
-  '/:questionId/solutions',
-  paginate(),
-  solutionController.listByQuestion
-);
-
-/**
- * @openapi
- * /papers/{paperId}/questions/{questionId}/solutions:
- *   post:
- *     operationId: createSolutionForPaperQuestion
- *     tags: [PaperQuestions]
- *     summary: Post a new solution for this question (authenticated)
- *     security:
- *       - bearerAuth: []
- *     parameters:
- *       - in: path
- *         name: paperId
- *         required: true
- *         schema: { type: string }
- *       - in: path
- *         name: questionId
- *         required: true
- *         schema: { type: string }
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/Solution'
- *     responses:
- *       201:
- *         description: Solution created
- *         content:
- *           application/json:
- *             schema:
- *               allOf:
- *                 - $ref: '#/components/schemas/SuccessResponse'
- *                 - type: object
- *                   properties:
- *                     data:
- *                       $ref: '#/components/schemas/Solution'
- *       401:
- *         $ref: '#/components/responses/Unauthorized'
- */
-router.post(
-  '/:questionId/solutions',
-  requireAuthentication,
-  validateBody(solutionZodSchema.omit({ questionId: true, authorId: true })),
-  solutionController.create
 );
 
 export default router;

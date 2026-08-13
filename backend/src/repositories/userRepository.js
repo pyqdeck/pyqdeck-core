@@ -92,22 +92,13 @@ class UserRepository {
         },
       },
       {
-        $lookup: {
-          from: 'solutions',
-          localField: '_id',
-          foreignField: 'authorId',
-          as: 'solutions',
-        },
-      },
-      {
         $project: {
           bookmarksCount: { $size: '$bookmarks' },
-          solutionsCount: { $size: '$solutions' },
         },
       },
     ]);
 
-    return results[0] || { bookmarksCount: 0, solutionsCount: 0 };
+    return results[0] || { bookmarksCount: 0 };
   }
 
   async getStatsByClerkId(clerkId) {
@@ -122,22 +113,13 @@ class UserRepository {
         },
       },
       {
-        $lookup: {
-          from: 'solutions',
-          localField: '_id',
-          foreignField: 'authorId',
-          as: 'solutions',
-        },
-      },
-      {
         $project: {
           bookmarksCount: { $size: '$bookmarks' },
-          solutionsCount: { $size: '$solutions' },
         },
       },
     ]);
 
-    return results[0] || { bookmarksCount: 0, solutionsCount: 0 };
+    return results[0] || { bookmarksCount: 0 };
   }
 
   async list(filter = {}, pagination = { page: 1, limit: 10 }) {

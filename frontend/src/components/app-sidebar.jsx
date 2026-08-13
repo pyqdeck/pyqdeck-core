@@ -74,23 +74,6 @@ const navData = {
       icon: <FileTextIcon />,
     },
   ],
-  moderation: [
-    {
-      title: 'Pending Papers',
-      url: '/studio/moderation',
-      icon: <FileTextIcon />,
-    },
-    {
-      title: 'AI Extraction',
-      url: '/studio/extraction',
-      icon: <Settings2Icon />,
-    },
-    {
-      title: 'Solutions',
-      url: '/studio/solutions',
-      icon: <BookOpenIcon />,
-    },
-  ],
   security: [
     {
       title: 'User Directory',
@@ -164,22 +147,6 @@ export function AppSidebar({ userRole, ...props }) {
           <SidebarGroupLabel>Content Management</SidebarGroupLabel>
           <SidebarMenu>
             {navData.content.map((item) => (
-              <SidebarMenuItem key={item.title}>
-                <SidebarMenuButton asChild tooltip={item.title}>
-                  <a href={item.url}>
-                    {item.icon}
-                    <span>{item.title}</span>
-                  </a>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            ))}
-          </SidebarMenu>
-        </SidebarGroup>
-
-        <SidebarGroup>
-          <SidebarGroupLabel>Moderation Queue</SidebarGroupLabel>
-          <SidebarMenu>
-            {navData.moderation.map((item) => (
               <SidebarMenuItem key={item.title}>
                 <SidebarMenuButton asChild tooltip={item.title}>
                   <a href={item.url}>

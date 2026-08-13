@@ -62,12 +62,8 @@
       "description": "Questions linked to a paper"
     },
     {
-      "name": "Solutions",
-      "description": "User solutions, votes, moderation"
-    },
-    {
       "name": "Bookmarks",
-      "description": "Saved questions, papers, and solutions"
+      "description": "Saved questions and papers"
     },
     {
       "name": "Users",
@@ -225,8 +221,7 @@
             "type": "string",
             "enum": [
               "question",
-              "paper",
-              "solution"
+              "paper"
             ],
             "example": "question"
           },
@@ -764,101 +759,6 @@
           }
         }
       },
-      "Solution": {
-        "type": "object",
-        "required": [
-          "questionId",
-          "authorId",
-          "type"
-        ],
-        "properties": {
-          "id": {
-            "type": "string",
-            "example": "65a12345b67890cdef444444"
-          },
-          "questionId": {
-            "type": "string",
-            "description": "Reference to Question",
-            "example": "65a12345b67890cdef123456"
-          },
-          "authorId": {
-            "type": "string",
-            "description": "Reference to User",
-            "example": "65b98765a43210fedcba9876"
-          },
-          "type": {
-            "type": "string",
-            "enum": [
-              "teacher",
-              "student",
-              "ai"
-            ],
-            "example": "ai"
-          },
-          "content": {
-            "type": "string",
-            "description": "Plain text solution",
-            "example": "The solution to this problem involves applying the first law of thermodynamics..."
-          },
-          "latexContent": {
-            "type": "string",
-            "description": "LaTeX-formatted solution",
-            "example": "E = mc^2"
-          },
-          "images": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "example": [
-              "https://example.com/solution-diagram.png"
-            ]
-          },
-          "videoLinks": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "example": [
-              "https://youtube.com/watch?v=123"
-            ]
-          },
-          "upvotes": {
-            "type": "integer",
-            "default": 0,
-            "example": 42
-          },
-          "downvotes": {
-            "type": "integer",
-            "default": 0,
-            "example": 2
-          },
-          "isVerified": {
-            "type": "boolean",
-            "default": false,
-            "example": true
-          },
-          "status": {
-            "type": "string",
-            "enum": [
-              "draft",
-              "pending",
-              "approved",
-              "rejected"
-            ],
-            "default": "pending",
-            "example": "approved"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          }
-        }
-      },
       "Subject": {
         "type": "object",
         "required": [
@@ -1371,8 +1271,7 @@
               "type": "string",
               "enum": [
                 "question",
-                "paper",
-                "solution"
+                "paper"
               ]
             }
           },
@@ -2387,151 +2286,6 @@
           },
           "403": {
             "$ref": "#/components/responses/Forbidden"
-          }
-        }
-      }
-    },
-    "/papers/{paperId}/questions/{questionId}/solutions": {
-      "get": {
-        "operationId": "listSolutionsForPaperQuestion",
-        "tags": [
-          "PaperQuestions"
-        ],
-        "summary": "List solutions for a question in the context of a paper",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "paperId",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "path",
-            "name": "questionId",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "page",
-            "schema": {
-              "type": "integer",
-              "default": 1
-            }
-          },
-          {
-            "in": "query",
-            "name": "limit",
-            "schema": {
-              "type": "integer",
-              "default": 20
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Paginated solutions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/SuccessResponse"
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "data": {
-                          "type": "object",
-                          "properties": {
-                            "items": {
-                              "type": "array",
-                              "items": {
-                                "$ref": "#/components/schemas/Solution"
-                              }
-                            },
-                            "pagination": {
-                              "$ref": "#/components/schemas/Pagination"
-                            }
-                          }
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "operationId": "createSolutionForPaperQuestion",
-        "tags": [
-          "PaperQuestions"
-        ],
-        "summary": "Post a new solution for this question (authenticated)",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "paperId",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "path",
-            "name": "questionId",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Solution"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Solution created",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/SuccessResponse"
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "data": {
-                          "$ref": "#/components/schemas/Solution"
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
           }
         }
       }
@@ -3830,317 +3584,6 @@
                 }
               }
             }
-          }
-        }
-      }
-    },
-    "/solutions/{id}": {
-      "get": {
-        "operationId": "getSolutionById",
-        "tags": [
-          "Solutions"
-        ],
-        "summary": "Get a solution by id",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Solution",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/SuccessResponse"
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "data": {
-                          "$ref": "#/components/schemas/Solution"
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          }
-        }
-      },
-      "patch": {
-        "operationId": "updateSolution",
-        "tags": [
-          "Solutions"
-        ],
-        "summary": "Update solution content (author or permitted roles)",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Solution"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Updated",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/SuccessResponse"
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "data": {
-                          "$ref": "#/components/schemas/Solution"
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          }
-        }
-      },
-      "delete": {
-        "operationId": "deleteSolution",
-        "tags": [
-          "Solutions"
-        ],
-        "summary": "Delete a solution (Admin only)",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Deleted"
-          },
-          "403": {
-            "$ref": "#/components/responses/Forbidden"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          }
-        }
-      }
-    },
-    "/solutions/{id}/status": {
-      "patch": {
-        "operationId": "updateSolutionStatus",
-        "tags": [
-          "Solutions"
-        ],
-        "summary": "Approve or reject a solution (Admin only)",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "status"
-                ],
-                "properties": {
-                  "status": {
-                    "type": "string",
-                    "enum": [
-                      "draft",
-                      "pending",
-                      "approved",
-                      "rejected"
-                    ]
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Status updated",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/SuccessResponse"
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "data": {
-                          "$ref": "#/components/schemas/Solution"
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "403": {
-            "$ref": "#/components/responses/Forbidden"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          }
-        }
-      }
-    },
-    "/solutions/{id}/vote": {
-      "post": {
-        "operationId": "voteOnSolution",
-        "tags": [
-          "Solutions"
-        ],
-        "summary": "Upvote or downvote a solution",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "type"
-                ],
-                "properties": {
-                  "type": {
-                    "type": "string",
-                    "enum": [
-                      "up",
-                      "down"
-                    ]
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Vote recorded",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/SuccessResponse"
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "data": {
-                          "type": "object",
-                          "properties": {
-                            "upvotes": {
-                              "type": "integer"
-                            },
-                            "downvotes": {
-                              "type": "integer"
-                            },
-                            "userVote": {
-                              "type": "string",
-                              "enum": [
-                                "up",
-                                "down",
-                                "none"
-                              ]
-                            }
-                          }
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
           }
         }
       }
@@ -5533,7 +4976,7 @@
         ],
         "responses": {
           "200": {
-            "description": "User record and bookmark/solution counts",
+            "description": "User record and bookmark counts",
             "content": {
               "application/json": {
                 "schema": {
@@ -5554,9 +4997,6 @@
                               "type": "object",
                               "properties": {
                                 "bookmarks": {
-                                  "type": "integer"
-                                },
-                                "solutions": {
                                   "type": "integer"
                                 }
                               }
@@ -5746,9 +5186,6 @@
                               "type": "object",
                               "properties": {
                                 "bookmarksCount": {
-                                  "type": "integer"
-                                },
-                                "solutionsCount": {
                                   "type": "integer"
                                 }
                               }

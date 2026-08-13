@@ -20,7 +20,6 @@ import { Module } from '../src/models/Module.js';
 import { QuestionPaperMap } from '../src/models/QuestionPaperMap.js';
 import { QuestionSyllabusMap } from '../src/models/QuestionSyllabusMap.js';
 import { Semester } from '../src/models/Semester.js';
-import { Solution } from '../src/models/Solution.js';
 import { SubjectOffering } from '../src/models/SubjectOffering.js';
 import { Syllabus } from '../src/models/Syllabus.js';
 import { Tag } from '../src/models/Tag.js';
@@ -404,7 +403,6 @@ async function cleanDatabase() {
     QuestionPaperMap,
     QuestionSyllabusMap,
     Semester,
-    Solution,
     SubjectOffering,
     Syllabus,
     Tag,
@@ -482,7 +480,6 @@ async function showInsights() {
     choices: [
       { name: 'roles', message: '👥 Users by Role' },
       { name: 'papers_by_year', message: '📅 Papers by Year' },
-      { name: 'unsolved', message: '❓ Unsolved Questions' },
       { name: 'top_bookmarked', message: '⭐ Top Bookmarked Papers' },
       { name: 'back', message: '⬅️  Back' },
     ],
@@ -532,37 +529,6 @@ async function showInsights() {
       });
       results.forEach((r) => table.push([r._id ?? 'N/A', r.count]));
       console.log(chalk.bold('\n📅 Papers by Exam Year (Top 10)'));
-      console.log(table.toString());
-    } else if (report === 'unsolved') {
-      // --- Report 3: Questions that have no Solution ---
-      const results = await Question.aggregate([
-        {
-          $lookup: {
-            from: 'solutions',
-            localField: '_id',
-            foreignField: 'questionId',
-            as: 'solutions',
-          },
-        },
-        { $match: { solutions: { $size: 0 } } },
-        { $count: 'unsolved' },
-      ]);
-      spinner.stop();
-
-      const count = results[0]?.unsolved ?? 0;
-      const total = await Question.countDocuments();
-      const pct = total > 0 ? ((count / total) * 100).toFixed(1) : 0;
-
-      const table = new Table({
-        head: [chalk.cyan('Metric'), chalk.cyan('Value')],
-        colWidths: [25, 15],
-      });
-      table.push(
-        ['Total Questions', total],
-        ['Without Solution', chalk.red(count)],
-        ['Coverage', chalk.green(`${100 - pct}%`)]
-      );
-      console.log(chalk.bold('\n❓ Question Solution Coverage'));
       console.log(table.toString());
     } else if (report === 'top_bookmarked') {
       // --- Report 4: Papers sorted by how many times they are bookmarked ---

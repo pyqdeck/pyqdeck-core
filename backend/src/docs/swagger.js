@@ -62,10 +62,9 @@ Most endpoints require a valid Clerk JWT token. Include it in the header:
       { name: 'Questions', description: 'Question bank and search' },
       { name: 'Papers', description: 'Exam papers' },
       { name: 'PaperQuestions', description: 'Questions linked to a paper' },
-      { name: 'Solutions', description: 'User solutions, votes, moderation' },
       {
         name: 'Bookmarks',
-        description: 'Saved questions, papers, and solutions',
+        description: 'Saved questions and papers',
       },
       { name: 'Users', description: 'Current user profile' },
       { name: 'Search', description: 'Global search' },
