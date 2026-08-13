@@ -3,8 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { ArrowRight, CheckCircle2 } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
+import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 export function FinalCTA() {
@@ -16,28 +15,21 @@ export function FinalCTA() {
         viewport={{ once: true }}
         className="mx-auto max-w-2xl text-center"
       >
-        <Badge
-          variant="outline"
-          className="border-success/30 bg-success-bg text-success mb-6 gap-1.5 rounded-full px-4 py-1.5"
-        >
-          <CheckCircle2 className="size-3.5" />
-          Join 100K+ students
-        </Badge>
-        <h2 className="text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
-          Ready to study smarter?
+        <h2 className="font-display text-3xl font-medium tracking-tight sm:text-4xl lg:text-5xl">
+          Your next paper is a few taps away.
         </h2>
         <p className="text-muted-foreground mt-4 text-lg leading-relaxed">
-          Join thousands of students who use PyqDeck to prepare for their exams.
-          Free forever, no credit card required.
+          No account needed to look around. Free, ad-supported, and getting
+          better every week.
         </p>
         <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
           <Button
             size="lg"
-            className="bg-primary text-primary-foreground shadow-primary/25 hover:shadow-primary/40 h-12 gap-2 rounded-full px-10 text-base font-semibold"
+            className="bg-primary text-primary-foreground h-12 gap-2 rounded-full px-10 text-base font-semibold"
             asChild
           >
-            <Link href="/sign-up">
-              Create Free Account
+            <Link href="/browse">
+              Browse Papers
               <ArrowRight className="size-4" />
             </Link>
           </Button>
@@ -47,7 +39,7 @@ export function FinalCTA() {
             className="bg-background h-12 rounded-full px-8 text-base"
             asChild
           >
-            <Link href="/sign-in">Already have an account?</Link>
+            <Link href="/sign-up">Create free account</Link>
           </Button>
         </div>
       </motion.div>

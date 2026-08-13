@@ -13,7 +13,7 @@ import { ThemeProvider } from '@/components/theme-provider';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { Toaster } from '@/components/ui/sonner';
 import { Analytics } from '@vercel/analytics/next';
-import { Geist, Geist_Mono } from 'next/font/google';
+import { Geist, Geist_Mono, Fraunces } from 'next/font/google';
 import Script from 'next/script';
 import './globals.css';
 
@@ -27,6 +27,12 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 });
 
+const fraunces = Fraunces({
+  variable: '--font-display',
+  subsets: ['latin'],
+  axes: ['opsz', 'SOFT'],
+});
+
 export const metadata = {
   title: 'Pyqdeck',
   description: 'Next-generation learning platform',
@@ -38,7 +44,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className="h-full" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} flex min-h-full flex-col antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${fraunces.variable} flex min-h-full flex-col antialiased`}
         suppressHydrationWarning
       >
         <ClerkProvider>

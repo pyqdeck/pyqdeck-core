@@ -1,12 +1,5 @@
 import { Features } from './Features';
-import {
-  Search,
-  Building2,
-  FileText,
-  Bookmark,
-  Filter,
-  ShieldCheck,
-} from 'lucide-react';
+import { Layers, Building2, Bookmark, Sparkles, Ban, Users } from 'lucide-react';
 
 /**
  * The Features component highlights the key capabilities of the PyqDeck platform.
@@ -43,61 +36,48 @@ export default meta;
 
 const defaultFeatures = [
   {
-    icon: Search,
-    title: 'Smart Search',
+    icon: Layers,
+    title: 'Structured browsing',
     description:
-      'Find papers instantly by university, branch, semester, or subject with our powerful search engine.',
-    color: 'text-info',
-    bg: 'bg-info-bg',
+      'University → branch → semester → subject → paper. No more scrolling through a messy Drive folder.',
   },
   {
     icon: Building2,
-    title: 'Multi-University',
+    title: 'Multi-university',
     description:
-      'Access question papers from universities across India, all organized in one place.',
-    color: 'text-primary',
-    bg: 'bg-primary/10',
-  },
-  {
-    icon: FileText,
-    title: 'Complete Papers',
-    description:
-      'Get full question papers with solutions, organized by year and exam type.',
-    color: 'text-success',
-    bg: 'bg-success-bg',
+      "Not locked to one college. We're adding universities as students request them.",
   },
   {
     icon: Bookmark,
     title: 'Bookmarks',
     description:
-      'Save your favorite papers and solutions for quick access during exam prep.',
-    color: 'text-warning',
-    bg: 'bg-warning-bg',
+      'Save the questions that matter and come back to them the night before your exam.',
   },
   {
-    icon: Filter,
-    title: 'Precise Filtering',
+    icon: Sparkles,
+    title: 'Ask AI',
     description:
-      'Filter by branch, semester, subject, and year to find exactly what you need.',
-    color: 'text-destructive',
-    bg: 'bg-destructive/10',
+      'Stuck on a question? One tap sends it to Coursify, our AI-tutoring partner, for a clear explanation.',
   },
   {
-    icon: ShieldCheck,
-    title: 'Verified Content',
+    icon: Ban,
+    title: 'No paywall',
     description:
-      'All papers and solutions are reviewed by our editorial team for accuracy.',
-    color: 'text-teal',
-    bg: 'bg-teal-bg',
+      'Ad-supported, not subscription-gated. Every paper we have is free to browse.',
+  },
+  {
+    icon: Users,
+    title: 'Added by real people',
+    description:
+      'Papers are uploaded and organized through our admin studio — not scraped and dumped.',
   },
 ];
 
 export const Default = {
   args: {
-    badgeText: 'Powerful Features',
-    title: 'Everything you need to ace your exams',
-    description:
-      'PyqDeck brings all your study resources together so you can focus on what matters — learning.',
+    badgeText: 'What you get',
+    title: 'Everything you need to find a paper fast',
+    description: 'No account required to browse. Sign up only if you want bookmarks.',
     features: defaultFeatures,
   },
 };

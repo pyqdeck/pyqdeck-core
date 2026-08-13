@@ -1,58 +1,10 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
-import { Bookmark, Bot, Copy, Database, Share2, Check } from 'lucide-react';
-
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Switch } from '@/components/ui/switch';
-import { GoogleIcon } from '@/components/icons';
+import { Bookmark, CheckCheck, Sparkles } from 'lucide-react';
 
 export function HeroVisual() {
-  const [isCopied, setIsCopied] = useState(false);
-  const [isSolved, setIsSolved] = useState(false);
-
-  const handleCopy = () => {
-    navigator.clipboard.writeText(
-      'Define multiplexer and realize a three-input AND gate using a 4x1 multiplexer.'
-    );
-    setIsCopied(true);
-    setTimeout(() => setIsCopied(false), 2000);
-  };
-
-  const handleShare = async () => {
-    const shareData = {
-      title: 'PYQDeck',
-      text: 'Check out this question on PYQDeck!',
-      url: 'https://pyqdeck.in/',
-    };
-    if (navigator.share) {
-      try {
-        await navigator.share(shareData);
-      } catch {}
-    } else {
-      navigator.clipboard.writeText(shareData.url);
-    }
-  };
-
-  const handleGoogleSearch = () => {
-    window.open(
-      `https://www.google.com/search?q=${encodeURIComponent(
-        'Define multiplexer and realize a three-input AND gate using a 4x1 multiplexer.'
-      )}`,
-      '_blank'
-    );
-  };
-
-  const handleAskAI = () => {
-    const prompt = `Hello, I have a university exam question...\n\nDefine multiplexer and realize a three-input AND gate using a 4x1 multiplexer.\n\nExplain clearly.`;
-    window.open(
-      `https://chat.openai.com/chat?q=${encodeURIComponent(prompt)}`,
-      '_blank'
-    );
-  };
-
   return (
     <motion.div
       initial={{ opacity: 0, x: 40 }}
@@ -64,116 +16,64 @@ export function HeroVisual() {
       }}
       className="relative order-1 flex min-h-[480px] w-full items-center justify-center lg:order-2 lg:min-h-[540px] xl:justify-end"
     >
-      <div className="relative flex w-full max-w-[460px] flex-col gap-5">
-        {/* Top card (peek behind) */}
-        <div className="border-border bg-background/40 origin-bottom translate-y-3 scale-[0.93] transform rounded-[2rem] border p-5 opacity-40 backdrop-blur-sm select-none">
-          <div className="mb-3 flex items-center gap-2">
-            <Badge variant="teal">2020</Badge>
-            <Badge variant="purple">Q1a</Badge>
-            <Badge variant="amber">5 Marks</Badge>
-            <Badge variant="emerald">Solved</Badge>
-          </div>
-          <p className="text-muted-foreground decoration-border/50 text-sm leading-snug font-medium line-through">
-            Explain the working of a full adder circuit with truth table.
+      <div className="relative flex w-full max-w-[440px] flex-col">
+        {/* Peek card behind — an older, "cleared" paper */}
+        <div className="border-border bg-background/50 origin-bottom translate-y-4 scale-[0.94] rounded-t-2xl border border-b-0 px-6 pt-5 pb-8 opacity-50">
+          <p className="text-muted-foreground font-mono text-[10px] tracking-widest uppercase">
+            2022 · Q2(b) · 10 marks
           </p>
         </div>
 
-        {/* Active card */}
-        <div className="border-border bg-card text-card-foreground relative z-10 rounded-[2.5rem] border p-7 shadow-2xl ring-1 ring-black/5 transition-all dark:ring-white/5">
-          {/* Top meta row */}
-          <div className="mb-5 flex items-center justify-between">
-            <div className="flex flex-wrap gap-2">
-              <Badge variant="teal">2021</Badge>
-              <Badge variant="purple">Q1c</Badge>
-              <Badge variant="amber">2 Marks</Badge>
-              {isSolved && (
-                <motion.div
-                  className="inline-flex"
-                  initial={{ opacity: 0, scale: 0.7 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{
-                    type: 'spring',
-                    stiffness: 400,
-                    damping: 20,
-                  }}
-                >
-                  <Badge variant="emerald">Solved</Badge>
-                </motion.div>
-              )}
-            </div>
-            <div className="flex items-center gap-3">
-              <Bookmark className="text-muted-foreground hover:text-foreground size-5 cursor-pointer transition-colors" />
-              <Switch checked={isSolved} onCheckedChange={setIsSolved} />
-            </div>
-          </div>
-
-          {/* Module label */}
-          <div className="text-primary mb-4 flex items-center gap-2">
-            <Database className="size-4" />
-            <span className="text-[11px] font-bold tracking-widest uppercase">
-              Module 2 · Combinational Circuits
+        {/* Active "answer sheet" card */}
+        <div className="border-border bg-card text-card-foreground relative z-10 -mt-2 rounded-2xl border shadow-xl">
+          {/* Header strip — mimics a mark-sheet header */}
+          <div className="border-border flex items-center justify-between border-b px-6 py-3">
+            <span className="font-mono text-[11px] tracking-widest uppercase text-muted-foreground">
+              BEU · CSE · Sem 5
+            </span>
+            <span className="font-mono text-[11px] tracking-widest uppercase text-muted-foreground">
+              2021
             </span>
           </div>
 
-          {/* Question */}
-          <h3 className="text-foreground mb-8 text-lg leading-snug font-bold tracking-tight sm:text-xl">
-            Define multiplexer and realize a three-input AND gate using a 4x1
-            multiplexer.
-          </h3>
-
-          {/* Action row */}
-          <div className="flex items-center justify-between">
-            <div className="text-muted-foreground flex items-center gap-4">
-              {/* Google icon */}
-              <button
-                onClick={handleGoogleSearch}
-                aria-label="Search on Google"
-                className="hover:text-foreground cursor-pointer transition-colors"
-              >
-                <GoogleIcon className="size-5" />
-              </button>
-
-              <button
-                onClick={handleCopy}
-                aria-label="Copy question"
-                className="hover:text-foreground cursor-pointer transition-colors"
-              >
-                {isCopied ? (
-                  <Check className="text-success size-5" />
-                ) : (
-                  <Copy className="size-5" />
-                )}
-              </button>
-
-              <button
-                onClick={handleShare}
-                aria-label="Share question"
-                className="hover:text-foreground cursor-pointer transition-colors"
-              >
-                <Share2 className="size-5" />
-              </button>
+          <div className="p-6 sm:p-7">
+            <div className="mb-5 flex items-start justify-between gap-4">
+              <span className="text-muted-foreground font-mono text-sm">
+                Q1(c)
+              </span>
+              <div className="relative shrink-0">
+                <span className="border-correction text-correction flex size-9 items-center justify-center rounded-full border-2 font-mono text-sm font-semibold">
+                  2/2
+                </span>
+              </div>
             </div>
 
-            <Button
-              onClick={handleAskAI}
-              className="bg-primary text-primary-foreground shadow-primary/30 hover:shadow-primary/50 h-10 gap-2 rounded-full px-5 text-sm font-bold shadow-md transition-all active:scale-95"
-            >
-              <Bot className="size-4" />
-              Ask AI
-            </Button>
+            <h3 className="font-display mb-8 text-xl leading-snug font-medium tracking-tight sm:text-2xl">
+              Define a multiplexer and realize a three-input AND gate using a
+              4×1 MUX.
+            </h3>
+
+            <div className="border-border flex items-center justify-between border-t pt-5">
+              <div className="text-muted-foreground flex items-center gap-2 text-xs">
+                <CheckCheck className="text-correction size-4" />
+                <span className="font-mono">marked correct</span>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <Bookmark className="text-foreground size-4" />
+                <span className="bg-primary/10 text-primary flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold">
+                  <Sparkles className="size-3.5" />
+                  Ask AI
+                </span>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* Bottom card (peek below) */}
-        <div className="border-border bg-background/60 relative z-0 origin-top -translate-y-3 scale-[0.95] transform rounded-[2rem] border p-5 opacity-60 shadow-md">
-          <div className="mb-3 flex items-center gap-2">
-            <Badge variant="teal">2022</Badge>
-            <Badge variant="purple">Q2b</Badge>
-            <Badge variant="amber">10 Marks</Badge>
-          </div>
-          <p className="text-muted-foreground text-sm leading-snug font-medium">
-            Distinguish between Combinational and Sequential circuits with
-            examples.
+        {/* Peek card below — the next paper up */}
+        <div className="border-border bg-background/70 relative z-0 -mt-2 origin-top scale-[0.96] rounded-b-2xl border border-t-0 px-6 pt-8 pb-5 shadow-sm">
+          <p className="text-muted-foreground font-mono text-[10px] tracking-widest uppercase">
+            2023 · Q3(a) · 5 marks
           </p>
         </div>
       </div>

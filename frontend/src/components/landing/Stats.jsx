@@ -1,38 +1,32 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
-import { motion, useInView, useMotionValue, useSpring } from 'framer-motion';
+import React from 'react';
+import { motion } from 'framer-motion';
+import { Sprout, Ban, GraduationCap, Bot } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 
-const stats = [
-  { value: 50, suffix: '+', label: 'Universities' },
-  { value: 10, suffix: 'K+', label: 'Question Papers' },
-  { value: 25, suffix: 'K+', label: 'Solutions' },
-  { value: 100, suffix: 'K+', label: 'Students' },
+const facts = [
+  {
+    icon: Sprout,
+    label: 'In early access',
+    detail: 'New papers added every week',
+  },
+  {
+    icon: Ban,
+    label: 'No paywall, ever',
+    detail: 'Ad-supported, not subscription-gated',
+  },
+  {
+    icon: GraduationCap,
+    label: 'Built by a student',
+    detail: 'For BEU, VTU, SPPU and more',
+  },
+  {
+    icon: Bot,
+    label: 'Ask AI via Coursify',
+    detail: 'Our AI-tutoring partner, not a gimmick',
+  },
 ];
-
-function AnimatedCounter({ value, suffix }) {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: '-50px' });
-  const motionValue = useMotionValue(0);
-  const spring = useSpring(motionValue, { duration: 1200, bounce: 0 });
-  const [display, setDisplay] = useState(0);
-
-  useEffect(() => {
-    if (inView) motionValue.set(value);
-  }, [inView, motionValue, value]);
-
-  useEffect(() => {
-    return spring.on('change', (v) => setDisplay(Math.round(v)));
-  }, [spring]);
-
-  return (
-    <span ref={ref}>
-      {display}
-      {suffix}
-    </span>
-  );
-}
 
 export function Stats() {
   return (
@@ -40,21 +34,22 @@ export function Stats() {
       <Separator />
       <div className="bg-muted/40">
         <div className="mx-auto max-w-5xl px-4 py-12">
-          <div className="grid grid-cols-2 gap-8 sm:grid-cols-4">
-            {stats.map((stat, i) => (
+          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+            {facts.map((fact, i) => (
               <motion.div
-                key={stat.label}
+                key={fact.label}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="flex flex-col items-center gap-1 text-center"
+                transition={{ delay: i * 0.08 }}
+                className="flex flex-col items-center gap-2 text-center sm:items-start sm:text-left"
               >
-                <span className="text-primary text-4xl font-extrabold">
-                  <AnimatedCounter value={stat.value} suffix={stat.suffix} />
+                <fact.icon className="text-primary size-5" />
+                <span className="text-foreground text-sm font-semibold">
+                  {fact.label}
                 </span>
-                <span className="text-muted-foreground text-sm font-medium">
-                  {stat.label}
+                <span className="text-muted-foreground text-xs leading-relaxed">
+                  {fact.detail}
                 </span>
               </motion.div>
             ))}

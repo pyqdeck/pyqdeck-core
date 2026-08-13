@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 
-import { Menu, Sparkles, LayoutDashboard, Bookmark } from 'lucide-react';
+import { Menu, LayoutDashboard, Bookmark } from 'lucide-react';
 
 import {
   ClerkLoaded,
@@ -47,15 +47,17 @@ export function Header() {
         ======================================================= */}
 
         <Link href="/" className="group flex items-center gap-3">
-          <div className="bg-primary text-primary-foreground flex size-10 items-center justify-center rounded-xl shadow-sm transition-all duration-300 group-hover:scale-105 group-hover:shadow-md">
-            <Sparkles className="size-5" />
+          <div className="bg-primary text-primary-foreground flex size-10 items-center justify-center rounded-xl text-xs font-extrabold transition-transform duration-300 group-hover:scale-105">
+            PQ
           </div>
 
           <div className="hidden sm:flex sm:flex-col sm:leading-none">
-            <span className="text-lg font-bold tracking-tight">PyqDeck</span>
+            <span className="font-display text-lg font-semibold tracking-tight">
+              PyqDeck
+            </span>
 
             <span className="text-muted-foreground text-xs">
-              Smart Learning
+              Past year papers
             </span>
           </div>
         </Link>
@@ -142,15 +144,17 @@ export function Header() {
                   onClick={() => setOpen(false)}
                   className="flex items-center gap-3 pb-2"
                 >
-                  <div className="bg-primary text-primary-foreground flex size-10 items-center justify-center rounded-xl">
-                    <Sparkles className="size-5" />
+                  <div className="bg-primary text-primary-foreground flex size-10 items-center justify-center rounded-xl text-xs font-extrabold">
+                    PQ
                   </div>
 
                   <div className="flex flex-col leading-none">
-                    <span className="text-lg font-bold">PyqDeck</span>
+                    <span className="font-display text-lg font-semibold">
+                      PyqDeck
+                    </span>
 
                     <span className="text-muted-foreground text-xs">
-                      Smart Learning
+                      Past year papers
                     </span>
                   </div>
                 </Link>

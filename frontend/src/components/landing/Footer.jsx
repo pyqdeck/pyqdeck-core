@@ -2,7 +2,6 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Download } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 
 export function Footer() {
@@ -21,10 +20,9 @@ export function Footer() {
           {/* Links */}
           <div className="flex flex-wrap justify-center gap-x-8 gap-y-4 text-sm font-medium">
             {[
+              { label: 'Browse Papers', href: '/browse' },
               { label: 'Features', href: '#features' },
               { label: 'How it Works', href: '#how-it-works' },
-              { label: 'About', href: '#' },
-              { label: 'Privacy', href: '#' },
             ].map((link) => (
               <Link
                 key={link.label}
@@ -34,15 +32,6 @@ export function Footer() {
                 {link.label}
               </Link>
             ))}
-            <a
-              href="https://pyqdeck.en.uptodown.com/android"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-foreground flex items-center gap-1.5 transition-colors"
-            >
-              <Download className="size-3.5" />
-              App
-            </a>
           </div>
         </div>
 

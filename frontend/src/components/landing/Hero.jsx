@@ -25,11 +25,9 @@ export function Hero() {
 
   return (
     <section className="relative flex-1 overflow-hidden px-4 pt-8 pb-24 lg:pt-12 lg:pb-32">
-      {/* Background gradients */}
+      {/* Background wash */}
       <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_90%_60%_at_50%_-10%,oklch(0.72_0.15_250/0.12),transparent)]" />
-        <div className="bg-primary/5 absolute top-1/3 left-1/4 size-72 rounded-full blur-3xl" />
-        <div className="bg-brand-to/5 absolute top-1/2 right-1/4 size-96 rounded-full blur-3xl" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_90%_60%_at_50%_-10%,oklch(0.72_0.15_250/0.08),transparent)]" />
       </div>
 
       <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">

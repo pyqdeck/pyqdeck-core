@@ -2,75 +2,29 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Star } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/card';
-
-const testimonials = [
-  {
-    quote: 'PyqDeck saved me weeks of searching. Everything is right here.',
-    name: 'Priya S.',
-    role: 'B.Tech, SPPU',
-  },
-  {
-    quote:
-      'The filtering is incredible — found exactly what I needed in seconds.',
-    name: 'Arjun M.',
-    role: 'B.E., VTU',
-  },
-  {
-    quote:
-      'Free, fast, and accurate. This is a must for every engineering student.',
-    name: 'Sneha K.',
-    role: 'B.Tech, AKTU',
-  },
-];
+import { PenLine } from 'lucide-react';
 
 export function Testimonials() {
   return (
     <section className="border-border bg-muted/30 border-y py-24">
-      <div className="mx-auto max-w-5xl px-4">
+      <div className="mx-auto max-w-2xl px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="mb-12 text-center"
+          className="text-center"
         >
-          <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
-            Loved by students everywhere
-          </h2>
+          <PenLine className="text-correction mx-auto mb-5 size-6" />
+          <p className="font-display text-xl leading-relaxed font-medium tracking-tight sm:text-2xl">
+            &ldquo;I built this because I was tired of digging through
+            WhatsApp groups for last year&apos;s paper the night before an
+            exam. It&apos;s still early — most of the good stuff is what
+            happens after real students start adding their own papers.&rdquo;
+          </p>
+          <p className="text-muted-foreground mt-5 text-sm">
+            Raiyan Hasan, builder of PyqDeck
+          </p>
         </motion.div>
-
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
-          {testimonials.map((t, i) => (
-            <motion.div
-              key={t.name}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-            >
-              <Card className="h-full">
-                <CardContent className="pt-6">
-                  <div className="mb-4 flex">
-                    {[...Array(5)].map((_, j) => (
-                      <Star
-                        key={j}
-                        className="fill-warning text-warning size-4"
-                      />
-                    ))}
-                  </div>
-                  <p className="text-foreground mb-4 text-sm leading-relaxed">
-                    &quot;{t.quote}&quot;
-                  </p>
-                  <div>
-                    <p className="text-sm font-semibold">{t.name}</p>
-                    <p className="text-muted-foreground text-xs">{t.role}</p>
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
-          ))}
-        </div>
       </div>
     </section>
   );

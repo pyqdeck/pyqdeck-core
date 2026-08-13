@@ -15,7 +15,7 @@ export function PartnerSpotlight() {
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        className="group bg-primary shadow-primary/20 hover:shadow-primary/40 relative block overflow-hidden rounded-3xl p-px shadow-xl transition-all"
+        className="group bg-primary relative block overflow-hidden rounded-3xl p-px transition-all"
       >
         <div className="bg-primary rounded-[calc(1.5rem-1px)] p-8 sm:p-10">
           {/* Noise overlay */}
