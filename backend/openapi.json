@@ -463,33 +463,6 @@
           "maintenanceMode": {
             "type": "boolean",
             "default": false
-          },
-          "ai": {
-            "type": "object",
-            "properties": {
-              "enabled": {
-                "type": "boolean"
-              },
-              "provider": {
-                "type": "string",
-                "enum": [
-                  "openai",
-                  "openai-compatible",
-                  "anthropic"
-                ]
-              },
-              "hasApiKey": {
-                "type": "boolean"
-              },
-              "baseUrl": {
-                "type": "string",
-                "nullable": true
-              },
-              "model": {
-                "type": "string",
-                "nullable": true
-              }
-            }
           }
         }
       },
@@ -2709,34 +2682,6 @@
                   },
                   "maintenanceMode": {
                     "type": "boolean"
-                  },
-                  "ai": {
-                    "type": "object",
-                    "properties": {
-                      "enabled": {
-                        "type": "boolean"
-                      },
-                      "provider": {
-                        "type": "string",
-                        "enum": [
-                          "openai",
-                          "openai-compatible",
-                          "anthropic"
-                        ]
-                      },
-                      "apiKey": {
-                        "type": "string",
-                        "nullable": true
-                      },
-                      "baseUrl": {
-                        "type": "string",
-                        "nullable": true
-                      },
-                      "model": {
-                        "type": "string",
-                        "nullable": true
-                      }
-                    }
                   }
                 }
               }

@@ -30,8 +30,4 @@ export {
 } from './QuestionSyllabusMap.js';
 export { Upload, uploadZodSchema } from './Upload.js';
 export { Bookmark, BookmarkTargetType, bookmarkZodSchema } from './Bookmark.js';
-export {
-  PlatformConfig,
-  AiProvider,
-  platformConfigZodSchema,
-} from './PlatformConfig.js';
+export { PlatformConfig, platformConfigZodSchema } from './PlatformConfig.js';

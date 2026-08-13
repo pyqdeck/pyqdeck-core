@@ -171,13 +171,6 @@ export interface PlatformConfig {
   contentFreeze?: boolean;
   /** @default false */
   maintenanceMode?: boolean;
-  ai?: {
-    enabled?: boolean;
-    provider?: "openai" | "openai-compatible" | "anthropic";
-    hasApiKey?: boolean;
-    baseUrl?: string | null;
-    model?: string | null;
-  };
 }
 
 export interface Question {
@@ -1992,13 +1985,6 @@ export class Api<
         devMode?: boolean;
         contentFreeze?: boolean;
         maintenanceMode?: boolean;
-        ai?: {
-          enabled?: boolean;
-          provider?: "openai" | "openai-compatible" | "anthropic";
-          apiKey?: string | null;
-          baseUrl?: string | null;
-          model?: string | null;
-        };
       },
       params: RequestParams = {},
     ) =>

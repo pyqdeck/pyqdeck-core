@@ -64,23 +64,6 @@ router.get(
  *                 type: boolean
  *               maintenanceMode:
  *                 type: boolean
- *               ai:
- *                 type: object
- *                 properties:
- *                   enabled:
- *                     type: boolean
- *                   provider:
- *                     type: string
- *                     enum: [openai, openai-compatible, anthropic]
- *                   apiKey:
- *                     type: string
- *                     nullable: true
- *                   baseUrl:
- *                     type: string
- *                     nullable: true
- *                   model:
- *                     type: string
- *                     nullable: true
  *     responses:
  *       200:
  *         description: Updated platform configuration

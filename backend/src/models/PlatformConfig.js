@@ -17,25 +17,7 @@ import { z } from 'zod';
  *         maintenanceMode:
  *           type: boolean
  *           default: false
- *         ai:
- *           type: object
- *           properties:
- *             enabled:
- *               type: boolean
- *             provider:
- *               type: string
- *               enum: [openai, openai-compatible, anthropic]
- *             hasApiKey:
- *               type: boolean
- *             baseUrl:
- *               type: string
- *               nullable: true
- *             model:
- *               type: string
- *               nullable: true
  */
-
-export const AiProvider = z.enum(['openai', 'openai-compatible', 'anthropic']);
 
 const platformConfigSchema = new mongoose.Schema(
   {
@@ -55,17 +37,6 @@ const platformConfigSchema = new mongoose.Schema(
     maintenanceMode: {
       type: Boolean,
       default: false,
-    },
-    ai: {
-      enabled: { type: Boolean, default: false },
-      provider: {
-        type: String,
-        enum: ['openai', 'openai-compatible', 'anthropic'],
-        default: 'openai',
-      },
-      apiKey: { type: String, default: null },
-      baseUrl: { type: String, default: null },
-      model: { type: String, default: null },
     },
   },
   {
@@ -97,13 +68,4 @@ export const platformConfigZodSchema = z.object({
   devMode: z.boolean().optional(),
   contentFreeze: z.boolean().optional(),
   maintenanceMode: z.boolean().optional(),
-  ai: z
-    .object({
-      enabled: z.boolean().optional(),
-      provider: AiProvider.optional(),
-      apiKey: z.string().nullable().optional(),
-      baseUrl: z.string().nullable().optional(),
-      model: z.string().nullable().optional(),
-    })
-    .optional(),
 });

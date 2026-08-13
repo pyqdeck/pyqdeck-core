@@ -15,21 +15,9 @@ class PlatformConfigRepository {
   async update(data) {
     const sanitized = platformConfigZodSchema.parse(data);
 
-    // Flatten nested ai fields so $set patches individual keys, not the whole subdoc
-    const setFields = {};
-    for (const [key, value] of Object.entries(sanitized)) {
-      if (key === 'ai' && value && typeof value === 'object') {
-        for (const [aiKey, aiVal] of Object.entries(value)) {
-          setFields[`ai.${aiKey}`] = aiVal;
-        }
-      } else {
-        setFields[key] = value;
-      }
-    }
-
     return PlatformConfig.findOneAndUpdate(
       { instanceId: 'main' },
-      { $set: setFields },
+      { $set: sanitized },
       { returnDocument: 'after', upsert: true, runValidators: true }
     );
   }

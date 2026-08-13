@@ -1,15 +1,8 @@
 import { catchAsync, successFormatter } from '../utils/index.js';
 import { platformConfigService } from '../services/platformConfigService.js';
 
-const sanitizeConfig = (config) => {
-  const obj = config.toObject ? config.toObject() : { ...config };
-  const hasApiKey = !!obj.ai?.apiKey;
-  if (obj.ai) {
-    delete obj.ai.apiKey;
-    obj.ai.hasApiKey = hasApiKey;
-  }
-  return obj;
-};
+const sanitizeConfig = (config) =>
+  config.toObject ? config.toObject() : { ...config };
 
 export const getConfig = catchAsync(async (req, res) => {
   const config = await platformConfigService.getConfig();

@@ -1,18 +1,16 @@
 'use client';
 
 import * as React from 'react';
-import { Settings2Icon, WrenchIcon, BrainIcon } from 'lucide-react';
+import { Settings2Icon, WrenchIcon } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { GeneralSettingsCard } from './general-settings-card';
-import { AiConfigCard } from './ai-config-card';
 import { WipeDbCard } from './wipe-db-card';
 import { SystemInfoCard } from './system-info-card';
 
 const SETTINGS_TABS = [
   { id: 'platform', label: 'Platform', icon: Settings2Icon },
-  { id: 'ai', label: 'AI Config', icon: BrainIcon },
   { id: 'maintenance', label: 'Maintenance', icon: WrenchIcon },
 ];
 
@@ -44,13 +42,6 @@ export function SettingsTabs({ platformConfig, health }) {
             className="animate-in fade-in-50 mt-2 duration-300"
           >
             <GeneralSettingsCard initialConfig={platformConfig} />
-          </TabsContent>
-
-          <TabsContent
-            value="ai"
-            className="animate-in fade-in-50 mt-2 duration-300"
-          >
-            <AiConfigCard initialConfig={platformConfig} />
           </TabsContent>
 
           <TabsContent
