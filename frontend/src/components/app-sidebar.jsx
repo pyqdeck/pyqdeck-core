@@ -39,11 +39,6 @@ const navData = {
       icon: <LayoutDashboardIcon />,
       isActive: true,
     },
-    {
-      title: 'Analytics',
-      url: '/studio/analytics',
-      icon: <LibraryIcon />,
-    },
   ],
   academics: [
     {
