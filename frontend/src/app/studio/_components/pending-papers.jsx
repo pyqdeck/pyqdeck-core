@@ -8,10 +8,12 @@ import { useApi } from '@/hooks/use-api';
 export function PendingPapers({ papers: initialPapers, loading }) {
   const api = useApi();
   const [papers, setPapers] = React.useState(initialPapers || []);
+  const [prevInitialPapers, setPrevInitialPapers] = React.useState(initialPapers);
 
-  React.useEffect(() => {
+  if (initialPapers !== prevInitialPapers) {
+    setPrevInitialPapers(initialPapers);
     setPapers(initialPapers || []);
-  }, [initialPapers]);
+  }
 
   const updateStatus = async (paper, status, verb) => {
     try {
