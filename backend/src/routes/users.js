@@ -21,6 +21,7 @@ const createGrantSchema = z
     scopeId: z.string().nullable().optional(),
     label: z.string().max(200).optional(),
     notes: z.string().max(500).optional(),
+    expiresAt: z.coerce.date().optional(),
   })
   .refine(
     (data) => (data.scopeLevel === 'global' ? !data.scopeId : !!data.scopeId),
@@ -62,6 +63,82 @@ const createGrantSchema = z
  *         $ref: '#/components/responses/Unauthorized'
  */
 router.get('/me', requireAuthentication, syncUser, userController.getMe);
+
+/**
+ * @openapi
+ * /users/me/grants:
+ *   get:
+ *     operationId: listMyGrants
+ *     tags: [Users]
+ *     summary: List my own active scoped permission grants
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: List of my active permission grants
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       type: object
+ *                       properties:
+ *                         items:
+ *                           type: array
+ *                           items: { $ref: '#/components/schemas/PermissionGrant' }
+ *       401:
+ *         $ref: '#/components/responses/Unauthorized'
+ */
+router.get(
+  '/me/grants',
+  requireAuthentication,
+  syncUser,
+  permissionGrantController.listMyGrants
+);
+
+/**
+ * @openapi
+ * /users/grant-templates:
+ *   get:
+ *     operationId: listGrantTemplates
+ *     tags: [Users]
+ *     summary: List the preset capability-bundle templates offered when creating a grant (Admin only)
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Role-template presets
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       type: object
+ *                       properties:
+ *                         items:
+ *                           type: array
+ *                           items:
+ *                             type: object
+ *                             properties:
+ *                               value: { type: string }
+ *                               label: { type: string }
+ *                               capabilities:
+ *                                 type: array
+ *                                 items: { type: string }
+ */
+router.get(
+  '/grant-templates',
+  requireAuthentication,
+  syncUser,
+  isAdmin,
+  permissionGrantController.listGrantTemplates
+);
 
 /**
  * @openapi
@@ -295,6 +372,10 @@ router.get(
  *                 type: string
  *               notes:
  *                 type: string
+ *               expiresAt:
+ *                 type: string
+ *                 format: date-time
+ *                 nullable: true
  *     responses:
  *       201:
  *         description: Grant created

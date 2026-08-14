@@ -204,6 +204,11 @@ export interface PermissionGrant {
   /** @format date-time */
   revokedAt?: string | null;
   notes?: string;
+  /**
+   * Optional expiry -- an expired grant is treated as inactive without being explicitly revoked
+   * @format date-time
+   */
+  expiresAt?: string | null;
   /** @format date-time */
   createdAt?: string;
   /** @format date-time */
@@ -3073,6 +3078,80 @@ export class Api<
  * No description
  *
  * @tags Users
+ * @name ListMyGrants
+ * @summary List my own active scoped permission grants
+ * @request GET:/users/me/grants
+ * @secure
+ * @response `200` `(SuccessResponse & {
+    data?: {
+    items?: (PermissionGrant)[],
+
+},
+
+})` List of my active permission grants
+ * @response `401` `Error`
+ */
+    listMyGrants: (params: RequestParams = {}) =>
+      this.request<
+        SuccessResponse & {
+          data?: {
+            items?: PermissionGrant[];
+          };
+        },
+        Error
+      >({
+        path: `/users/me/grants`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+ * No description
+ *
+ * @tags Users
+ * @name ListGrantTemplates
+ * @summary List the preset capability-bundle templates offered when creating a grant (Admin only)
+ * @request GET:/users/grant-templates
+ * @secure
+ * @response `200` `(SuccessResponse & {
+    data?: {
+    items?: ({
+    value?: string,
+    label?: string,
+    capabilities?: (string)[],
+
+})[],
+
+},
+
+})` Role-template presets
+ */
+    listGrantTemplates: (params: RequestParams = {}) =>
+      this.request<
+        SuccessResponse & {
+          data?: {
+            items?: {
+              value?: string;
+              label?: string;
+              capabilities?: string[];
+            }[];
+          };
+        },
+        any
+      >({
+        path: `/users/grant-templates`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+ * No description
+ *
+ * @tags Users
  * @name ListUsers
  * @summary List all users (Admin only)
  * @request GET:/users
@@ -3281,6 +3360,8 @@ export class Api<
         scopeId?: string | null;
         label?: string;
         notes?: string;
+        /** @format date-time */
+        expiresAt?: string | null;
       },
       params: RequestParams = {},
     ) =>

@@ -53,6 +53,11 @@ import { z } from 'zod';
  *           nullable: true
  *         notes:
  *           type: string
+ *         expiresAt:
+ *           type: string
+ *           format: date-time
+ *           nullable: true
+ *           description: Optional expiry -- an expired grant is treated as inactive without being explicitly revoked
  *         createdAt:
  *           type: string
  *           format: date-time
@@ -75,6 +80,26 @@ export const ScopeLevel = z.enum([
   'semester',
   'subjectOffering',
 ]);
+
+/**
+ * Preset capability bundles offered when creating a grant, so "give this
+ * person moderator rights" doesn't require picking individual capability
+ * checkboxes every time. Served to the frontend rather than hardcoded
+ * there, so the presets stay a single source of truth.
+ */
+export const ROLE_TEMPLATES = [
+  {
+    value: 'moderator',
+    label: 'Content Moderator',
+    capabilities: ['content:create', 'content:moderate'],
+  },
+  {
+    value: 'contributor',
+    label: 'Content Contributor',
+    capabilities: ['content:create', 'content:edit'],
+  },
+  { value: 'custom', label: 'Custom', capabilities: [] },
+];
 
 const permissionGrantSchema = new mongoose.Schema(
   {
@@ -145,6 +170,10 @@ const permissionGrantSchema = new mongoose.Schema(
       trim: true,
       maxlength: 500,
     },
+    expiresAt: {
+      type: Date,
+      default: null,
+    },
   },
   {
     timestamps: true,
@@ -191,6 +220,7 @@ export const permissionGrantZodSchema = z
     scopeId: z.string().nullable().optional(),
     label: z.string().max(200).optional(),
     notes: z.string().max(500).optional(),
+    expiresAt: z.coerce.date().optional(),
   })
   .refine(
     (data) => (data.scopeLevel === 'global' ? !data.scopeId : !!data.scopeId),

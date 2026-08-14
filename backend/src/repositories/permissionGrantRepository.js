@@ -17,14 +17,23 @@ class PermissionGrantRepository {
   async findByUserId(userId, { includeRevoked = false } = {}) {
     const query = { userId };
     if (!includeRevoked) query.isActive = true;
-    return PermissionGrant.find(query).sort({ createdAt: -1 });
+    return PermissionGrant.find(query)
+      .sort({ createdAt: -1 })
+      .populate('grantedBy', 'name email')
+      .populate('revokedBy', 'name email');
   }
 
+  /**
+   * Active grants for a capability check, excluding both soft-revoked
+   * (isActive: false) and time-expired grants -- an expiresAt in the past
+   * makes a grant inert without requiring an explicit revoke.
+   */
   async findActiveByUserAndCapability(userId, capability) {
     return PermissionGrant.find({
       userId,
       isActive: true,
       capabilities: capability,
+      $or: [{ expiresAt: null }, { expiresAt: { $gt: new Date() } }],
     }).lean();
   }
 

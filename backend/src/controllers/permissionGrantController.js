@@ -1,6 +1,32 @@
 import { successFormatter, catchAsync } from '../utils/index.js';
 import permissionGrantService from '../services/permissionGrantService.js';
 import userRepository from '../repositories/userRepository.js';
+import { ROLE_TEMPLATES } from '../models/PermissionGrant.js';
+
+/**
+ * GET /api/v1/users/grant-templates
+ */
+export const listGrantTemplates = catchAsync(async (req, res) => {
+  res.json(
+    successFormatter.formatSuccess(
+      { items: ROLE_TEMPLATES },
+      'Grant templates fetched'
+    )
+  );
+});
+
+/**
+ * GET /api/v1/users/me/grants
+ * Self-service: any authenticated user can see their own active grants,
+ * no admin required.
+ */
+export const listMyGrants = catchAsync(async (req, res) => {
+  const grants = await permissionGrantService.listForUser(req.dbUser._id, {
+    includeRevoked: false,
+  });
+
+  res.json(successFormatter.formatSuccess({ items: grants }, 'Grants fetched'));
+});
 
 /**
  * GET /api/v1/users/:clerkId/grants
@@ -21,7 +47,8 @@ export const listGrants = catchAsync(async (req, res) => {
  */
 export const createGrant = catchAsync(async (req, res) => {
   const user = await userRepository.findByClerkId(req.params.clerkId);
-  const { capabilities, scopeLevel, scopeId, label, notes } = req.body;
+  const { capabilities, scopeLevel, scopeId, label, notes, expiresAt } =
+    req.body;
 
   const grant = await permissionGrantService.create({
     userId: user._id,
@@ -30,6 +57,7 @@ export const createGrant = catchAsync(async (req, res) => {
     scopeId: scopeLevel === 'global' ? undefined : scopeId,
     label,
     notes,
+    expiresAt,
     grantedBy: req.dbUser._id,
   });
 
