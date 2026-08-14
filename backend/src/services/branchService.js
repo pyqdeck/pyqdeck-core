@@ -1,5 +1,7 @@
 import branchRepository from '../repositories/branchRepository.js';
+import semesterRepository from '../repositories/semesterRepository.js';
 import permissionGrantService from './permissionGrantService.js';
+import { ConflictError } from '../utils/errors/index.js';
 
 class BranchService {
   async listByUniversity(universityId, pagination, query = {}) {
@@ -54,6 +56,13 @@ class BranchService {
   }
 
   async delete(id, deletedBy) {
+    const semesterCount = await semesterRepository.countByBranchId(id);
+    if (semesterCount > 0) {
+      throw new ConflictError(
+        `Cannot delete: this branch still has ${semesterCount} semester(s). Delete them first.`
+      );
+    }
+
     const branch = await branchRepository.delete(id);
     await permissionGrantService.revokeAllForScope('branch', id, deletedBy);
     return branch;

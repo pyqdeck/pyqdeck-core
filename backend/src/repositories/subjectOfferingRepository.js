@@ -54,6 +54,10 @@ class SubjectOfferingRepository {
     return result;
   }
 
+  async countBySemesterId(semesterId) {
+    return SubjectOffering.countDocuments({ semesterId: String(semesterId) });
+  }
+
   async findByUniversityBranchSemester(
     universityId,
     branchId,

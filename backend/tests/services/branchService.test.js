@@ -1,7 +1,8 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { branchService } from '../../src/services/branchService.js';
 import branchRepository from '../../src/repositories/branchRepository.js';
-import { NotFoundError } from '../../src/utils/errors/index.js';
+import semesterRepository from '../../src/repositories/semesterRepository.js';
+import { NotFoundError, ConflictError } from '../../src/utils/errors/index.js';
 
 vi.mock('../../src/repositories/branchRepository.js', () => ({
   default: {
@@ -14,6 +15,12 @@ vi.mock('../../src/repositories/branchRepository.js', () => ({
     getStructure: vi.fn(),
     findAll: vi.fn(),
     createMany: vi.fn(),
+  },
+}));
+
+vi.mock('../../src/repositories/semesterRepository.js', () => ({
+  default: {
+    countByBranchId: vi.fn(),
   },
 }));
 
@@ -165,14 +172,25 @@ describe('BranchService', () => {
   });
 
   describe('delete', () => {
-    it('should delete and return the branch', async () => {
+    it('should delete and return the branch when it has no semesters', async () => {
+      semesterRepository.countByBranchId.mockResolvedValue(0);
       branchRepository.delete.mockResolvedValue(sampleBranch);
       const result = await branchService.delete('branch_1');
       expect(branchRepository.delete).toHaveBeenCalledWith('branch_1');
       expect(result).toEqual(sampleBranch);
     });
 
+    it('should throw ConflictError and not delete when semesters still exist', async () => {
+      semesterRepository.countByBranchId.mockResolvedValue(2);
+
+      await expect(branchService.delete('branch_1')).rejects.toThrow(
+        ConflictError
+      );
+      expect(branchRepository.delete).not.toHaveBeenCalled();
+    });
+
     it('should throw NotFoundError for unknown id', async () => {
+      semesterRepository.countByBranchId.mockResolvedValue(0);
       branchRepository.delete.mockRejectedValue(
         new NotFoundError('Branch not found')
       );

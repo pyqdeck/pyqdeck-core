@@ -1,4 +1,5 @@
 import paperRepository from '../repositories/paperRepository.js';
+import questionPaperMapRepository from '../repositories/questionPaperMapRepository.js';
 import { loggerService } from '../utils/index.js';
 
 const logger = loggerService.getLogger();
@@ -30,7 +31,12 @@ class PaperService {
   }
 
   async delete(id) {
-    return paperRepository.delete(id);
+    const paper = await paperRepository.delete(id);
+    // The paper is gone, but its questions aren't -- they're standalone
+    // and may be linked to other papers too. Just clean up this paper's
+    // own link records.
+    await questionPaperMapRepository.deleteByPaper(id);
+    return paper;
   }
 }
 

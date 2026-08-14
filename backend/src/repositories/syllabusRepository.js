@@ -30,6 +30,11 @@ class SyllabusRepository {
     return syllabus;
   }
 
+  async existsForSubjectOffering(subjectOfferingId) {
+    const syllabus = await Syllabus.exists({ subjectOfferingId });
+    return !!syllabus;
+  }
+
   async update(id, data) {
     // Sanitize data using the Zod schema to prevent NoSQL injection
     // and ensure only allowed fields are updated.

@@ -34,6 +34,10 @@ class SemesterRepository {
       .sort({ number: 1 });
   }
 
+  async countByBranchId(branchId) {
+    return Semester.countDocuments({ branchId: String(branchId) });
+  }
+
   async findAll(query = {}, pagination = { skip: 0, limit: 10 }) {
     const filters = {};
     if (query.branchId) filters.branchId = String(query.branchId);

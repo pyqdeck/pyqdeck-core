@@ -1,5 +1,7 @@
 import universityRepository from '../repositories/universityRepository.js';
+import branchRepository from '../repositories/branchRepository.js';
 import permissionGrantService from './permissionGrantService.js';
+import { ConflictError } from '../utils/errors/index.js';
 
 class UniversityService {
   async list(query = {}, pagination) {
@@ -48,6 +50,13 @@ class UniversityService {
   }
 
   async delete(id, deletedBy) {
+    const branchCount = await branchRepository.countByUniversityId(id);
+    if (branchCount > 0) {
+      throw new ConflictError(
+        `Cannot delete: this university still has ${branchCount} branch(es). Delete them first.`
+      );
+    }
+
     const university = await universityRepository.delete(id);
     await permissionGrantService.revokeAllForScope('university', id, deletedBy);
     return university;

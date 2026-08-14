@@ -1,7 +1,9 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { subjectOfferingService } from '../../src/services/subjectOfferingService.js';
 import subjectOfferingRepository from '../../src/repositories/subjectOfferingRepository.js';
-import { NotFoundError } from '../../src/utils/errors/index.js';
+import paperRepository from '../../src/repositories/paperRepository.js';
+import syllabusRepository from '../../src/repositories/syllabusRepository.js';
+import { NotFoundError, ConflictError } from '../../src/utils/errors/index.js';
 
 vi.mock('../../src/repositories/subjectOfferingRepository.js', () => ({
   default: {
@@ -12,6 +14,18 @@ vi.mock('../../src/repositories/subjectOfferingRepository.js', () => ({
     create: vi.fn(),
     update: vi.fn(),
     delete: vi.fn(),
+  },
+}));
+
+vi.mock('../../src/repositories/paperRepository.js', () => ({
+  default: {
+    countBySubjectOffering: vi.fn(),
+  },
+}));
+
+vi.mock('../../src/repositories/syllabusRepository.js', () => ({
+  default: {
+    existsForSubjectOffering: vi.fn(),
   },
 }));
 
@@ -201,7 +215,9 @@ describe('SubjectOfferingService', () => {
   });
 
   describe('delete', () => {
-    it('should delete and return the offering', async () => {
+    it('should delete and return the offering when it has no papers or syllabus', async () => {
+      paperRepository.countBySubjectOffering.mockResolvedValue(0);
+      syllabusRepository.existsForSubjectOffering.mockResolvedValue(false);
       subjectOfferingRepository.delete.mockResolvedValue(sampleOffering);
       const result = await subjectOfferingService.delete('offering_1');
       expect(subjectOfferingRepository.delete).toHaveBeenCalledWith(
@@ -210,7 +226,28 @@ describe('SubjectOfferingService', () => {
       expect(result).toEqual(sampleOffering);
     });
 
+    it('should throw ConflictError and not delete when papers still exist', async () => {
+      paperRepository.countBySubjectOffering.mockResolvedValue(5);
+
+      await expect(subjectOfferingService.delete('offering_1')).rejects.toThrow(
+        ConflictError
+      );
+      expect(subjectOfferingRepository.delete).not.toHaveBeenCalled();
+    });
+
+    it('should throw ConflictError and not delete when a syllabus still exists', async () => {
+      paperRepository.countBySubjectOffering.mockResolvedValue(0);
+      syllabusRepository.existsForSubjectOffering.mockResolvedValue(true);
+
+      await expect(subjectOfferingService.delete('offering_1')).rejects.toThrow(
+        ConflictError
+      );
+      expect(subjectOfferingRepository.delete).not.toHaveBeenCalled();
+    });
+
     it('should throw NotFoundError for unknown id', async () => {
+      paperRepository.countBySubjectOffering.mockResolvedValue(0);
+      syllabusRepository.existsForSubjectOffering.mockResolvedValue(false);
       subjectOfferingRepository.delete.mockRejectedValue(
         new NotFoundError('Subject offering not found')
       );

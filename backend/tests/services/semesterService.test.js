@@ -1,7 +1,8 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { semesterService } from '../../src/services/semesterService.js';
 import semesterRepository from '../../src/repositories/semesterRepository.js';
-import { NotFoundError } from '../../src/utils/errors/index.js';
+import subjectOfferingRepository from '../../src/repositories/subjectOfferingRepository.js';
+import { NotFoundError, ConflictError } from '../../src/utils/errors/index.js';
 
 vi.mock('../../src/repositories/semesterRepository.js', () => ({
   default: {
@@ -11,6 +12,12 @@ vi.mock('../../src/repositories/semesterRepository.js', () => ({
     create: vi.fn(),
     update: vi.fn(),
     delete: vi.fn(),
+  },
+}));
+
+vi.mock('../../src/repositories/subjectOfferingRepository.js', () => ({
+  default: {
+    countBySemesterId: vi.fn(),
   },
 }));
 
@@ -122,14 +129,25 @@ describe('SemesterService', () => {
   });
 
   describe('delete', () => {
-    it('should delete and return the semester', async () => {
+    it('should delete and return the semester when it has no subject offerings', async () => {
+      subjectOfferingRepository.countBySemesterId.mockResolvedValue(0);
       semesterRepository.delete.mockResolvedValue(sampleSemester);
       const result = await semesterService.delete('sem_1');
       expect(semesterRepository.delete).toHaveBeenCalledWith('sem_1');
       expect(result).toEqual(sampleSemester);
     });
 
+    it('should throw ConflictError and not delete when subject offerings still exist', async () => {
+      subjectOfferingRepository.countBySemesterId.mockResolvedValue(1);
+
+      await expect(semesterService.delete('sem_1')).rejects.toThrow(
+        ConflictError
+      );
+      expect(semesterRepository.delete).not.toHaveBeenCalled();
+    });
+
     it('should throw NotFoundError for unknown id', async () => {
+      subjectOfferingRepository.countBySemesterId.mockResolvedValue(0);
       semesterRepository.delete.mockRejectedValue(
         new NotFoundError('Semester not found')
       );

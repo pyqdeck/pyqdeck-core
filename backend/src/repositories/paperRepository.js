@@ -39,6 +39,12 @@ class PaperRepository {
     );
   }
 
+  async countBySubjectOffering(subjectOfferingId) {
+    return Paper.countDocuments({
+      subjectOfferingId: String(subjectOfferingId),
+    });
+  }
+
   async findAll(filter = {}, pagination) {
     const result = await paginate(Paper, filter, pagination, {
       sort: { examYear: -1 },

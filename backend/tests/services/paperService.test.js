@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { paperService } from '../../src/services/paperService.js';
 import paperRepository from '../../src/repositories/paperRepository.js';
+import questionPaperMapRepository from '../../src/repositories/questionPaperMapRepository.js';
 import { NotFoundError } from '../../src/utils/errors/index.js';
 
 vi.mock('../../src/repositories/paperRepository.js', () => ({
@@ -12,6 +13,12 @@ vi.mock('../../src/repositories/paperRepository.js', () => ({
     update: vi.fn(),
     updateStatus: vi.fn(),
     delete: vi.fn(),
+  },
+}));
+
+vi.mock('../../src/repositories/questionPaperMapRepository.js', () => ({
+  default: {
+    deleteByPaper: vi.fn(),
   },
 }));
 
@@ -178,20 +185,29 @@ describe('PaperService', () => {
   });
 
   describe('delete', () => {
-    it('should delete and return the paper', async () => {
+    it('should delete the paper and clean up its question-paper links', async () => {
       paperRepository.delete.mockResolvedValue(samplePaper);
+      questionPaperMapRepository.deleteByPaper.mockResolvedValue({
+        deletedCount: 3,
+      });
+
       const result = await paperService.delete('paper_1');
+
       expect(paperRepository.delete).toHaveBeenCalledWith('paper_1');
+      expect(questionPaperMapRepository.deleteByPaper).toHaveBeenCalledWith(
+        'paper_1'
+      );
       expect(result).toEqual(samplePaper);
     });
 
-    it('should throw NotFoundError for unknown id', async () => {
+    it('should throw NotFoundError for unknown id and skip the link cleanup', async () => {
       paperRepository.delete.mockRejectedValue(
         new NotFoundError('Paper not found')
       );
       await expect(paperService.delete('bad_id')).rejects.toThrow(
         NotFoundError
       );
+      expect(questionPaperMapRepository.deleteByPaper).not.toHaveBeenCalled();
     });
   });
 });

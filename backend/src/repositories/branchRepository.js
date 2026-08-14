@@ -84,6 +84,10 @@ class BranchRepository {
     );
   }
 
+  async countByUniversityId(universityId) {
+    return Branch.countDocuments({ universityId: String(universityId) });
+  }
+
   async findAll(filter = {}, pagination) {
     // We don't use the paginate util here because we want population
     const { page, limit, skip } = pagination;
