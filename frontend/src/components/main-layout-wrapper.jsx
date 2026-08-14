@@ -6,13 +6,18 @@ import { Header } from '@/components/header';
 export function MainLayoutWrapper({ children }) {
   const pathname = usePathname();
 
-  // Hide the global Header for the Admin Studio
+  // Hide the global Header for the Admin Studio and the branded auth pages
   const isStudio = pathname?.startsWith('/studio');
+  const isAuthPage =
+    pathname?.startsWith('/sign-in') ||
+    pathname?.startsWith('/sign-up') ||
+    pathname?.startsWith('/sso-callback');
+  const hideHeader = isStudio || isAuthPage;
 
   return (
     <>
-      {!isStudio && <Header />}
-      <main className={`flex-1 ${!isStudio ? 'pt-16' : ''}`}>{children}</main>
+      {!hideHeader && <Header />}
+      <main className={`flex-1 ${!hideHeader ? 'pt-16' : ''}`}>{children}</main>
     </>
   );
 }

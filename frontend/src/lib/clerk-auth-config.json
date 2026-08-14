@@ -1,0 +1,54 @@
+{
+  "_meta": {
+    "generatedAt": null,
+    "source": null,
+    "note": "Placeholder shape -- run `pnpm sync:clerk-config` (with NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY set) to pull the real values from the Clerk Dashboard. Update whenever a field or social provider is toggled in Clerk."
+  },
+  "socialProviders": [],
+  "attributes": {
+    "email_address": {
+      "enabled": true,
+      "required": true
+    },
+    "phone_number": {
+      "enabled": false,
+      "required": false
+    },
+    "username": {
+      "enabled": false,
+      "required": false
+    },
+    "web3_wallet": {
+      "enabled": false,
+      "required": false
+    },
+    "first_name": {
+      "enabled": true,
+      "required": false
+    },
+    "last_name": {
+      "enabled": true,
+      "required": false
+    },
+    "password": {
+      "enabled": true,
+      "required": true
+    },
+    "authenticator_app": {
+      "enabled": false,
+      "required": false
+    },
+    "ticket": {
+      "enabled": true,
+      "required": false
+    },
+    "backup_code": {
+      "enabled": false,
+      "required": false
+    },
+    "passkey": {
+      "enabled": false,
+      "required": false
+    }
+  }
+}

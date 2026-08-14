@@ -1,7 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { useUser, SignInButton } from '@clerk/nextjs';
+import Link from 'next/link';
+import { useUser } from '@clerk/nextjs';
 import { useApi } from '@/hooks/use-api';
 import { getCoursifyAskUrl } from '@/lib/coursify';
 import { Button } from '@/components/ui/button';
@@ -88,11 +89,11 @@ export function QuestionCard({
             )}
           </Button>
         ) : (
-          <SignInButton mode="modal">
+          <Link href="/sign-in">
             <Button variant="ghost" size="icon" className="shrink-0">
               <Bookmark className="size-4.5" />
             </Button>
-          </SignInButton>
+          </Link>
         )}
       </CardHeader>
 

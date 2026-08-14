@@ -5,13 +5,7 @@ import Link from 'next/link';
 
 import { Menu, Bookmark } from 'lucide-react';
 
-import {
-  ClerkLoaded,
-  SignInButton,
-  SignUpButton,
-  UserButton,
-  useUser,
-} from '@clerk/nextjs';
+import { ClerkLoaded, UserButton, useUser } from '@clerk/nextjs';
 
 import { Button } from '@/components/ui/button';
 
@@ -82,17 +76,17 @@ export function Header() {
           <ClerkLoaded>
             {!isSignedIn ? (
               <div className="flex items-center gap-2">
-                <SignInButton mode="modal">
+                <Link href="/sign-in">
                   <Button variant="ghost" className="rounded-full">
                     Sign In
                   </Button>
-                </SignInButton>
+                </Link>
 
-                <SignUpButton mode="modal">
+                <Link href="/sign-up">
                   <Button className="rounded-full px-5 shadow-sm">
                     Get Started
                   </Button>
-                </SignUpButton>
+                </Link>
               </div>
             ) : (
               <div className="flex items-center gap-3">
@@ -180,20 +174,20 @@ export function Header() {
                 <ClerkLoaded>
                   {!isSignedIn ? (
                     <div className="flex flex-col gap-3">
-                      <SignInButton mode="modal">
+                      <Link href="/sign-in" onClick={() => setOpen(false)}>
                         <Button
                           variant="outline"
                           className="h-11 w-full rounded-xl"
                         >
                           Sign In
                         </Button>
-                      </SignInButton>
+                      </Link>
 
-                      <SignUpButton mode="modal">
+                      <Link href="/sign-up" onClick={() => setOpen(false)}>
                         <Button className="h-11 w-full rounded-xl">
                           Get Started
                         </Button>
-                      </SignUpButton>
+                      </Link>
                     </div>
                   ) : (
                     <Link

@@ -10,6 +10,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "gen:api": "pnpm --prefix ../backend openapi:export && swagger-typescript-api generate -p ../backend/openapi.json -o ./src/lib -n api-generated.js --responses --axios",
+    "sync:clerk-config": "node scripts/generate-clerk-config.js",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
