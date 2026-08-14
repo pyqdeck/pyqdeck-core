@@ -6,6 +6,14 @@ import { useApi } from '@/hooks/use-api';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty';
 import { Plus, RefreshCcw } from 'lucide-react';
 import { StudioBreadcrumb } from './studio-breadcrumb';
 import { SyllabusTable } from './syllabus-table';
@@ -156,31 +164,33 @@ export function OfferingDetail({
               onTopicDelete={handleTopicDelete}
             />
           ) : (
-            <div className="border-border/50 bg-muted/5 flex flex-col items-center justify-center gap-4 rounded-3xl border border-dashed py-20">
-              <div className="bg-muted text-muted-foreground flex h-16 w-16 items-center justify-center rounded-2xl">
-                <Plus className="h-8 w-8" />
-              </div>
-              <div className="space-y-1 text-center">
-                <h3 className="font-roboto text-lg font-bold">
-                  No Syllabus Found
-                </h3>
-                <p className="text-muted-foreground font-roboto mx-auto max-w-xs text-sm">
+            <Empty className="border-border/50 rounded-xl border">
+              <EmptyHeader>
+                <EmptyMedia variant="icon">
+                  <Plus />
+                </EmptyMedia>
+                <EmptyTitle className="font-roboto text-base font-bold">
+                  No syllabus yet
+                </EmptyTitle>
+                <EmptyDescription className="font-roboto">
                   This offering doesn&apos;t have a syllabus structure yet.
-                </p>
-              </div>
-              <Button
-                onClick={handleInitializeSyllabus}
-                disabled={initializing}
-                className="font-roboto h-10 border font-bold"
-              >
-                {initializing ? (
-                  <RefreshCcw className="mr-2 h-4 w-4 animate-spin" />
-                ) : (
-                  <Plus className="mr-2 h-4 w-4" />
-                )}
-                Initialize Structure
-              </Button>
-            </div>
+                </EmptyDescription>
+              </EmptyHeader>
+              <EmptyContent>
+                <Button
+                  onClick={handleInitializeSyllabus}
+                  disabled={initializing}
+                  className="font-roboto h-10 border font-bold shadow-none"
+                >
+                  {initializing ? (
+                    <RefreshCcw className="mr-2 h-4 w-4 animate-spin" />
+                  ) : (
+                    <Plus className="mr-2 h-4 w-4" />
+                  )}
+                  Initialize Structure
+                </Button>
+              </EmptyContent>
+            </Empty>
           )}
 
           <EditSyllabusDialog

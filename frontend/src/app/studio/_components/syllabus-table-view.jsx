@@ -89,8 +89,8 @@ export function SyllabusTableView({
 
   return (
     <Card className="border-border/50 overflow-hidden border p-0 shadow-none">
-      <CardHeader className="bg-muted/30 border-b px-6 py-6">
-        <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
+      <CardHeader className="border-b px-6 py-5">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div className="space-y-1">
             <div className="flex items-center gap-3">
               <CardTitle className="font-roboto text-2xl font-bold">
@@ -177,7 +177,7 @@ export function SyllabusTableView({
               syllabusId={syllabusId}
               onAdd={onModuleAdd}
               trigger={
-                <Button className="font-roboto h-10 px-5 font-bold shadow-sm">
+                <Button className="font-roboto h-10 px-5 font-bold shadow-none">
                   <Plus className="mr-2 h-4 w-4" /> Add Module
                 </Button>
               }
@@ -270,24 +270,16 @@ export function SyllabusTableView({
                       <TableRow className="group bg-muted/5 hover:bg-muted/20 border-b transition-all">
                         <TableCell className="px-6 py-4">
                           <div className="flex items-center gap-4">
-                            <div className="bg-primary/10 text-primary font-roboto ring-primary/10 flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl text-lg font-black ring-1 transition-transform group-hover:scale-105">
+                            <div className="bg-primary/10 text-primary font-roboto flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl text-lg font-black">
                               {mod.moduleNumber}
                             </div>
                             <div className="flex min-w-0 flex-col gap-0.5">
-                              <span className="text-foreground group-hover:text-primary font-roboto truncate text-base font-bold transition-colors">
+                              <span className="text-foreground font-roboto truncate text-base font-bold">
                                 {mod.title}
                               </span>
-                              <div className="flex items-center gap-2">
-                                <Badge
-                                  variant="none"
-                                  className="bg-muted text-muted-foreground font-roboto h-4 rounded-full px-2 text-[9px] font-bold"
-                                >
-                                  MODULE
-                                </Badge>
-                                <span className="text-muted-foreground font-roboto text-[11px] font-medium italic">
-                                  {topics.length} learning units
-                                </span>
-                              </div>
+                              <span className="text-muted-foreground font-roboto text-[11px] font-medium">
+                                {topics.length} learning units
+                              </span>
                             </div>
                           </div>
                         </TableCell>
@@ -364,21 +356,13 @@ export function SyllabusTableView({
                                 <div className="text-muted-foreground/30 shrink-0">
                                   <ChevronRight className="size-3.5" />
                                 </div>
-                                <div className="flex flex-col gap-0.5">
-                                  <span className="text-foreground font-roboto text-sm font-semibold">
-                                    {topic.title}
-                                  </span>
-                                  <Badge
-                                    variant="none"
-                                    className="bg-muted/50 text-muted-foreground/70 h-3.5 w-fit rounded px-1.5 text-[8px] font-bold"
-                                  >
-                                    TOPIC
-                                  </Badge>
-                                </div>
+                                <span className="text-foreground font-roboto text-sm font-semibold">
+                                  {topic.title}
+                                </span>
                               </div>
                             </TableCell>
                             <TableCell className="text-muted-foreground hidden max-w-[300px] px-6 py-3 lg:table-cell">
-                              <p className="line-clamp-1 text-xs italic opacity-70">
+                              <p className="line-clamp-1 text-xs opacity-70">
                                 {topic.description || 'No summary available.'}
                               </p>
                             </TableCell>
@@ -440,7 +424,7 @@ export function SyllabusTableView({
         </div>
       </CardContent>
       {pagination && pagination.pages > 1 && (
-        <CardFooter className="flex-col items-start gap-4 border-t pt-6 sm:flex-row sm:items-center">
+        <CardFooter className="border-border/50 flex-col items-start gap-4 border-t px-6 py-4 sm:flex-row sm:items-center">
           <Pagination className="mx-0 w-auto justify-start">
             <PaginationContent>
               <PaginationItem>
