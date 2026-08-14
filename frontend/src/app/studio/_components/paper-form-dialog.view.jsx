@@ -37,6 +37,7 @@ const labelClass = 'font-roboto text-xs font-bold tracking-wider uppercase';
 export function PaperFormDialogView({
   form,
   isEdit,
+  existingPapers = [],
   onSubmit,
   open,
   onOpenChange,
@@ -68,6 +69,18 @@ export function PaperFormDialogView({
               : 'Add a past exam paper to this subject offering.'}
           </DialogDescription>
         </DialogHeader>
+
+        {!isEdit && existingPapers.length > 0 && (
+          <div className="bg-muted/40 text-muted-foreground font-roboto rounded-md border px-3 py-2 text-sm">
+            <span className="text-foreground font-bold">
+              {existingPapers.length} paper
+              {existingPapers.length === 1 ? '' : 's'} already added
+            </span>{' '}
+            for this offering:{' '}
+            {existingPapers.map((p) => `${p.title} (${p.examYear})`).join(', ')}
+          </div>
+        )}
+
         <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4">
           <div className="grid gap-2">
             <Label htmlFor="title" className={labelClass}>

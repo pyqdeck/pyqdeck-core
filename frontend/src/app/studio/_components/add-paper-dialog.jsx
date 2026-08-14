@@ -10,6 +10,7 @@ export function AddPaperDialog({ onAdd }) {
   const [pickerOpen, setPickerOpen] = React.useState(false);
   const [formOpen, setFormOpen] = React.useState(false);
   const [selectedOffering, setSelectedOffering] = React.useState(null);
+  const [existingPapers, setExistingPapers] = React.useState([]);
 
   const [universities, setUniversities] = React.useState([]);
   const [branches, setBranches] = React.useState([]);
@@ -92,12 +93,23 @@ export function AddPaperDialog({ onAdd }) {
     if (!open) resetPicker();
   };
 
-  const handleContinue = () => {
+  const handleContinue = async () => {
     const offering = offerings.find((o) => o.id === offeringId);
     if (!offering) return;
     setSelectedOffering(offering);
     setPickerOpen(false);
     resetPicker();
+
+    try {
+      const res = await api.papers.listPapers({
+        subjectOfferingId: offering.id,
+        limit: 100,
+      });
+      setExistingPapers(res.data?.data?.items || []);
+    } catch {
+      setExistingPapers([]);
+    }
+
     setFormOpen(true);
   };
 
@@ -122,6 +134,7 @@ export function AddPaperDialog({ onAdd }) {
       />
       <PaperFormDialog
         offering={selectedOffering}
+        existingPapers={existingPapers}
         open={formOpen}
         onOpenChange={setFormOpen}
         onSubmit={onAdd}

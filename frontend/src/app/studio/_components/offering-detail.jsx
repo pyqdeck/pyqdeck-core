@@ -219,6 +219,7 @@ export function OfferingDetail({
           />
           <PaperFormDialog
             offering={offering}
+            existingPapers={papers}
             open={addPaperOpen}
             onOpenChange={setAddPaperOpen}
             onSubmit={handlePaperAdd}

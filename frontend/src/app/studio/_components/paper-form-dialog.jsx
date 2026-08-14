@@ -38,6 +38,7 @@ const emptyValues = {
 export function PaperFormDialog({
   paper = null,
   offering,
+  existingPapers = [],
   open,
   onOpenChange,
   onSubmit: onSave,
@@ -70,19 +71,42 @@ export function PaperFormDialog({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
-  // Auto-generate slug from offering + exam type + year (create mode only)
+  // Auto-generate slug from offering + exam type + year (+ session, when it
+  // disambiguates two sittings of the same exam) -- create mode only.
+  // Deduped against papers that already exist for this offering, since the
+  // backend rejects a duplicate slug outright.
   React.useEffect(() => {
     if (isEdit || !offering) return;
-    const { examType, examYear } = watched;
+    const { examType, examYear, session } = watched;
     if (examType && examYear) {
-      const generated = `${offering.slug}-${examType}-${examYear}`
+      const parts = [offering.slug, examType, examYear, session].filter(
+        Boolean
+      );
+      const base = parts
+        .join('-')
         .toLowerCase()
         .replace(/[^a-z0-9]+/g, '-')
         .replace(/(^-|-$)/g, '');
-      setValue('slug', generated, { shouldValidate: true });
+
+      const takenSlugs = new Set(existingPapers.map((p) => p.slug));
+      let candidate = base;
+      let suffix = 2;
+      while (takenSlugs.has(candidate)) {
+        candidate = `${base}-${suffix}`;
+        suffix += 1;
+      }
+
+      setValue('slug', candidate, { shouldValidate: true });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [watched.examType, watched.examYear, offering, isEdit]);
+  }, [
+    watched.examType,
+    watched.examYear,
+    watched.session,
+    offering,
+    isEdit,
+    existingPapers,
+  ]);
 
   const handleSubmit = async (data) => {
     const payload = {
@@ -108,6 +132,7 @@ export function PaperFormDialog({
     <PaperFormDialogView
       form={form}
       isEdit={isEdit}
+      existingPapers={existingPapers}
       onSubmit={handleSubmit}
       open={open}
       onOpenChange={onOpenChange}
