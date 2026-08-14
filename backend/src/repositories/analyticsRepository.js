@@ -22,6 +22,20 @@ class AnalyticsRepository {
   }
 
   /**
+   * Get one user's own contribution counts -- used for the personalized
+   * studio overview shown to non-admin users, who shouldn't see
+   * platform-wide business metrics like total user count.
+   */
+  async getPersonalCounts(userId) {
+    return Promise.all([
+      Paper.countDocuments({ uploadedBy: userId }),
+      Paper.countDocuments({ uploadedBy: userId, status: 'approved' }),
+      Paper.countDocuments({ uploadedBy: userId, status: 'pending' }),
+      Question.countDocuments({ createdBy: userId }),
+    ]);
+  }
+
+  /**
    * Get recently uploaded papers awaiting review
    * @param {number} limit
    */

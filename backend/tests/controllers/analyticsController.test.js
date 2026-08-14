@@ -12,7 +12,7 @@ describe('analyticsController', () => {
   let req, res, next;
 
   beforeEach(() => {
-    req = {};
+    req = { dbUser: { _id: 'u1', role: 'admin' } };
     res = {
       status: vi.fn().mockReturnThis(),
       json: vi.fn().mockReturnThis(),
@@ -28,7 +28,9 @@ describe('analyticsController', () => {
 
       await analyticsController.getStudioOverview(req, res, next);
 
-      expect(analyticsService.getStudioOverviewData).toHaveBeenCalled();
+      expect(analyticsService.getStudioOverviewData).toHaveBeenCalledWith(
+        req.dbUser
+      );
       expect(res.status).toHaveBeenCalledWith(200);
       expect(res.json).toHaveBeenCalledWith(
         expect.objectContaining({

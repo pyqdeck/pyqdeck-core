@@ -33,6 +33,60 @@ describe('analyticsRepository', () => {
     });
   });
 
+  describe('getPersonalCounts', () => {
+    it('scopes paper and question counts to the given user only', async () => {
+      const offering = new mongoose.Types.ObjectId();
+      const userId = new mongoose.Types.ObjectId();
+      const otherUserId = new mongoose.Types.ObjectId();
+
+      await Paper.create([
+        {
+          title: 'Mine, approved',
+          slug: 'mine-approved',
+          status: 'approved',
+          exam: 'End',
+          examYear: 2023,
+          examType: 'regular',
+          subjectOfferingId: offering,
+          uploadedBy: userId,
+        },
+        {
+          title: 'Mine, pending',
+          slug: 'mine-pending',
+          status: 'pending',
+          exam: 'End',
+          examYear: 2023,
+          examType: 'regular',
+          subjectOfferingId: offering,
+          uploadedBy: userId,
+        },
+        {
+          title: 'Someone else',
+          slug: 'someone-else',
+          status: 'approved',
+          exam: 'End',
+          examYear: 2023,
+          examType: 'regular',
+          subjectOfferingId: offering,
+          uploadedBy: otherUserId,
+        },
+      ]);
+
+      await Question.create([
+        { mdText: 'Mine', type: 'short', createdBy: userId },
+        { mdText: 'Also someone else', type: 'short', createdBy: otherUserId },
+      ]);
+
+      const [papersTotal, papersApproved, papersPending, questionsTotal] =
+        await analyticsRepository.getPersonalCounts(userId);
+
+      expect(papersTotal).toBe(2);
+      expect(papersApproved).toBe(1);
+      expect(papersPending).toBe(1);
+      expect(questionsTotal).toBe(1);
+    });
+  });
+
   describe('getRecentPendingPapers', () => {
     it('should return recent pending papers limited to provided number', async () => {
       const subject = await Subject.create({

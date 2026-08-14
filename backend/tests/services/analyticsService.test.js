@@ -8,6 +8,7 @@ vi.mock('../../src/repositories/analyticsRepository.js', () => ({
     getRecentPendingPapers: vi.fn(),
     getSubjectPopularity: vi.fn(),
     getPaperUploadsByDay: vi.fn(),
+    getPersonalCounts: vi.fn(),
   },
 }));
 
@@ -35,8 +36,11 @@ describe('analyticsService', () => {
         return Promise.resolve([{ _id: dateStr, count: 5 }]);
       });
 
-      const result = await analyticsService.getStudioOverviewData();
+      const result = await analyticsService.getStudioOverviewData({
+        role: 'admin',
+      });
 
+      expect(result.scope).toBe('global');
       expect(analyticsRepository.getGlobalCounts).toHaveBeenCalled();
       expect(analyticsRepository.getRecentPendingPapers).toHaveBeenCalledWith(
         5
@@ -74,6 +78,49 @@ describe('analyticsService', () => {
       );
       expect(todayChart).toBeDefined();
       expect(todayChart.papers).toBe(5);
+    });
+  });
+
+  describe('getStudioOverviewData for a non-admin', () => {
+    it('returns a personal scope with the caller own counts, not global data', async () => {
+      analyticsRepository.getPersonalCounts.mockResolvedValue([3, 2, 1, 7]);
+
+      const result = await analyticsService.getStudioOverviewData({
+        _id: 'editor_1',
+        role: 'editor',
+      });
+
+      expect(analyticsRepository.getPersonalCounts).toHaveBeenCalledWith(
+        'editor_1'
+      );
+      expect(analyticsRepository.getGlobalCounts).not.toHaveBeenCalled();
+      expect(result).toEqual({
+        scope: 'personal',
+        metrics: {
+          papers: { total: 3, approved: 2, pending: 1 },
+          questions: { total: 7 },
+        },
+      });
+    });
+
+    it('does not leak platform-wide metrics like total users into the personal scope', async () => {
+      analyticsRepository.getPersonalCounts.mockResolvedValue([0, 0, 0, 0]);
+
+      const result = await analyticsService.getStudioOverviewData({
+        _id: 'editor_1',
+        role: 'editor',
+      });
+
+      expect(result.metrics).not.toHaveProperty('users');
+      expect(result.metrics).not.toHaveProperty('academics');
+    });
+
+    it('handles a missing dbUser without throwing', async () => {
+      const result = await analyticsService.getStudioOverviewData(null);
+
+      expect(result.scope).toBe('personal');
+      expect(result.metrics.papers.total).toBe(0);
+      expect(analyticsRepository.getPersonalCounts).not.toHaveBeenCalled();
     });
   });
 

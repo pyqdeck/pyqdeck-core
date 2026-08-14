@@ -2,9 +2,18 @@ import analyticsRepository from '../repositories/analyticsRepository.js';
 
 class AnalyticsService {
   /**
-   * Aggregate and format all data required for the Studio Overview dashboard
+   * Aggregate and format all data required for the Studio Overview
+   * dashboard. Admins see platform-wide business metrics (total users,
+   * global content counts); everyone else sees a personalized view of
+   * their own contributions instead -- an editor has no business reason
+   * to see total registered users, and "total papers on the platform"
+   * isn't actionable to them the way "papers I've added" is.
    */
-  async getStudioOverviewData() {
+  async getStudioOverviewData(dbUser) {
+    if (dbUser?.role !== 'admin') {
+      return this._getPersonalOverviewData(dbUser);
+    }
+
     const [
       [
         totalUsers,
@@ -25,6 +34,7 @@ class AnalyticsService {
     const velocityChart = await this._calculateContentVelocity();
 
     return {
+      scope: 'global',
       metrics: {
         users: totalUsers,
         papers: {
@@ -43,6 +53,36 @@ class AnalyticsService {
       },
       queues: {
         pendingPapers: recentPendingPapers,
+      },
+    };
+  }
+
+  /**
+   * @private
+   */
+  async _getPersonalOverviewData(dbUser) {
+    if (!dbUser) {
+      return {
+        scope: 'personal',
+        metrics: {
+          papers: { total: 0, approved: 0, pending: 0 },
+          questions: { total: 0 },
+        },
+      };
+    }
+
+    const [papersTotal, papersApproved, papersPending, questionsTotal] =
+      await analyticsRepository.getPersonalCounts(dbUser._id);
+
+    return {
+      scope: 'personal',
+      metrics: {
+        papers: {
+          total: papersTotal,
+          approved: papersApproved,
+          pending: papersPending,
+        },
+        questions: { total: questionsTotal },
       },
     };
   }

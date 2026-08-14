@@ -7,7 +7,9 @@ import { successFormatter, catchAsync } from '../utils/index.js';
  * @access  Private (Admin/Editor)
  */
 export const getStudioOverview = catchAsync(async (req, res, next) => {
-  const dashboardData = await analyticsService.getStudioOverviewData();
+  const dashboardData = await analyticsService.getStudioOverviewData(
+    req.dbUser
+  );
 
   return res
     .status(200)
