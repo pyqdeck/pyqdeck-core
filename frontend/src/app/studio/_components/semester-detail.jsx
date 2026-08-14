@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 import { useApi } from '@/hooks/use-api';
 import { StudioBreadcrumb } from './studio-breadcrumb';
 import { OfferingsTable } from './offerings-table';
@@ -23,8 +24,15 @@ export function SemesterDetail({
   };
 
   const handleDelete = async (id) => {
-    await api.subjectOfferings.deleteSubjectOffering(id);
-    router.refresh();
+    try {
+      await api.subjectOfferings.deleteSubjectOffering(id);
+      toast.success('Subject offering deleted');
+      router.refresh();
+    } catch (error) {
+      toast.error(
+        error?.response?.data?.message || 'Failed to delete subject offering'
+      );
+    }
   };
 
   const semesterLabel = semester.title || `Semester ${semester.number}`;

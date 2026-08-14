@@ -21,7 +21,9 @@ export function DeleteSemesterDialog({
       toast.success(`Semester ${semester.number} deleted successfully`);
       onOpenChange(false);
     } catch (error) {
-      toast.error(error.message || 'Failed to delete semester');
+      toast.error(
+        error?.response?.data?.message || 'Failed to delete semester'
+      );
     } finally {
       setLoading(false);
     }

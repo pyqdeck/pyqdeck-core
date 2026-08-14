@@ -17,7 +17,7 @@ export function DeleteBranchDialog({ branch, onDelete, open, onOpenChange }) {
       toast.success(`Branch ${branch.name} deleted successfully`);
       onOpenChange(false);
     } catch (error) {
-      toast.error(error.message || 'Failed to delete branch');
+      toast.error(error?.response?.data?.message || 'Failed to delete branch');
     } finally {
       setLoading(false);
     }
