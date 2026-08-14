@@ -1,8 +1,10 @@
+import { cache } from 'react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getApiServer } from '@/lib/api-server';
 import { getSubjectMap } from '@/lib/browse-helpers';
 import { BreadcrumbNav } from '@/components/browse/breadcrumb-nav';
+import { BreadcrumbJsonLd } from '@/components/browse/breadcrumb-json-ld';
 import {
   Card,
   CardHeader,
@@ -18,9 +20,46 @@ import {
 } from '@/components/ui/empty';
 import { BookOpen } from 'lucide-react';
 
+const getUniversityBranchSemester = cache(
+  async (universitySlug, branchSlug, semesterNumber) => {
+    const api = await getApiServer();
+    const uniRes = await api.universities.getUniversityBySlug(universitySlug);
+    const university = uniRes.data?.data;
+    if (!university) return { university: null, branch: null, semester: null };
+
+    const branchRes = await api.universities.getBranchBySlug(
+      university.id,
+      branchSlug
+    );
+    const branch = branchRes.data?.data;
+    if (!branch) return { university, branch: null, semester: null };
+
+    const semRes = await api.branches.getSemesterByNumber(
+      branch.id,
+      Number(semesterNumber)
+    );
+    return { university, branch, semester: semRes.data?.data || null };
+  }
+);
+
+export async function generateMetadata({ params }) {
+  const { universitySlug, branchSlug, semesterNumber } = await params;
+  const { university, branch, semester } = await getUniversityBranchSemester(
+    universitySlug,
+    branchSlug,
+    semesterNumber
+  ).catch(() => ({ university: null, branch: null, semester: null }));
+  if (!university || !branch || !semester) return {};
+
+  const semesterLabel = semester.title || `Semester ${semester.number}`;
+  return {
+    title: `${semesterLabel} — ${branch.name}, ${university.name}`,
+    description: `Subjects and past year question papers for ${semesterLabel} of ${branch.name} at ${university.name}.`,
+  };
+}
+
 export default async function SemesterSubjectsPage({ params }) {
   const { universitySlug, branchSlug, semesterNumber } = await params;
-  const api = await getApiServer();
 
   let university = null;
   let branch = null;
@@ -29,24 +68,16 @@ export default async function SemesterSubjectsPage({ params }) {
   let subjectMap = new Map();
 
   try {
-    const uniRes = await api.universities.getUniversityBySlug(universitySlug);
-    university = uniRes.data?.data;
+    ({ university, branch, semester } = await getUniversityBranchSemester(
+      universitySlug,
+      branchSlug,
+      semesterNumber
+    ));
     if (!university) return notFound();
-
-    const branchRes = await api.universities.getBranchBySlug(
-      university.id,
-      branchSlug
-    );
-    branch = branchRes.data?.data;
     if (!branch) return notFound();
-
-    const semRes = await api.branches.getSemesterByNumber(
-      branch.id,
-      Number(semesterNumber)
-    );
-    semester = semRes.data?.data;
     if (!semester) return notFound();
 
+    const api = await getApiServer();
     const [offeringRes, subjects] = await Promise.all([
       api.subjectOfferings.listSubjectOfferings({
         branchId: branch.id,
@@ -64,26 +95,27 @@ export default async function SemesterSubjectsPage({ params }) {
   }
 
   const semesterLabel = semester.title || `Semester ${semester.number}`;
+  const trail = [
+    { label: university.name, href: `/browse/${universitySlug}` },
+    {
+      label: branch.name,
+      href: `/browse/${universitySlug}/${branchSlug}`,
+    },
+    { label: semesterLabel },
+  ];
 
   return (
     <div className="mx-auto w-full max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
-      <BreadcrumbNav
-        trail={[
-          { label: university.name, href: `/browse/${universitySlug}` },
-          {
-            label: branch.name,
-            href: `/browse/${universitySlug}/${branchSlug}`,
-          },
-          { label: semesterLabel },
-        ]}
-      />
+      <BreadcrumbJsonLd trail={trail} />
+      <BreadcrumbNav trail={trail} />
 
       <div className="mt-4 mb-8">
         <h1 className="text-3xl font-bold tracking-tight">
           {branch.name} · {semesterLabel}
         </h1>
-        <p className="text-muted-foreground mt-2">
-          Choose a subject to see past papers and syllabus.
+        <p className="text-muted-foreground mt-2 max-w-2xl">
+          Subjects and free past year question papers for {semesterLabel} of{' '}
+          {branch.name} at {university.name}.
         </p>
       </div>
 

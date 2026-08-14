@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 
-import { Menu, LayoutDashboard, Bookmark } from 'lucide-react';
+import { Menu, Bookmark } from 'lucide-react';
 
 import {
   ClerkLoaded,
@@ -103,13 +103,6 @@ export function Header() {
                   </Button>
                 </Link>
 
-                <Link href="/dashboard">
-                  <Button variant="ghost" className="gap-2 rounded-full">
-                    <LayoutDashboard className="size-4" />
-                    Dashboard
-                  </Button>
-                </Link>
-
                 <UserButton afterSignOutUrl="/" />
               </div>
             )}
@@ -203,10 +196,13 @@ export function Header() {
                       </SignUpButton>
                     </div>
                   ) : (
-                    <Link href="/dashboard" onClick={() => setOpen(false)}>
+                    <Link
+                      href="/browse/bookmarks"
+                      onClick={() => setOpen(false)}
+                    >
                       <Button className="h-11 w-full justify-center gap-2 rounded-xl text-sm font-medium">
-                        <LayoutDashboard className="size-4" />
-                        Dashboard
+                        <Bookmark className="size-4" />
+                        Bookmarks
                       </Button>
                     </Link>
                   )}

@@ -1,7 +1,9 @@
+import { cache } from 'react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getApiServer } from '@/lib/api-server';
 import { BreadcrumbNav } from '@/components/browse/breadcrumb-nav';
+import { BreadcrumbJsonLd } from '@/components/browse/breadcrumb-json-ld';
 import {
   Card,
   CardHeader,
@@ -16,18 +18,36 @@ import {
 } from '@/components/ui/empty';
 import { Layers } from 'lucide-react';
 
+const getUniversity = cache(async (universitySlug) => {
+  const api = await getApiServer();
+  const res = await api.universities.getUniversityBySlug(universitySlug);
+  return res.data?.data || null;
+});
+
+export async function generateMetadata({ params }) {
+  const { universitySlug } = await params;
+  const university = await getUniversity(universitySlug).catch(() => null);
+  if (!university) return {};
+
+  return {
+    title: `${university.name} — Browse by Branch`,
+    description:
+      university.description ||
+      `Browse branches and past year question papers for ${university.name}${university.state ? ` (${university.state})` : ''}.`,
+  };
+}
+
 export default async function UniversityBranchesPage({ params }) {
   const { universitySlug } = await params;
-  const api = await getApiServer();
 
   let university = null;
   let branches = [];
 
   try {
-    const uniRes = await api.universities.getUniversityBySlug(universitySlug);
-    university = uniRes.data?.data;
+    university = await getUniversity(universitySlug);
     if (!university) return notFound();
 
+    const api = await getApiServer();
     const branchRes = await api.universities.listBranches(university.id, {
       limit: 100,
     });
@@ -37,14 +57,18 @@ export default async function UniversityBranchesPage({ params }) {
     return notFound();
   }
 
+  const trail = [{ label: university.name }];
+
   return (
     <div className="mx-auto w-full max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
-      <BreadcrumbNav trail={[{ label: university.name }]} />
+      <BreadcrumbJsonLd trail={trail} />
+      <BreadcrumbNav trail={trail} />
 
       <div className="mt-4 mb-8">
         <h1 className="text-3xl font-bold tracking-tight">{university.name}</h1>
-        <p className="text-muted-foreground mt-2">
-          Choose your branch to see available semesters.
+        <p className="text-muted-foreground mt-2 max-w-2xl">
+          {university.description ||
+            `Explore branches, semesters, and subjects at ${university.name}${university.state ? ` (${university.state})` : ''}, and find free past year question papers for each.`}
         </p>
       </div>
 

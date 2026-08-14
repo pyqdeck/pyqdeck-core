@@ -65,9 +65,9 @@ export default async function StudioLayout({ children }) {
   // This prevents "accidental kicks" during backend restarts.
   if (isSynced && role !== 'admin' && role !== 'editor') {
     console.warn(
-      `🚫 Access Denied: User has role "${role}". Redirecting to dashboard.`
+      `🚫 Access Denied: User has role "${role}". Redirecting to browse.`
     );
-    redirect('/dashboard');
+    redirect('/browse');
   }
 
   return (

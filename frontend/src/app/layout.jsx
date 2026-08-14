@@ -33,9 +33,32 @@ const fraunces = Fraunces({
   axes: ['opsz', 'SOFT'],
 });
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://pyqdeck.in';
+const siteDescription =
+  'Free past year question papers for engineering and university exams, organized by university, branch, semester, and subject -- built for focused exam prep.';
+
 export const metadata = {
-  title: 'Pyqdeck',
-  description: 'Next-generation learning platform',
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: 'PyqDeck — Past Year Question Papers',
+    template: '%s | PyqDeck',
+  },
+  description: siteDescription,
+  openGraph: {
+    type: 'website',
+    siteName: 'PyqDeck',
+    title: 'PyqDeck — Past Year Question Papers',
+    description: siteDescription,
+  },
+  twitter: {
+    card: 'summary',
+    title: 'PyqDeck — Past Year Question Papers',
+    description: siteDescription,
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 import { MainLayoutWrapper } from '@/components/main-layout-wrapper';

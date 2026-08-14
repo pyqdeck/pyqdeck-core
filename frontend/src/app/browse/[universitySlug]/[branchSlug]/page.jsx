@@ -1,7 +1,9 @@
+import { cache } from 'react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getApiServer } from '@/lib/api-server';
 import { BreadcrumbNav } from '@/components/browse/breadcrumb-nav';
+import { BreadcrumbJsonLd } from '@/components/browse/breadcrumb-json-ld';
 import { Card, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Empty,
@@ -11,26 +13,49 @@ import {
 } from '@/components/ui/empty';
 import { CalendarDays } from 'lucide-react';
 
+const getUniversityAndBranch = cache(async (universitySlug, branchSlug) => {
+  const api = await getApiServer();
+  const uniRes = await api.universities.getUniversityBySlug(universitySlug);
+  const university = uniRes.data?.data;
+  if (!university) return { university: null, branch: null };
+
+  const branchRes = await api.universities.getBranchBySlug(
+    university.id,
+    branchSlug
+  );
+  return { university, branch: branchRes.data?.data || null };
+});
+
+export async function generateMetadata({ params }) {
+  const { universitySlug, branchSlug } = await params;
+  const { university, branch } = await getUniversityAndBranch(
+    universitySlug,
+    branchSlug
+  ).catch(() => ({ university: null, branch: null }));
+  if (!university || !branch) return {};
+
+  return {
+    title: `${branch.name} at ${university.name} — Semesters`,
+    description: `Browse semesters and past year question papers for ${branch.name} at ${university.name}.`,
+  };
+}
+
 export default async function BranchSemestersPage({ params }) {
   const { universitySlug, branchSlug } = await params;
-  const api = await getApiServer();
 
   let university = null;
   let branch = null;
   let semesters = [];
 
   try {
-    const uniRes = await api.universities.getUniversityBySlug(universitySlug);
-    university = uniRes.data?.data;
-    if (!university) return notFound();
-
-    const branchRes = await api.universities.getBranchBySlug(
-      university.id,
+    ({ university, branch } = await getUniversityAndBranch(
+      universitySlug,
       branchSlug
-    );
-    branch = branchRes.data?.data;
+    ));
+    if (!university) return notFound();
     if (!branch) return notFound();
 
+    const api = await getApiServer();
     const semRes = await api.branches.listSemesters(branch.id);
     semesters = (semRes.data?.data?.items || []).sort(
       (a, b) => a.number - b.number
@@ -40,19 +65,21 @@ export default async function BranchSemestersPage({ params }) {
     return notFound();
   }
 
+  const trail = [
+    { label: university.name, href: `/browse/${universitySlug}` },
+    { label: branch.name },
+  ];
+
   return (
     <div className="mx-auto w-full max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
-      <BreadcrumbNav
-        trail={[
-          { label: university.name, href: `/browse/${universitySlug}` },
-          { label: branch.name },
-        ]}
-      />
+      <BreadcrumbJsonLd trail={trail} />
+      <BreadcrumbNav trail={trail} />
 
       <div className="mt-4 mb-8">
         <h1 className="text-3xl font-bold tracking-tight">{branch.name}</h1>
-        <p className="text-muted-foreground mt-2">
-          Choose your semester to see subjects.
+        <p className="text-muted-foreground mt-2 max-w-2xl">
+          Semester-wise subjects and past year question papers for {branch.name}{' '}
+          at {university.name}.
         </p>
       </div>
 

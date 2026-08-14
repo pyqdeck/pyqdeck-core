@@ -15,8 +15,9 @@ import {
 import { GraduationCap } from 'lucide-react';
 
 export const metadata = {
-  title: 'Browse Universities | PyqDeck',
-  description: 'Pick your university to start browsing past year questions.',
+  title: 'Browse Universities',
+  description:
+    'Browse free past year question papers by university. Pick your university to drill down into branches, semesters, and subjects, and find exam papers organized for focused revision.',
 };
 
 export default async function BrowseUniversitiesPage() {
@@ -36,8 +37,11 @@ export default async function BrowseUniversitiesPage() {
         <h1 className="text-3xl font-bold tracking-tight">
           Choose Your University
         </h1>
-        <p className="text-muted-foreground mt-2">
-          Browse past year questions organized by branch, semester, and subject.
+        <p className="text-muted-foreground mt-2 max-w-2xl">
+          PyqDeck collects free past year question papers for engineering and
+          university exams, organized by university, branch, semester, and
+          subject. Pick your university below to start browsing past papers and
+          question banks built for focused exam prep.
         </p>
       </div>
 
