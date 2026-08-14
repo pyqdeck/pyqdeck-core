@@ -49,7 +49,12 @@ export function AuthField({ id, label, error, ...inputProps }) {
   return (
     <div className="flex flex-col gap-1.5">
       <Label htmlFor={id}>{label}</Label>
-      <Input id={id} className="h-11 rounded-xl px-3.5" aria-invalid={!!error} {...inputProps} />
+      <Input
+        id={id}
+        className="h-11 rounded-xl px-3.5"
+        aria-invalid={!!error}
+        {...inputProps}
+      />
       <FieldMessage error={error} />
     </div>
   );

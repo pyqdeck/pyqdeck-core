@@ -38,7 +38,8 @@ function frontendApiOrigin(publishableKey) {
   const host = Buffer.from(encoded, 'base64')
     .toString('utf8')
     .replace(/\$$/, '');
-  if (!host) throw new Error(`Could not decode publishable key: ${publishableKey}`);
+  if (!host)
+    throw new Error(`Could not decode publishable key: ${publishableKey}`);
   return `https://${host}`;
 }
 
@@ -49,7 +50,9 @@ async function main() {
   console.log(`Fetching Clerk environment config from ${origin} ...`);
   const res = await fetch(`${origin}/v1/environment`);
   if (!res.ok) {
-    throw new Error(`Clerk environment fetch failed: ${res.status} ${res.statusText}`);
+    throw new Error(
+      `Clerk environment fetch failed: ${res.status} ${res.statusText}`
+    );
   }
   const data = await res.json();
 

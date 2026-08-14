@@ -66,13 +66,15 @@ export default function SignInPage() {
 
   const handleSubmitReset = async (e) => {
     e.preventDefault();
-    const { error: verifyError } = await signIn.resetPasswordEmailCode.verifyCode({
-      code: resetCode,
-    });
+    const { error: verifyError } =
+      await signIn.resetPasswordEmailCode.verifyCode({
+        code: resetCode,
+      });
     if (verifyError) return;
-    const { error: submitError } = await signIn.resetPasswordEmailCode.submitPassword({
-      password: newPassword,
-    });
+    const { error: submitError } =
+      await signIn.resetPasswordEmailCode.submitPassword({
+        password: newPassword,
+      });
     if (submitError) return;
     if (signIn.status === 'complete') await finalizeAndGo();
   };
@@ -80,7 +82,9 @@ export default function SignInPage() {
   if (step === 'forgot' || step === 'reset-code') {
     return (
       <div className={CARD_CLASS}>
-        <h1 className="font-display text-2xl font-semibold">Reset your password</h1>
+        <h1 className="font-display text-2xl font-semibold">
+          Reset your password
+        </h1>
         <p className="text-muted-foreground mt-1.5 text-sm">
           {step === 'forgot'
             ? "Enter your email and we'll send you a reset code."
@@ -105,7 +109,10 @@ export default function SignInPage() {
             </Button>
           </form>
         ) : (
-          <form onSubmit={handleSubmitReset} className="mt-6 flex flex-col gap-4">
+          <form
+            onSubmit={handleSubmitReset}
+            className="mt-6 flex flex-col gap-4"
+          >
             <AuthField
               id="reset-code"
               label="Reset code"
@@ -209,7 +216,10 @@ export default function SignInPage() {
 
       <p className="text-muted-foreground mt-6 text-center text-sm">
         Don&apos;t have an account?{' '}
-        <Link href="/sign-up" className="text-primary font-medium hover:underline">
+        <Link
+          href="/sign-up"
+          className="text-primary font-medium hover:underline"
+        >
           Sign up
         </Link>
       </p>

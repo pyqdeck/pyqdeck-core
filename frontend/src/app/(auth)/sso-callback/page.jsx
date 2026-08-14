@@ -20,7 +20,8 @@ export default function SSOCallbackPage() {
       if (!clerk.loaded || hasRun.current) return;
       hasRun.current = true;
 
-      const goToBrowse = ({ decorateUrl }) => router.push(decorateUrl('/browse'));
+      const goToBrowse = ({ decorateUrl }) =>
+        router.push(decorateUrl('/browse'));
 
       if (signIn.status === 'complete') {
         await signIn.finalize({ navigate: goToBrowse });
@@ -45,12 +46,19 @@ export default function SSOCallbackPage() {
   }, [clerk, signIn, signUp, router]);
 
   return (
-    <div className={`${CARD_CLASS} flex flex-col items-center gap-4 text-center`}>
+    <div
+      className={`${CARD_CLASS} flex flex-col items-center gap-4 text-center`}
+    >
       <div id="clerk-captcha" className="empty:hidden" />
       {failed ? (
         <>
-          <p className="text-muted-foreground text-sm">We couldn&apos;t finish signing you in.</p>
-          <Link href="/sign-in" className="text-primary text-sm font-medium hover:underline">
+          <p className="text-muted-foreground text-sm">
+            We couldn&apos;t finish signing you in.
+          </p>
+          <Link
+            href="/sign-in"
+            className="text-primary text-sm font-medium hover:underline"
+          >
             Back to sign in
           </Link>
         </>

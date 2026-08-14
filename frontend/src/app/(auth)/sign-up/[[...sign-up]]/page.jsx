@@ -86,8 +86,8 @@ export default function SignUpPage() {
       <div className={CARD_CLASS}>
         <h1 className="font-display text-2xl font-semibold">Almost there</h1>
         <p className="text-muted-foreground mt-1.5 text-sm">
-          Your account needs one more step that isn&apos;t supported here yet. Contact
-          support or try again shortly.
+          Your account needs one more step that isn&apos;t supported here yet.
+          Contact support or try again shortly.
         </p>
         <button
           type="button"
@@ -103,7 +103,9 @@ export default function SignUpPage() {
   if (step === 'verify') {
     return (
       <div className={CARD_CLASS}>
-        <h1 className="font-display text-2xl font-semibold">Check your email</h1>
+        <h1 className="font-display text-2xl font-semibold">
+          Check your email
+        </h1>
         <p className="text-muted-foreground mt-1.5 text-sm">
           Enter the code we sent to {emailAddress}.
         </p>
@@ -138,7 +140,9 @@ export default function SignUpPage() {
 
   return (
     <div className={CARD_CLASS}>
-      <h1 className="font-display text-2xl font-semibold">Create your account</h1>
+      <h1 className="font-display text-2xl font-semibold">
+        Create your account
+      </h1>
       <p className="text-muted-foreground mt-1.5 text-sm">
         Free to join -- browse and bookmark past papers in seconds.
       </p>
@@ -233,7 +237,10 @@ export default function SignUpPage() {
 
       <p className="text-muted-foreground mt-6 text-center text-sm">
         Already have an account?{' '}
-        <Link href="/sign-in" className="text-primary font-medium hover:underline">
+        <Link
+          href="/sign-in"
+          className="text-primary font-medium hover:underline"
+        >
           Sign in
         </Link>
       </p>

@@ -38,7 +38,9 @@ function Logo({ dark }) {
         >
           PyqDeck
         </span>
-        <span className={`text-xs ${dark ? 'text-white/50' : 'text-muted-foreground'}`}>
+        <span
+          className={`text-xs ${dark ? 'text-white/50' : 'text-muted-foreground'}`}
+        >
           Past year papers
         </span>
       </div>
@@ -69,14 +71,18 @@ export default function AuthLayout({ children }) {
                 </div>
                 <div>
                   <p className="text-sm font-semibold text-white">{c.tag}</p>
-                  <p className="mt-0.5 text-sm leading-relaxed text-white/50">{c.line}</p>
+                  <p className="mt-0.5 text-sm leading-relaxed text-white/50">
+                    {c.line}
+                  </p>
                 </div>
               </li>
             ))}
           </ul>
         </div>
 
-        <p className="text-xs text-white/30">&copy; {new Date().getFullYear()} PyqDeck</p>
+        <p className="text-xs text-white/30">
+          &copy; {new Date().getFullYear()} PyqDeck
+        </p>
       </div>
 
       {/* Auth content */}
