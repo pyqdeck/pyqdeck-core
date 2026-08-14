@@ -21,6 +21,13 @@ export function requireCapability(capability, scopeResolver) {
         );
       }
 
+      // Banned accounts lose access regardless of any grant they hold --
+      // authorizeAny() tries this branch independently of the role check,
+      // so this can't rely on authorize() having already caught it.
+      if (req.dbUser.isActive === false) {
+        return next(new ForbiddenError('Your account has been suspended.'));
+      }
+
       const scope = await scopeResolver(req);
       const allowed = await permissionGrantService.userHasCapability(
         req.dbUser,

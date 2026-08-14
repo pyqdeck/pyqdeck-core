@@ -38,7 +38,13 @@ export const authorize = (allowedRoles = []) => {
       );
     }
 
-    // 3. Check if user has one of the allowed roles
+    // 3. Banned accounts lose access regardless of role -- a stale Clerk
+    // session shouldn't outlive an admin's ban decision.
+    if (req.dbUser.isActive === false) {
+      return next(new ForbiddenError('Your account has been suspended.'));
+    }
+
+    // 4. Check if user has one of the allowed roles
     // If no roles are specified, allow any authenticated user
     if (allowedRoles.length === 0) {
       return next();

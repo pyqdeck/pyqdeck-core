@@ -1,12 +1,18 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { getAuth } from '@clerk/express';
 import { requireCapability } from '../../src/middlewares/requireCapability.middleware.js';
 import { authorizeAny } from '../../src/middlewares/authorizeAny.middleware.js';
+import { isEditor } from '../../src/middlewares/auth.middleware.js';
 import permissionGrantService from '../../src/services/permissionGrantService.js';
 import {
   UnauthorizedError,
   ForbiddenError,
   NotFoundError,
 } from '../../src/utils/errors/index.js';
+
+vi.mock('@clerk/express', () => ({
+  getAuth: vi.fn(),
+}));
 
 vi.mock('../../src/services/permissionGrantService.js', () => ({
   default: {
@@ -64,6 +70,18 @@ describe('requireCapability', () => {
     await mw(req, res, next);
 
     expect(next).toHaveBeenCalledWith(expect.any(NotFoundError));
+    expect(permissionGrantService.userHasCapability).not.toHaveBeenCalled();
+  });
+
+  it('calls next(ForbiddenError) for a banned user, without resolving scope or checking the grant', async () => {
+    req.dbUser = { _id: 'u1', role: 'normal', isActive: false };
+    const scopeResolver = vi.fn();
+    const mw = requireCapability('content:create', scopeResolver);
+
+    await mw(req, res, next);
+
+    expect(next).toHaveBeenCalledWith(expect.any(ForbiddenError));
+    expect(scopeResolver).not.toHaveBeenCalled();
     expect(permissionGrantService.userHasCapability).not.toHaveBeenCalled();
   });
 });
@@ -132,5 +150,24 @@ describe('authorizeAny', () => {
     await mw(req, res, next);
 
     expect(next).toHaveBeenCalledWith();
+  });
+
+  it('blocks a banned user even when they hold both a matching editor role AND a valid capability grant', async () => {
+    // This is the actual bypass the isActive check closes: a banned user
+    // whose role check would pass (isEditor) and whose grant check would
+    // also pass (requireCapability) must still be rejected overall, since
+    // authorizeAny tries each branch independently.
+    getAuth.mockReturnValue({ userId: 'user_123' });
+    permissionGrantService.userHasCapability.mockResolvedValue(true);
+    const scopeResolver = vi.fn().mockResolvedValue({ branchId: 'b1' });
+    req.dbUser = { _id: 'u1', role: 'editor', isActive: false };
+
+    const mw = authorizeAny(
+      isEditor,
+      requireCapability('content:create', scopeResolver)
+    );
+    await mw(req, res, next);
+
+    expect(next).toHaveBeenCalledWith(expect.any(ForbiddenError));
   });
 });

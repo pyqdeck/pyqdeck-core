@@ -88,6 +88,14 @@ describe('auth.middleware', () => {
       mw(req, res, next);
       expect(next).toHaveBeenCalledWith(expect.any(ForbiddenError));
     });
+
+    it('should call next(ForbiddenError) for a banned admin, before the role check runs', () => {
+      getAuth.mockReturnValue({ userId: 'user_123' });
+      req.dbUser = { role: 'admin', isActive: false };
+      const mw = authorize(['admin']);
+      mw(req, res, next);
+      expect(next).toHaveBeenCalledWith(expect.any(ForbiddenError));
+    });
   });
 
   // ─── isAdmin shorthand ───────────────────────────────────────────────────────
@@ -135,6 +143,13 @@ describe('auth.middleware', () => {
     it('should reject normal users with ForbiddenError', () => {
       getAuth.mockReturnValue({ userId: 'user_123' });
       req.dbUser = { role: 'normal' };
+      isEditor(req, res, next);
+      expect(next).toHaveBeenCalledWith(expect.any(ForbiddenError));
+    });
+
+    it('should reject a banned editor with ForbiddenError even though the role matches', () => {
+      getAuth.mockReturnValue({ userId: 'user_123' });
+      req.dbUser = { role: 'editor', isActive: false };
       isEditor(req, res, next);
       expect(next).toHaveBeenCalledWith(expect.any(ForbiddenError));
     });
