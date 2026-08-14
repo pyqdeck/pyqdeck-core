@@ -4,6 +4,7 @@ import * as React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import { toast } from 'sonner';
 import { QuestionFormDialogView } from './question-form-dialog.view';
 
 const questionSchema = z.object({
@@ -73,8 +74,16 @@ export function QuestionFormDialog({
       estimatedTime:
         data.estimatedTime === '' ? undefined : Number(data.estimatedTime),
     };
-    await onSave(payload, question?.id);
-    onOpenChange(false);
+    try {
+      await onSave(payload, question?.id);
+      onOpenChange(false);
+    } catch (error) {
+      toast.error(
+        error.response?.data?.message ||
+          error.message ||
+          `Failed to ${isEdit ? 'update' : 'add'} question`
+      );
+    }
   };
 
   return (

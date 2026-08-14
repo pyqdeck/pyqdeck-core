@@ -4,6 +4,7 @@ import * as React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import { toast } from 'sonner';
 import { PaperFormDialogView } from './paper-form-dialog.view';
 
 const paperSchema = z.object({
@@ -91,8 +92,16 @@ export function PaperFormDialog({
     };
     if (!isEdit) payload.subjectOfferingId = offering.id;
 
-    await onSave(payload, paper?.id);
-    onOpenChange(false);
+    try {
+      await onSave(payload, paper?.id);
+      onOpenChange(false);
+    } catch (error) {
+      toast.error(
+        error.response?.data?.message ||
+          error.message ||
+          `Failed to ${isEdit ? 'update' : 'add'} paper`
+      );
+    }
   };
 
   return (
