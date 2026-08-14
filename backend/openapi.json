@@ -5417,7 +5417,7 @@
         "tags": [
           "Users"
         ],
-        "summary": "List the preset capability-bundle templates offered when creating a grant (Admin only)",
+        "summary": "List the preset capability-bundle templates offered when creating a grant or request",
         "security": [
           {
             "bearerAuth": []

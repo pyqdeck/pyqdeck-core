@@ -201,7 +201,7 @@ router.post(
  *   get:
  *     operationId: listGrantTemplates
  *     tags: [Users]
- *     summary: List the preset capability-bundle templates offered when creating a grant (Admin only)
+ *     summary: List the preset capability-bundle templates offered when creating a grant or request
  *     security:
  *       - bearerAuth: []
  *     responses:
@@ -232,7 +232,6 @@ router.get(
   '/grant-templates',
   requireAuthentication,
   syncUser,
-  isAdmin,
   permissionGrantController.listGrantTemplates
 );
 

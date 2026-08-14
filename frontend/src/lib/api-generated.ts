@@ -3243,7 +3243,7 @@ export class Api<
  *
  * @tags Users
  * @name ListGrantTemplates
- * @summary List the preset capability-bundle templates offered when creating a grant (Admin only)
+ * @summary List the preset capability-bundle templates offered when creating a grant or request
  * @request GET:/users/grant-templates
  * @secure
  * @response `200` `(SuccessResponse & {
