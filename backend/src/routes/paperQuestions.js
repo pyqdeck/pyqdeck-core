@@ -8,7 +8,7 @@ import { requireCapability } from '../middlewares/requireCapability.middleware.j
 import { resolveFromPaperParam } from '../middlewares/scopeResolvers.js';
 import { paginate } from '../middlewares/pagination.middleware.js';
 import { validateBody } from '../middlewares/validationMiddleware.js';
-import { questionZodSchema } from '../models/Question.js';
+import { questionCreateZodSchema } from '../models/Question.js';
 import * as questionController from '../controllers/questionController.js';
 
 const router = Router({ mergeParams: true }); // Access :paperId
@@ -95,7 +95,7 @@ router.post(
     isEditor,
     requireCapability('content:create', resolveFromPaperParam)
   ),
-  validateBody(questionZodSchema),
+  validateBody(questionCreateZodSchema),
   questionController.createForPaper
 );
 

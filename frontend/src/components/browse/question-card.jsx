@@ -100,20 +100,6 @@ export function QuestionCard({
           {question.text}
         </p>
 
-        {question.images?.length > 0 && (
-          <div className="mt-3 flex flex-wrap gap-2">
-            {question.images.map((src) => (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                key={src}
-                src={src}
-                alt="Question attachment"
-                className="max-h-48 rounded-md border object-contain"
-              />
-            ))}
-          </div>
-        )}
-
         <div className="mt-4 border-t pt-3">
           <Button
             variant="secondary"

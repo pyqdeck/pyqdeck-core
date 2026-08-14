@@ -46,22 +46,18 @@ import { z } from 'zod';
  *             type: string
  *           description: References to Tag documents
  *           example: ["compiler-design", "architecture"]
- *         images:
+ *         options:
  *           type: array
+ *           description: Answer choices -- only meaningful when type is "mcq"; exactly one must have isCorrect true
  *           items:
- *             type: string
- *           example: ["https://example.com/compiler-diagram.png"]
- *         equations:
- *           type: array
- *           items:
- *             type: string
- *           description: LaTeX equation strings
- *           example: ["E = mc^2"]
- *         codeSnippets:
- *           type: array
- *           items:
- *             type: string
- *           example: ["void main() { printf(\"Hello\"); }"]
+ *             type: object
+ *             properties:
+ *               text:
+ *                 type: string
+ *               isCorrect:
+ *                 type: boolean
+ *                 default: false
+ *           example: [{ "text": "O(n log n)", "isCorrect": true }, { "text": "O(n^2)", "isCorrect": false }]
  *         slug:
  *           type: string
  *           example: explain-compiler-architecture
@@ -149,16 +145,16 @@ const questionSchema = new mongoose.Schema(
         ref: 'Tag',
       },
     ],
-    images: {
-      type: [String],
-      default: [],
-    },
-    equations: {
-      type: [String],
-      default: [],
-    },
-    codeSnippets: {
-      type: [String],
+    options: {
+      type: [
+        new mongoose.Schema(
+          {
+            text: { type: String, trim: true },
+            isCorrect: { type: Boolean, default: false },
+          },
+          { _id: false }
+        ),
+      ],
       default: [],
     },
     slug: {
@@ -210,6 +206,11 @@ questionSchema.index({ isVerified: 1 });
 export const Question = mongoose.model('Question', questionSchema);
 export default Question;
 
+export const questionOptionZodSchema = z.object({
+  text: z.string().min(1, 'Option text is required'),
+  isCorrect: z.boolean().default(false),
+});
+
 export const questionZodSchema = z.object({
   text: z.string().min(1, 'Question text is required'),
   normalizedText: z.string().optional(),
@@ -220,10 +221,37 @@ export const questionZodSchema = z.object({
   marks: z.number().min(0).optional(),
   estimatedTime: z.number().int().min(0).optional(),
   tags: z.array(z.string()).default([]),
-  images: z.array(z.string().url()).default([]),
-  equations: z.array(z.string()).default([]),
-  codeSnippets: z.array(z.string()).default([]),
+  options: z.array(questionOptionZodSchema).default([]),
   language: z.string().default('en'),
   createdBy: z.string().optional(),
   isVerified: z.boolean().default(false),
 });
+
+/**
+ * MCQ questions need at least 2 options with exactly one marked correct.
+ * A no-op for every other type, and for partial-update payloads that
+ * don't touch `type` at all (there's no way to check the combined state
+ * against the stored document without a fetch, so those are left to the
+ * caller's judgement rather than blocked here).
+ */
+function mcqOptionsAreValid(data) {
+  if (data.type !== 'mcq') return true;
+  const options = data.options || [];
+  if (options.length < 2) return false;
+  return options.filter((o) => o.isCorrect).length === 1;
+}
+
+const mcqOptionsRefinement = {
+  message:
+    'MCQ questions need at least 2 options with exactly one marked correct',
+  path: ['options'],
+};
+
+export const questionCreateZodSchema = questionZodSchema.refine(
+  mcqOptionsAreValid,
+  mcqOptionsRefinement
+);
+
+export const questionUpdateZodSchema = questionZodSchema
+  .partial()
+  .refine(mcqOptionsAreValid, mcqOptionsRefinement);

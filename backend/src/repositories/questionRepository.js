@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { Question, questionZodSchema } from '../models/Question.js';
+import { Question, questionUpdateZodSchema } from '../models/Question.js';
 import { NotFoundError, ConflictError } from '../utils/errors/index.js';
 import { paginate } from '../utils/pagination/index.js';
 
@@ -47,7 +47,7 @@ class QuestionRepository {
   async update(id, data) {
     // Sanitize data using the Zod schema to prevent NoSQL injection
     // and ensure only allowed fields are updated.
-    const sanitizedData = questionZodSchema.partial().parse(data);
+    const sanitizedData = questionUpdateZodSchema.parse(data);
 
     const question = await Question.findByIdAndUpdate(
       id,

@@ -9,13 +9,14 @@ import { requireCapability } from '../middlewares/requireCapability.middleware.j
 import { resolveFromQuestionId } from '../middlewares/scopeResolvers.js';
 import { paginate } from '../middlewares/pagination.middleware.js';
 import { validateBody } from '../middlewares/validationMiddleware.js';
-import { questionZodSchema } from '../models/Question.js';
+import {
+  questionCreateZodSchema,
+  questionUpdateZodSchema,
+} from '../models/Question.js';
 import * as questionController from '../controllers/questionController.js';
 import { checkContentFreeze } from '../middlewares/checkContentFreeze.middleware.js';
 
 const router = Router();
-
-const updateQuestionSchema = questionZodSchema.partial();
 
 /**
  * @openapi
@@ -155,7 +156,7 @@ router.post(
   requireAuthentication,
   isEditor,
   checkContentFreeze,
-  validateBody(questionZodSchema),
+  validateBody(questionCreateZodSchema),
   questionController.create
 );
 
@@ -203,7 +204,7 @@ router.patch(
     isEditor,
     requireCapability('content:edit', resolveFromQuestionId)
   ),
-  validateBody(updateQuestionSchema),
+  validateBody(questionUpdateZodSchema),
   questionController.update
 );
 

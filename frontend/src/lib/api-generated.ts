@@ -258,15 +258,15 @@ export interface Question {
    * @example ["compiler-design","architecture"]
    */
   tags?: string[];
-  /** @example ["https://example.com/compiler-diagram.png"] */
-  images?: string[];
   /**
-   * LaTeX equation strings
-   * @example ["E = mc^2"]
+   * Answer choices -- only meaningful when type is "mcq"; exactly one must have isCorrect true
+   * @example [{"text":"O(n log n)","isCorrect":true},{"text":"O(n^2)","isCorrect":false}]
    */
-  equations?: string[];
-  /** @example ["void main() { printf(\"Hello\"); }"] */
-  codeSnippets?: string[];
+  options?: {
+    text?: string;
+    /** @default false */
+    isCorrect?: boolean;
+  }[];
   /** @example "explain-compiler-architecture" */
   slug?: string;
   /**

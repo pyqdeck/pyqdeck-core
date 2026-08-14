@@ -629,32 +629,30 @@
               "architecture"
             ]
           },
-          "images": {
+          "options": {
             "type": "array",
+            "description": "Answer choices -- only meaningful when type is \"mcq\"; exactly one must have isCorrect true",
             "items": {
-              "type": "string"
+              "type": "object",
+              "properties": {
+                "text": {
+                  "type": "string"
+                },
+                "isCorrect": {
+                  "type": "boolean",
+                  "default": false
+                }
+              }
             },
             "example": [
-              "https://example.com/compiler-diagram.png"
-            ]
-          },
-          "equations": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "description": "LaTeX equation strings",
-            "example": [
-              "E = mc^2"
-            ]
-          },
-          "codeSnippets": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "example": [
-              "void main() { printf(\"Hello\"); }"
+              {
+                "text": "O(n log n)",
+                "isCorrect": true
+              },
+              {
+                "text": "O(n^2)",
+                "isCorrect": false
+              }
             ]
           },
           "slug": {

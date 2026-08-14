@@ -88,6 +88,33 @@ describe('QuestionRepository', () => {
       });
       expect(updated.text).toBe('Updated Text');
     });
+
+    it('should reject an mcq update whose options break the single-correct-answer rule', async () => {
+      const created = await questionRepository.create(questionData);
+      await expect(
+        questionRepository.update(created.id, {
+          type: 'mcq',
+          options: [{ text: 'Only one option', isCorrect: true }],
+        })
+      ).rejects.toThrow();
+    });
+  });
+
+  describe('mcq options', () => {
+    it('persists options with exactly one correct answer', async () => {
+      const question = await questionRepository.create({
+        text: 'What does CPU stand for?',
+        type: 'mcq',
+        slug: 'what-does-cpu-stand-for',
+        options: [
+          { text: 'Central Processing Unit', isCorrect: true },
+          { text: 'Central Programming Unit', isCorrect: false },
+        ],
+      });
+
+      expect(question.options).toHaveLength(2);
+      expect(question.options.filter((o) => o.isCorrect)).toHaveLength(1);
+    });
   });
 
   describe('delete', () => {
