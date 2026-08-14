@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import * as paperController from '../../src/controllers/paperController.js';
 import paperService from '../../src/services/paperService.js';
+import permissionGrantService from '../../src/services/permissionGrantService.js';
 import { NotFoundError } from '../../src/utils/errors/index.js';
 
 vi.mock('../../src/services/paperService.js', () => ({
@@ -12,6 +13,12 @@ vi.mock('../../src/services/paperService.js', () => ({
     update: vi.fn(),
     updateStatus: vi.fn(),
     delete: vi.fn(),
+  },
+}));
+
+vi.mock('../../src/services/permissionGrantService.js', () => ({
+  default: {
+    resolveModeratorOfferingIds: vi.fn(),
   },
 }));
 
@@ -41,6 +48,9 @@ describe('paperController', () => {
     };
     next = vi.fn();
     vi.clearAllMocks();
+    // Default: no moderate grants at all, matching pre-existing "normal
+    // role sees only approved" behavior in the tests below.
+    permissionGrantService.resolveModeratorOfferingIds.mockResolvedValue([]);
   });
 
   // ─── list ────────────────────────────────────────────────────────────────────
@@ -153,6 +163,89 @@ describe('paperController', () => {
       paperService.list.mockRejectedValue(new Error('DB error'));
       await paperController.list(req, res, next);
       expect(next).toHaveBeenCalledWith(expect.any(Error));
+    });
+
+    describe('scoped content:moderate grants', () => {
+      beforeEach(() => {
+        req.dbUser = { _id: 'mod_1', role: 'normal' };
+        paperService.list.mockResolvedValue({
+          items: [],
+          total: 0,
+          page: 1,
+          limit: 10,
+        });
+      });
+
+      it('sees all statuses, unrestricted, when the grant is global', async () => {
+        permissionGrantService.resolveModeratorOfferingIds.mockResolvedValue(
+          null
+        );
+
+        await paperController.list(req, res, next);
+
+        const callArg = paperService.list.mock.calls[0][0];
+        expect(callArg).not.toHaveProperty('status');
+        expect(callArg).not.toHaveProperty('subjectOfferingId');
+      });
+
+      it('restricts to the granted offerings when the grant is scoped', async () => {
+        permissionGrantService.resolveModeratorOfferingIds.mockResolvedValue([
+          'off_1',
+          'off_2',
+        ]);
+
+        await paperController.list(req, res, next);
+
+        expect(paperService.list).toHaveBeenCalledWith(
+          expect.objectContaining({
+            subjectOfferingId: { $in: ['off_1', 'off_2'] },
+          }),
+          req.pagination
+        );
+      });
+
+      it('narrows to nothing when an explicit subjectOfferingId filter falls outside the granted scope', async () => {
+        permissionGrantService.resolveModeratorOfferingIds.mockResolvedValue([
+          'off_1',
+        ]);
+        req.query.subjectOfferingId = 'off_outside_scope';
+
+        await paperController.list(req, res, next);
+
+        expect(paperService.list).toHaveBeenCalledWith(
+          expect.objectContaining({
+            subjectOfferingId: { $in: [] },
+          }),
+          req.pagination
+        );
+      });
+
+      it('keeps an explicit subjectOfferingId filter that falls inside the granted scope', async () => {
+        permissionGrantService.resolveModeratorOfferingIds.mockResolvedValue([
+          'off_1',
+        ]);
+        req.query.subjectOfferingId = 'off_1';
+
+        await paperController.list(req, res, next);
+
+        expect(paperService.list).toHaveBeenCalledWith(
+          expect.objectContaining({ subjectOfferingId: 'off_1' }),
+          req.pagination
+        );
+      });
+
+      it('falls back to the public approved-only view when there are no moderate grants', async () => {
+        permissionGrantService.resolveModeratorOfferingIds.mockResolvedValue(
+          []
+        );
+
+        await paperController.list(req, res, next);
+
+        expect(paperService.list).toHaveBeenCalledWith(
+          expect.objectContaining({ status: 'approved' }),
+          req.pagination
+        );
+      });
     });
   });
 

@@ -1,4 +1,5 @@
 import permissionGrantRepository from '../repositories/permissionGrantRepository.js';
+import subjectOfferingRepository from '../repositories/subjectOfferingRepository.js';
 import { University } from '../models/University.js';
 import { Branch } from '../models/Branch.js';
 import { Semester } from '../models/Semester.js';
@@ -70,6 +71,45 @@ class PermissionGrantService {
       }[grant.scopeLevel];
 
       return !!targetId && String(grant.scopeId) === String(targetId);
+    });
+  }
+
+  /**
+   * Resolves which subjectOfferings a non-admin/editor moderator is allowed
+   * to see pending/rejected/draft papers for, based on their active
+   * `content:moderate` grants.
+   *
+   * Returns `null` to mean "unrestricted" (the user holds a global grant),
+   * or an array of offering ids to mean "restricted to exactly these" --
+   * an empty array means the user has no moderate grants at all, so they
+   * see nothing beyond the public approved-only view.
+   */
+  async resolveModeratorOfferingIds(dbUser) {
+    if (!dbUser) return [];
+
+    const grants =
+      await permissionGrantRepository.findActiveByUserAndCapability(
+        dbUser._id,
+        'content:moderate'
+      );
+    if (grants.length === 0) return [];
+    if (grants.some((grant) => grant.scopeLevel === 'global')) return null;
+
+    const byLevel = {
+      university: [],
+      branch: [],
+      semester: [],
+      subjectOffering: [],
+    };
+    for (const grant of grants) {
+      byLevel[grant.scopeLevel].push(grant.scopeId);
+    }
+
+    return subjectOfferingRepository.findIdsByScope({
+      universityIds: byLevel.university,
+      branchIds: byLevel.branch,
+      semesterIds: byLevel.semester,
+      subjectOfferingIds: byLevel.subjectOffering,
     });
   }
 }

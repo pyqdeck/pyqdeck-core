@@ -1,4 +1,5 @@
 import paperService from '../services/paperService.js';
+import permissionGrantService from '../services/permissionGrantService.js';
 import { successFormatter, catchAsync } from '../utils/index.js';
 
 /**
@@ -6,8 +7,19 @@ import { successFormatter, catchAsync } from '../utils/index.js';
  */
 export const list = catchAsync(async (req, res, next) => {
   const filter = {};
-  // Public users only see approved papers
-  const canSeeAllStatuses = ['admin', 'editor'].includes(req.dbUser?.role);
+  const isPrivileged = ['admin', 'editor'].includes(req.dbUser?.role);
+
+  // A non-editor/admin user with a scoped content:moderate grant can also
+  // see non-approved papers, but only within their granted scope(s).
+  let moderatorOfferingIds = null;
+  let canSeeAllStatuses = isPrivileged;
+  if (!isPrivileged && req.dbUser) {
+    moderatorOfferingIds =
+      await permissionGrantService.resolveModeratorOfferingIds(req.dbUser);
+    canSeeAllStatuses =
+      moderatorOfferingIds === null || moderatorOfferingIds.length > 0;
+  }
+
   if (!canSeeAllStatuses) filter.status = 'approved';
 
   // Optional query filters
@@ -21,6 +33,18 @@ export const list = catchAsync(async (req, res, next) => {
       .trim()
       .replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     if (escaped) filter.title = { $regex: escaped, $options: 'i' };
+  }
+
+  // Scoped moderators (not admin/editor) are restricted to their granted
+  // offerings, intersected with any explicit subjectOfferingId filter.
+  if (!isPrivileged && Array.isArray(moderatorOfferingIds)) {
+    if (filter.subjectOfferingId) {
+      if (!moderatorOfferingIds.includes(String(filter.subjectOfferingId))) {
+        filter.subjectOfferingId = { $in: [] };
+      }
+    } else {
+      filter.subjectOfferingId = { $in: moderatorOfferingIds };
+    }
   }
 
   const { items, total, page, limit } = await paperService.list(

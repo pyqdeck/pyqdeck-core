@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { permissionGrantService } from '../../src/services/permissionGrantService.js';
 import permissionGrantRepository from '../../src/repositories/permissionGrantRepository.js';
+import subjectOfferingRepository from '../../src/repositories/subjectOfferingRepository.js';
 import { University } from '../../src/models/University.js';
 import { Branch } from '../../src/models/Branch.js';
 import { ValidationError } from '../../src/utils/errors/index.js';
@@ -13,6 +14,12 @@ vi.mock('../../src/repositories/permissionGrantRepository.js', () => ({
     findActiveByUserAndCapability: vi.fn(),
     revoke: vi.fn(),
     revokeAllForScope: vi.fn(),
+  },
+}));
+
+vi.mock('../../src/repositories/subjectOfferingRepository.js', () => ({
+  default: {
+    findIdsByScope: vi.fn(),
   },
 }));
 
@@ -220,6 +227,70 @@ describe('PermissionGrantService', () => {
         'g1',
         'admin1'
       );
+    });
+  });
+
+  describe('resolveModeratorOfferingIds', () => {
+    it('returns an empty array when there is no dbUser', async () => {
+      const result =
+        await permissionGrantService.resolveModeratorOfferingIds(null);
+      expect(result).toEqual([]);
+      expect(
+        permissionGrantRepository.findActiveByUserAndCapability
+      ).not.toHaveBeenCalled();
+    });
+
+    it('returns an empty array when the user holds no content:moderate grants', async () => {
+      permissionGrantRepository.findActiveByUserAndCapability.mockResolvedValue(
+        []
+      );
+
+      const result = await permissionGrantService.resolveModeratorOfferingIds({
+        _id: 'u1',
+      });
+      expect(result).toEqual([]);
+      expect(subjectOfferingRepository.findIdsByScope).not.toHaveBeenCalled();
+    });
+
+    it('returns null (unrestricted) when any grant is global', async () => {
+      permissionGrantRepository.findActiveByUserAndCapability.mockResolvedValue(
+        [
+          { scopeLevel: 'branch', scopeId: 'b1' },
+          { scopeLevel: 'global', scopeId: null },
+        ]
+      );
+
+      const result = await permissionGrantService.resolveModeratorOfferingIds({
+        _id: 'u1',
+      });
+      expect(result).toBeNull();
+      expect(subjectOfferingRepository.findIdsByScope).not.toHaveBeenCalled();
+    });
+
+    it('groups scoped grants by level and delegates to findIdsByScope', async () => {
+      permissionGrantRepository.findActiveByUserAndCapability.mockResolvedValue(
+        [
+          { scopeLevel: 'branch', scopeId: 'b1' },
+          { scopeLevel: 'semester', scopeId: 's1' },
+          { scopeLevel: 'subjectOffering', scopeId: 'so1' },
+        ]
+      );
+      subjectOfferingRepository.findIdsByScope.mockResolvedValue([
+        'off-1',
+        'off-2',
+      ]);
+
+      const result = await permissionGrantService.resolveModeratorOfferingIds({
+        _id: 'u1',
+      });
+
+      expect(subjectOfferingRepository.findIdsByScope).toHaveBeenCalledWith({
+        universityIds: [],
+        branchIds: ['b1'],
+        semesterIds: ['s1'],
+        subjectOfferingIds: ['so1'],
+      });
+      expect(result).toEqual(['off-1', 'off-2']);
     });
   });
 

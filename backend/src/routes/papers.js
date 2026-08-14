@@ -6,7 +6,10 @@ import {
 } from '../middlewares/auth.middleware.js';
 import { authorizeAny } from '../middlewares/authorizeAny.middleware.js';
 import { requireCapability } from '../middlewares/requireCapability.middleware.js';
-import { resolveFromSubjectOfferingBody } from '../middlewares/scopeResolvers.js';
+import {
+  resolveFromSubjectOfferingBody,
+  resolveFromPaperId,
+} from '../middlewares/scopeResolvers.js';
 import * as paperController from '../controllers/paperController.js';
 import { paginate } from '../middlewares/pagination.middleware.js';
 import { validateBody } from '../middlewares/validationMiddleware.js';
@@ -42,7 +45,7 @@ const statusSchema = z.object({ status: PaperStatus });
  *         schema: { type: string }
  *       - in: query
  *         name: status
- *         description: Filter by status (admin/editor only; ignored otherwise)
+ *         description: Filter by status (admin/editor, or a scoped content:moderate grant; ignored otherwise)
  *         schema: { type: string }
  *       - in: query
  *         name: page
@@ -149,7 +152,7 @@ router.post(
  *   patch:
  *     operationId: updatePaper
  *     tags: [Papers]
- *     summary: Update a paper (Editor / Admin)
+ *     summary: Update a paper (Editor / Admin, or a scoped content:edit grant)
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -183,7 +186,7 @@ router.post(
 router.patch(
   '/:id',
   requireAuthentication,
-  isEditor,
+  authorizeAny(isEditor, requireCapability('content:edit', resolveFromPaperId)),
   validateBody(updatePaperSchema),
   paperController.update
 );
@@ -194,7 +197,7 @@ router.patch(
  *   patch:
  *     operationId: updatePaperStatus
  *     tags: [Papers]
- *     summary: Approve or reject a paper (Admin only)
+ *     summary: Approve or reject a paper (Admin, or a scoped content:moderate grant)
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -232,7 +235,10 @@ router.patch(
 router.patch(
   '/:id/status',
   requireAuthentication,
-  isAdmin,
+  authorizeAny(
+    isAdmin,
+    requireCapability('content:moderate', resolveFromPaperId)
+  ),
   validateBody(statusSchema),
   paperController.updateStatus
 );
@@ -243,7 +249,7 @@ router.patch(
  *   delete:
  *     operationId: deletePaper
  *     tags: [Papers]
- *     summary: Delete a paper (Admin only)
+ *     summary: Delete a paper (Admin, or a scoped content:delete grant)
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -259,6 +265,14 @@ router.patch(
  *       404:
  *         $ref: '#/components/responses/NotFound'
  */
-router.delete('/:id', requireAuthentication, isAdmin, paperController.remove);
+router.delete(
+  '/:id',
+  requireAuthentication,
+  authorizeAny(
+    isAdmin,
+    requireCapability('content:delete', resolveFromPaperId)
+  ),
+  paperController.remove
+);
 
 export default router;

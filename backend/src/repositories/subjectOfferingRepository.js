@@ -58,6 +58,29 @@ class SubjectOfferingRepository {
     return SubjectOffering.countDocuments({ semesterId: String(semesterId) });
   }
 
+  /**
+   * Resolves the set of offering ids reachable from a mix of
+   * university/branch/semester/subjectOffering scope ids -- used to turn a
+   * moderator's permission grants into a concrete visibility filter.
+   */
+  async findIdsByScope({
+    universityIds = [],
+    branchIds = [],
+    semesterIds = [],
+    subjectOfferingIds = [],
+  }) {
+    const or = [];
+    if (universityIds.length) or.push({ universityId: { $in: universityIds } });
+    if (branchIds.length) or.push({ branchId: { $in: branchIds } });
+    if (semesterIds.length) or.push({ semesterId: { $in: semesterIds } });
+    if (subjectOfferingIds.length)
+      or.push({ _id: { $in: subjectOfferingIds } });
+    if (!or.length) return [];
+
+    const docs = await SubjectOffering.find({ $or: or }).select('_id').lean();
+    return docs.map((doc) => String(doc._id));
+  }
+
   async findByUniversityBranchSemester(
     universityId,
     branchId,

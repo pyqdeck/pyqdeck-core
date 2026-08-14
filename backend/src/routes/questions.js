@@ -4,6 +4,9 @@ import {
   isAdmin,
   isEditor,
 } from '../middlewares/auth.middleware.js';
+import { authorizeAny } from '../middlewares/authorizeAny.middleware.js';
+import { requireCapability } from '../middlewares/requireCapability.middleware.js';
+import { resolveFromQuestionId } from '../middlewares/scopeResolvers.js';
 import { paginate } from '../middlewares/pagination.middleware.js';
 import { validateBody } from '../middlewares/validationMiddleware.js';
 import { questionZodSchema } from '../models/Question.js';
@@ -162,7 +165,7 @@ router.post(
  *   patch:
  *     operationId: updateQuestion
  *     tags: [Questions]
- *     summary: Update a question (Editor or Admin)
+ *     summary: Update a question (Editor/Admin, or a scoped content:edit grant)
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -196,7 +199,10 @@ router.post(
 router.patch(
   '/:id',
   requireAuthentication,
-  isEditor,
+  authorizeAny(
+    isEditor,
+    requireCapability('content:edit', resolveFromQuestionId)
+  ),
   validateBody(updateQuestionSchema),
   questionController.update
 );
@@ -207,7 +213,7 @@ router.patch(
  *   delete:
  *     operationId: deleteQuestion
  *     tags: [Questions]
- *     summary: Delete a question (Admin only)
+ *     summary: Delete a question (Admin, or a scoped content:delete grant)
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -226,7 +232,10 @@ router.patch(
 router.delete(
   '/:id',
   requireAuthentication,
-  isAdmin,
+  authorizeAny(
+    isAdmin,
+    requireCapability('content:delete', resolveFromQuestionId)
+  ),
   questionController.remove
 );
 
