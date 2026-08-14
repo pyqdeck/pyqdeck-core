@@ -11,6 +11,8 @@ export function PapersTable({
   onUpdate,
   onDelete,
   onSetStatus,
+  showContext = false,
+  pagination,
 }) {
   const [editingPaper, setEditingPaper] = React.useState(null);
   const [deletingPaper, setDeletingPaper] = React.useState(null);
@@ -22,6 +24,8 @@ export function PapersTable({
         onEdit={setEditingPaper}
         onDelete={setDeletingPaper}
         onSetStatus={onSetStatus}
+        showContext={showContext}
+        pagination={pagination}
       />
 
       <PaperFormDialog

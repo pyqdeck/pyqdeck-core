@@ -1768,6 +1768,10 @@ export class Api<
         examYear?: number;
         examType?: string;
         subjectOfferingId?: string;
+        /** Case-insensitive search on paper title */
+        q?: string;
+        /** Filter by status (admin/editor only; ignored otherwise) */
+        status?: string;
         /** @default 1 */
         page?: number;
         /** @default 20 */

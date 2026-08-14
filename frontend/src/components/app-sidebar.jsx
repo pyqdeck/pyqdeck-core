@@ -20,6 +20,7 @@ import {
 import {
   BuildingIcon,
   BookOpenIcon,
+  FileTextIcon,
   Settings2Icon,
   UsersIcon,
   GraduationCapIcon,
@@ -46,6 +47,11 @@ const navData = {
     },
   ],
   content: [
+    {
+      title: 'Papers',
+      url: '/studio/papers',
+      icon: <FileTextIcon />,
+    },
     {
       title: 'Subjects',
       url: '/studio/subjects',

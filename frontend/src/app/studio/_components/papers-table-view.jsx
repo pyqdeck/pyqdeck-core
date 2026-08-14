@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import {
   MoreVertical,
   Edit2,
@@ -16,7 +17,7 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import {
   Table,
   TableBody,
@@ -33,6 +34,15 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from '@/components/ui/empty';
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from '@/components/ui/pagination';
 
 const STATUS_STYLES = {
   draft: 'bg-muted text-muted-foreground',
@@ -51,12 +61,33 @@ function StatusBadge({ status }) {
   );
 }
 
+function offeringContext(offering) {
+  if (!offering) return null;
+  const parts = [
+    offering.universityId?.shortName || offering.universityId?.name,
+    offering.branchId?.shortName || offering.branchId?.name,
+    offering.semesterId?.number ? `Sem ${offering.semesterId.number}` : null,
+    offering.subjectId?.name,
+  ].filter(Boolean);
+  return parts.length ? parts.join(' · ') : null;
+}
+
 export function PapersTableView({
   papers = [],
   onEdit,
   onDelete,
   onSetStatus,
+  showContext = false,
+  pagination,
 }) {
+  const searchParams = useSearchParams();
+
+  const pageHref = (pageNumber) => {
+    const params = new URLSearchParams(searchParams?.toString());
+    params.set('page', String(pageNumber));
+    return `?${params.toString()}`;
+  };
+
   if (papers.length === 0) {
     return (
       <Card className="border shadow-none">
@@ -91,6 +122,11 @@ export function PapersTableView({
               <TableHead className="font-roboto h-12 px-6 font-medium">
                 Title
               </TableHead>
+              {showContext && (
+                <TableHead className="font-roboto h-12 px-6 font-medium">
+                  Context
+                </TableHead>
+              )}
               <TableHead className="font-roboto h-12 px-6 font-medium">
                 Year
               </TableHead>
@@ -116,6 +152,11 @@ export function PapersTableView({
                     {paper.title}
                   </Link>
                 </TableCell>
+                {showContext && (
+                  <TableCell className="text-muted-foreground px-6 py-4 text-sm">
+                    {offeringContext(paper.subjectOfferingId) || '—'}
+                  </TableCell>
+                )}
                 <TableCell className="text-muted-foreground px-6 py-4">
                   {paper.examYear}
                 </TableCell>
@@ -184,6 +225,100 @@ export function PapersTableView({
           </TableBody>
         </Table>
       </CardContent>
+
+      {pagination && pagination.pages > 1 && (
+        <CardFooter className="border-border/50 border-t px-6 py-4">
+          <div className="flex w-full flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <Pagination className="mx-0 w-auto">
+              <PaginationContent>
+                <PaginationItem>
+                  <PaginationPrevious
+                    href={
+                      pagination.current > 1
+                        ? pageHref(pagination.current - 1)
+                        : '#'
+                    }
+                    className={
+                      pagination.current === 1
+                        ? 'pointer-events-none opacity-50'
+                        : 'rounded-xl'
+                    }
+                  />
+                </PaginationItem>
+
+                {[...Array(pagination.pages)].map((_, i) => {
+                  const pageNumber = i + 1;
+
+                  if (
+                    pageNumber === 1 ||
+                    pageNumber === pagination.pages ||
+                    (pageNumber >= pagination.current - 1 &&
+                      pageNumber <= pagination.current + 1)
+                  ) {
+                    return (
+                      <PaginationItem key={pageNumber}>
+                        <PaginationLink
+                          href={pageHref(pageNumber)}
+                          isActive={pageNumber === pagination.current}
+                          className="rounded-xl"
+                        >
+                          {pageNumber}
+                        </PaginationLink>
+                      </PaginationItem>
+                    );
+                  }
+
+                  if (
+                    pageNumber === pagination.current - 2 ||
+                    pageNumber === pagination.current + 2
+                  ) {
+                    return (
+                      <PaginationItem key={pageNumber}>
+                        <PaginationEllipsis />
+                      </PaginationItem>
+                    );
+                  }
+
+                  return null;
+                })}
+
+                <PaginationItem>
+                  <PaginationNext
+                    href={
+                      pagination.current < pagination.pages
+                        ? pageHref(pagination.current + 1)
+                        : '#'
+                    }
+                    className={
+                      pagination.current === pagination.pages
+                        ? 'pointer-events-none opacity-50'
+                        : 'rounded-xl'
+                    }
+                  />
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
+
+            <div className="text-muted-foreground text-sm">
+              Showing{' '}
+              <span className="text-foreground font-semibold">
+                {(pagination.current - 1) * pagination.limit + 1}
+              </span>{' '}
+              to{' '}
+              <span className="text-foreground font-semibold">
+                {Math.min(
+                  pagination.current * pagination.limit,
+                  pagination.total
+                )}
+              </span>{' '}
+              of{' '}
+              <span className="text-foreground font-semibold">
+                {pagination.total}
+              </span>
+            </div>
+          </div>
+        </CardFooter>
+      )}
     </Card>
   );
 }

@@ -7,14 +7,21 @@ import { successFormatter, catchAsync } from '../utils/index.js';
 export const list = catchAsync(async (req, res, next) => {
   const filter = {};
   // Public users only see approved papers
-  const isAdmin = req.dbUser?.role === 'admin';
-  if (!isAdmin) filter.status = 'approved';
+  const canSeeAllStatuses = ['admin', 'editor'].includes(req.dbUser?.role);
+  if (!canSeeAllStatuses) filter.status = 'approved';
 
   // Optional query filters
   if (req.query.examYear) filter.examYear = Number(req.query.examYear);
   if (req.query.examType) filter.examType = req.query.examType;
   if (req.query.subjectOfferingId)
     filter.subjectOfferingId = req.query.subjectOfferingId;
+  if (canSeeAllStatuses && req.query.status) filter.status = req.query.status;
+  if (req.query.q) {
+    const escaped = String(req.query.q)
+      .trim()
+      .replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    if (escaped) filter.title = { $regex: escaped, $options: 'i' };
+  }
 
   const { items, total, page, limit } = await paperService.list(
     filter,

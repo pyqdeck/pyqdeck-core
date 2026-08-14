@@ -34,6 +34,14 @@ const statusSchema = z.object({ status: PaperStatus });
  *         name: subjectOfferingId
  *         schema: { type: string }
  *       - in: query
+ *         name: q
+ *         description: Case-insensitive search on paper title
+ *         schema: { type: string }
+ *       - in: query
+ *         name: status
+ *         description: Filter by status (admin/editor only; ignored otherwise)
+ *         schema: { type: string }
+ *       - in: query
  *         name: page
  *         schema: { type: integer, default: 1 }
  *       - in: query

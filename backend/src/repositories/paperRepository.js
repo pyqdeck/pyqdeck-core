@@ -40,7 +40,24 @@ class PaperRepository {
   }
 
   async findAll(filter = {}, pagination) {
-    return paginate(Paper, filter, pagination, { sort: { examYear: -1 } });
+    const result = await paginate(Paper, filter, pagination, {
+      sort: { examYear: -1 },
+    });
+
+    result.items = await Paper.populate(result.items, [
+      {
+        path: 'subjectOfferingId',
+        select: 'slug universityId branchId semesterId subjectId',
+        populate: [
+          { path: 'universityId', select: 'name shortName' },
+          { path: 'branchId', select: 'name shortName' },
+          { path: 'semesterId', select: 'number title' },
+          { path: 'subjectId', select: 'name subjectCode' },
+        ],
+      },
+    ]);
+
+    return result;
   }
 
   async updateStatus(id, status) {
