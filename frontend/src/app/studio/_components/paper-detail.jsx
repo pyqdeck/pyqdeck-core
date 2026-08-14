@@ -17,7 +17,7 @@ const STATUS_STYLES = {
   rejected: 'bg-destructive/10 text-destructive',
 };
 
-export function PaperDetail({ paper, questions = [] }) {
+export function PaperDetail({ paper, questions = [], backHref }) {
   const router = useRouter();
   const api = useApi();
   const [addOpen, setAddOpen] = React.useState(false);
@@ -41,10 +41,10 @@ export function PaperDetail({ paper, questions = [] }) {
     <div className="flex flex-col gap-6">
       <div>
         <Link
-          href="/studio/papers"
+          href={backHref || '/studio/universities'}
           className="text-muted-foreground hover:text-foreground mb-3 inline-flex items-center gap-1.5 text-sm"
         >
-          <ArrowLeft className="h-3.5 w-3.5" /> Back to papers
+          <ArrowLeft className="h-3.5 w-3.5" /> Back to offering
         </Link>
         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div className="flex flex-col gap-2">

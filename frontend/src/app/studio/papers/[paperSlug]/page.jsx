@@ -15,6 +15,7 @@ export default async function PaperDetailPage({ params }) {
 
   let paper = null;
   let questions = [];
+  let offeringHref = null;
 
   try {
     const paperRes = await api.papers.getPaperBySlug(paperSlug);
@@ -25,6 +26,17 @@ export default async function PaperDetailPage({ params }) {
       limit: 100,
     });
     questions = questionsRes.data.data.items || [];
+
+    const offeringRes = await api.subjectOfferings.getSubjectOfferingById(
+      paper.subjectOfferingId
+    );
+    const offering = offeringRes.data.data;
+    if (offering) {
+      const universityId = offering.universityId?.id || offering.universityId;
+      const branchId = offering.branchId?.id || offering.branchId;
+      const semesterId = offering.semesterId?.id || offering.semesterId;
+      offeringHref = `/studio/universities/${universityId}/branches/${branchId}/semesters/${semesterId}/offerings/${offering.id}?tab=papers`;
+    }
   } catch (error) {
     console.error('Failed to fetch paper detail:', error);
     return notFound();
@@ -32,7 +44,7 @@ export default async function PaperDetailPage({ params }) {
 
   return (
     <div className="p-4">
-      <PaperDetail paper={paper} questions={questions} />
+      <PaperDetail paper={paper} questions={questions} backHref={offeringHref} />
     </div>
   );
 }

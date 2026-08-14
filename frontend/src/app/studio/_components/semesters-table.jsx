@@ -10,6 +10,8 @@ export function SemestersTable({
   pagination,
   onUpdate,
   onDelete,
+  universityId,
+  branchId,
 }) {
   const [selectedSemester, setSelectedSemester] = React.useState(null);
   const [editOpen, setEditOpen] = React.useState(false);
@@ -32,6 +34,8 @@ export function SemestersTable({
         pagination={pagination}
         onEdit={handleEdit}
         onDelete={handleDelete}
+        universityId={universityId}
+        branchId={branchId}
       />
 
       {selectedSemester && (

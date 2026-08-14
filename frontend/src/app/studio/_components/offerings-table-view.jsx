@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import Link from 'next/link';
 import {
   Trash2,
   MoreVertical,
@@ -145,9 +146,12 @@ export function OfferingsTableView({
                         <BookOpen className="h-5 w-5" />
                       </div>
                       <div className="flex min-w-0 flex-col">
-                        <span className="font-roboto text-foreground group-hover:text-primary cursor-pointer truncate font-bold transition-colors">
+                        <Link
+                          href={`/studio/universities/${offering.universityId?.id || offering.universityId}/branches/${offering.branchId?.id || offering.branchId}/semesters/${offering.semesterId?.id || offering.semesterId}/offerings/${offering.id}`}
+                          className="font-roboto text-foreground group-hover:text-primary truncate font-bold transition-colors"
+                        >
                           {offering.subjectId?.name || 'Unknown Subject'}
-                        </span>
+                        </Link>
                         <span className="text-muted-foreground font-roboto text-xs italic">
                           {offering.subjectId?.subjectCode || 'No Code'}
                         </span>
@@ -210,15 +214,29 @@ export function OfferingsTableView({
                           Offering Controls
                         </DropdownMenuLabel>
                         <DropdownMenuSeparator className="my-1 border-b" />
-                        <DropdownMenuItem className="focus:bg-primary/5 group cursor-pointer rounded-md py-2.5">
-                          <ClipboardList className="text-muted-foreground group-hover:text-primary mr-3 h-4 w-4 transition-colors" />
-                          <span className="font-medium">View Syllabus</span>
+                        <DropdownMenuItem
+                          asChild
+                          className="focus:bg-primary/5 group cursor-pointer rounded-md py-2.5"
+                        >
+                          <Link
+                            href={`/studio/universities/${offering.universityId?.id || offering.universityId}/branches/${offering.branchId?.id || offering.branchId}/semesters/${offering.semesterId?.id || offering.semesterId}/offerings/${offering.id}?tab=syllabus`}
+                            className="flex w-full items-center"
+                          >
+                            <ClipboardList className="text-muted-foreground group-hover:text-primary mr-3 h-4 w-4 transition-colors" />
+                            <span className="font-medium">View Syllabus</span>
+                          </Link>
                         </DropdownMenuItem>
-                        <DropdownMenuItem className="focus:bg-primary/5 group cursor-pointer rounded-md py-2.5">
-                          <Layers className="text-muted-foreground group-hover:text-primary mr-3 h-4 w-4 transition-colors" />
-                          <span className="text-primary font-medium">
-                            Learning Materials
-                          </span>
+                        <DropdownMenuItem
+                          asChild
+                          className="focus:bg-primary/5 group cursor-pointer rounded-md py-2.5"
+                        >
+                          <Link
+                            href={`/studio/universities/${offering.universityId?.id || offering.universityId}/branches/${offering.branchId?.id || offering.branchId}/semesters/${offering.semesterId?.id || offering.semesterId}/offerings/${offering.id}?tab=papers`}
+                            className="flex w-full items-center"
+                          >
+                            <Layers className="text-muted-foreground group-hover:text-primary mr-3 h-4 w-4 transition-colors" />
+                            <span className="text-primary font-medium">Papers</span>
+                          </Link>
                         </DropdownMenuItem>
                         <DropdownMenuSeparator className="my-1 border-b" />
                         <DropdownMenuItem

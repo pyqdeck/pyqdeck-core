@@ -13,37 +13,12 @@ export default async function SubjectsPage({ searchParams }) {
   const resolvedSearchParams = await searchParams;
   const page = parseInt(resolvedSearchParams?.page || '1', 10);
   const limit = parseInt(resolvedSearchParams?.limit || '10', 10);
-  const universityId = resolvedSearchParams?.universityId;
-  const branchId = resolvedSearchParams?.branchId;
-  const semesterId = resolvedSearchParams?.semesterId;
-  const search = resolvedSearchParams?.q;
 
   let subjects = [];
-  let universities = [];
-  let branches = [];
-  let semesters = [];
   let pagination = { total: 0, pages: 1, current: 1 };
 
   try {
-    // Parallel fetching for filters
-    const [uniRes, branchRes, semRes] = await Promise.all([
-      api.universities.listUniversities({ limit: 100 }),
-      api.branches.listAllBranches({ limit: 100 }),
-      api.semesters.listAllSemesters({ limit: 100 }),
-    ]);
-
-    universities = uniRes.data.data.items || [];
-    branches = branchRes.data.data.items || [];
-    semesters = semRes.data.data.items || [];
-
-    // Fetch subjects with filters
-    const subRes = await api.subjects.listSubjects({
-      page,
-      limit,
-      universityId: universityId === 'all' ? undefined : universityId,
-      branchId: branchId === 'all' ? undefined : branchId,
-      q: search,
-    });
+    const subRes = await api.subjects.listSubjects({ page, limit });
 
     subjects = subRes.data.data.items || [];
     const backendPagination = subRes.data.data.pagination;
@@ -61,13 +36,7 @@ export default async function SubjectsPage({ searchParams }) {
 
   return (
     <div className="p-4">
-      <SubjectManagement
-        initialSubjects={subjects}
-        universities={universities}
-        branches={branches}
-        semesters={semesters}
-        pagination={pagination}
-      />
+      <SubjectManagement initialSubjects={subjects} pagination={pagination} />
     </div>
   );
 }

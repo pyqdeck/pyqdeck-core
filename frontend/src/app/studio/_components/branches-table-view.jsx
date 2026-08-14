@@ -141,9 +141,12 @@ export function BranchesTableView({
                 >
                   <TableCell className="px-6 py-3">
                     <div className="flex min-w-0 flex-col">
-                      <span className="font-roboto text-foreground group-hover:text-primary cursor-pointer truncate font-bold transition-colors">
+                      <Link
+                        href={`/studio/universities/${branch.universityId?.id || branch.universityId}/branches/${branch.id}`}
+                        className="font-roboto text-foreground group-hover:text-primary truncate font-bold transition-colors"
+                      >
                         {branch.name}
-                      </span>
+                      </Link>
                       <span className="text-muted-foreground font-roboto text-xs italic">
                         /{branch.slug}
                       </span>

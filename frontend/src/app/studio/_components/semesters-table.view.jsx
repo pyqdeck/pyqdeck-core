@@ -43,6 +43,8 @@ export function SemestersTableView({
   onEdit,
   onDelete,
   loading = false,
+  universityId,
+  branchId,
 }) {
   const searchParams = useSearchParams();
   const search = searchParams?.get('search') || '';
@@ -152,9 +154,18 @@ export function SemestersTableView({
                           {sem.number}
                         </span>
                       </div>
-                      <span className="font-roboto text-foreground group-hover:text-primary font-bold transition-colors">
-                        Semester {sem.number}
-                      </span>
+                      {universityId && branchId ? (
+                        <Link
+                          href={`/studio/universities/${universityId}/branches/${branchId}/semesters/${sem.id}`}
+                          className="font-roboto text-foreground group-hover:text-primary font-bold transition-colors"
+                        >
+                          Semester {sem.number}
+                        </Link>
+                      ) : (
+                        <span className="font-roboto text-foreground font-bold">
+                          Semester {sem.number}
+                        </span>
+                      )}
                     </div>
                   </TableCell>
                   <TableCell className="hidden px-6 py-3 sm:table-cell">

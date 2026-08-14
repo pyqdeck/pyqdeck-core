@@ -21,8 +21,6 @@ import {
   BuildingIcon,
   BookOpenIcon,
   Settings2Icon,
-  FileTextIcon,
-  LibraryIcon,
   UsersIcon,
   GraduationCapIcon,
   LayoutDashboardIcon,
@@ -46,37 +44,12 @@ const navData = {
       url: '/studio/universities',
       icon: <BuildingIcon />,
     },
-    {
-      title: 'Branches',
-      url: '/studio/branches',
-      icon: <GraduationCapIcon />,
-    },
-    {
-      title: 'Semesters',
-      url: '/studio/semesters',
-      icon: <Settings2Icon />,
-    },
   ],
   content: [
     {
       title: 'Subjects',
       url: '/studio/subjects',
       icon: <BookOpenIcon />,
-    },
-    {
-      title: 'Subject Offerings',
-      url: '/studio/offerings',
-      icon: <LibraryIcon />,
-    },
-    {
-      title: 'Syllabus Builder',
-      url: '/studio/syllabus',
-      icon: <FileTextIcon />,
-    },
-    {
-      title: 'Papers',
-      url: '/studio/papers',
-      icon: <FileTextIcon />,
     },
   ],
   security: [

@@ -189,7 +189,9 @@ export function UniversitiesTableView({
                       </Avatar>
                       <div className="flex min-w-0 flex-col">
                         <span className="text-foreground group-hover:text-primary font-roboto flex items-center gap-1.5 truncate font-bold transition-colors">
-                          {uni.name}
+                          <Link href={`/studio/universities/${uni.id}`}>
+                            {uni.name}
+                          </Link>
                           {uni.websiteUrl && (
                             <Link
                               href={uni.websiteUrl}

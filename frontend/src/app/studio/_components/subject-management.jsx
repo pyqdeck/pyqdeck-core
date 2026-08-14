@@ -5,19 +5,12 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useApi } from '@/hooks/use-api';
 import { SubjectsTable } from './subjects-table';
 import { AddSubjectDialog } from './add-subject-dialog';
-import { SubjectFilters } from './subject-filters';
 import { StudioSearch } from './studio-search';
 import { Plus } from 'lucide-react';
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu';
 import { DropdownAction } from '@/components/dropdown-action';
 
-export function SubjectManagement({
-  initialSubjects = [],
-  universities = [],
-  branches = [],
-  semesters = [],
-  pagination,
-}) {
+export function SubjectManagement({ initialSubjects = [], pagination }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const api = useApi();
@@ -56,7 +49,6 @@ export function SubjectManagement({
             paramName="q"
             initialValue={search}
           />
-          <SubjectFilters universities={universities} branches={branches} />
           <DropdownAction label="Management" tooltip="Subject Actions">
             <AddSubjectDialog
               onAdd={handleAdd}
