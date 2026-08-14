@@ -560,7 +560,7 @@
       "Question": {
         "type": "object",
         "required": [
-          "text",
+          "mdText",
           "type"
         ],
         "properties": {
@@ -568,8 +568,9 @@
             "type": "string",
             "example": "65a12345b67890cdef123456"
           },
-          "text": {
+          "mdText": {
             "type": "string",
+            "description": "Question text, in Markdown",
             "example": "Explain the architecture of a compiler in detail."
           },
           "normalizedText": {

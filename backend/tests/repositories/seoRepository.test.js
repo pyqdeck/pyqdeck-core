@@ -16,8 +16,8 @@ describe('SeoRepository', () => {
   });
   it('should fetch verified question slugs', async () => {
     await Question.create([
-      { text: 'Q1', slug: 'q1', isVerified: true, type: 'short' },
-      { text: 'Q2', slug: 'q2', isVerified: false, type: 'short' },
+      { mdText: 'Q1', slug: 'q1', isVerified: true, type: 'short' },
+      { mdText: 'Q2', slug: 'q2', isVerified: false, type: 'short' },
     ]);
 
     const result = await seoRepository.getAllQuestionSlugs();

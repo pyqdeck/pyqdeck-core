@@ -24,7 +24,7 @@ vi.mock('../../src/repositories/questionPaperMapRepository.js', () => ({
 describe('QuestionService', () => {
   const sampleQuestion = {
     _id: 'q_1',
-    text: 'What is a compiler?',
+    mdText: 'What is a compiler?',
     type: 'short',
     difficulty: 'easy',
   };
@@ -49,7 +49,7 @@ describe('QuestionService', () => {
       questionRepository.create.mockResolvedValue(sampleQuestion);
       questionPaperMapRepository.create.mockResolvedValue({ id: 'map_1' });
 
-      const data = { text: 'New', questionNumber: 1 };
+      const data = { mdText: 'New', questionNumber: 1 };
       const result = await questionService.createForPaper(
         'paper_1',
         data,
@@ -90,9 +90,9 @@ describe('QuestionService', () => {
   describe('update', () => {
     it('should update question', async () => {
       questionRepository.update.mockResolvedValue(sampleQuestion);
-      await questionService.update('q_1', { text: 'Updated' });
+      await questionService.update('q_1', { mdText: 'Updated' });
       expect(questionRepository.update).toHaveBeenCalledWith('q_1', {
-        text: 'Updated',
+        mdText: 'Updated',
       });
     });
   });

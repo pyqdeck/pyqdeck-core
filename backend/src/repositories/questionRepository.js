@@ -118,7 +118,7 @@ class QuestionRepository {
       // Cleanup
       {
         $project: {
-          text: 1,
+          mdText: 1,
           type: 1,
           difficulty: 1,
           marks: 1,

@@ -5,7 +5,7 @@ import {
 } from '../../src/models/Question.js';
 
 describe('Question zod schemas', () => {
-  const base = { text: 'What is the capital of France?' };
+  const base = { mdText: 'What is the capital of France?' };
 
   describe('questionCreateZodSchema', () => {
     it('accepts a non-mcq question with no options', () => {

@@ -8,14 +8,15 @@ import { z } from 'zod';
  *     Question:
  *       type: object
  *       required:
- *         - text
+ *         - mdText
  *         - type
  *       properties:
  *         id:
  *           type: string
  *           example: 65a12345b67890cdef123456
- *         text:
+ *         mdText:
  *           type: string
+ *           description: Question text, in Markdown
  *           example: "Explain the architecture of a compiler in detail."
  *         normalizedText:
  *           type: string
@@ -102,7 +103,7 @@ export const BloomLevel = z.enum([
 
 const questionSchema = new mongoose.Schema(
   {
-    text: {
+    mdText: {
       type: String,
       required: true,
       trim: true,
@@ -198,7 +199,7 @@ const questionSchema = new mongoose.Schema(
   }
 );
 
-questionSchema.index({ text: 'text', normalizedText: 'text' });
+questionSchema.index({ mdText: 'text', normalizedText: 'text' });
 questionSchema.index({ tags: 1 });
 questionSchema.index({ type: 1, difficulty: 1 });
 questionSchema.index({ isVerified: 1 });
@@ -212,7 +213,7 @@ export const questionOptionZodSchema = z.object({
 });
 
 export const questionZodSchema = z.object({
-  text: z.string().min(1, 'Question text is required'),
+  mdText: z.string().min(1, 'Question text is required'),
   normalizedText: z.string().optional(),
   slug: z.string().max(300).optional(),
   type: QuestionType,

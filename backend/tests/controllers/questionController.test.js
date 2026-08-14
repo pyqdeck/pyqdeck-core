@@ -64,7 +64,7 @@ describe('questionController', () => {
   describe('createForPaper', () => {
     it('should call createForPaper service', async () => {
       req.params.paperId = 'paper_1';
-      req.body = { text: 'Q1' };
+      req.body = { mdText: 'Q1' };
       questionService.createForPaper.mockResolvedValue({
         question: {},
         mapping: {},

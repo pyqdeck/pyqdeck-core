@@ -10,7 +10,7 @@ import { NotFoundError, ConflictError } from '../../src/utils/errors/index.js';
 
 describe('QuestionRepository', () => {
   const questionData = {
-    text: 'What is a compiler?',
+    mdText: 'What is a compiler?',
     type: 'short',
     slug: 'what-is-compiler',
   };
@@ -26,7 +26,7 @@ describe('QuestionRepository', () => {
   describe('create', () => {
     it('should create successfully', async () => {
       const question = await questionRepository.create(questionData);
-      expect(question.text).toBe(questionData.text);
+      expect(question.mdText).toBe(questionData.mdText);
       expect(question.slug).toBe(questionData.slug);
     });
 
@@ -35,7 +35,7 @@ describe('QuestionRepository', () => {
       await expect(
         questionRepository.create({
           ...questionData,
-          text: 'different text',
+          mdText: 'different text',
         })
       ).rejects.toThrow(ConflictError);
     });
@@ -84,9 +84,9 @@ describe('QuestionRepository', () => {
     it('should update successfully', async () => {
       const created = await questionRepository.create(questionData);
       const updated = await questionRepository.update(created.id, {
-        text: 'Updated Text',
+        mdText: 'Updated Text',
       });
-      expect(updated.text).toBe('Updated Text');
+      expect(updated.mdText).toBe('Updated Text');
     });
 
     it('should reject an mcq update whose options break the single-correct-answer rule', async () => {
@@ -103,7 +103,7 @@ describe('QuestionRepository', () => {
   describe('mcq options', () => {
     it('persists options with exactly one correct answer', async () => {
       const question = await questionRepository.create({
-        text: 'What does CPU stand for?',
+        mdText: 'What does CPU stand for?',
         type: 'mcq',
         slug: 'what-does-cpu-stand-for',
         options: [
