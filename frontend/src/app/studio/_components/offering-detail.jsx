@@ -151,7 +151,7 @@ export function OfferingDetail({
           <TabsTrigger value="papers">Papers</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="syllabus" className="mt-4">
+        <TabsContent value="syllabus">
           {syllabus ? (
             <SyllabusTable
               syllabus={syllabus}
@@ -201,7 +201,7 @@ export function OfferingDetail({
           />
         </TabsContent>
 
-        <TabsContent value="papers" className="mt-4 flex flex-col gap-4">
+        <TabsContent value="papers" className="flex flex-col gap-4">
           <div className="flex justify-end">
             <Button
               onClick={() => setAddPaperOpen(true)}
