@@ -30,6 +30,10 @@ class ModuleRepository {
     });
   }
 
+  async countBySyllabus(syllabusId) {
+    return Module.countDocuments({ syllabusId });
+  }
+
   async findBySyllabusAndSlug(syllabusId, slug) {
     const module = await Module.findOne({
       syllabusId,

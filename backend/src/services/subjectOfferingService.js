@@ -1,6 +1,7 @@
 import subjectOfferingRepository from '../repositories/subjectOfferingRepository.js';
 import paperRepository from '../repositories/paperRepository.js';
 import syllabusRepository from '../repositories/syllabusRepository.js';
+import moduleRepository from '../repositories/moduleRepository.js';
 import permissionGrantService from './permissionGrantService.js';
 import { ConflictError } from '../utils/errors/index.js';
 
@@ -47,11 +48,18 @@ class SubjectOfferingService {
       );
     }
 
-    const hasSyllabus = await syllabusRepository.existsForSubjectOffering(id);
-    if (hasSyllabus) {
-      throw new ConflictError(
-        'Cannot delete: this subject offering still has a syllabus. Delete it first.'
-      );
+    const syllabus = await syllabusRepository.findBySubjectOfferingOrNull(id);
+    if (syllabus) {
+      const syllabusId = syllabus.id || syllabus._id;
+      const moduleCount = await moduleRepository.countBySyllabus(syllabusId);
+      if (moduleCount > 0) {
+        throw new ConflictError(
+          `Cannot delete: this subject offering's syllabus still has ${moduleCount} module(s). Delete them first.`
+        );
+      }
+      // Empty syllabus (no modules) -- cascade-delete it along with the
+      // offering instead of leaving an orphaned record behind.
+      await syllabusRepository.delete(syllabusId);
     }
 
     const offering = await subjectOfferingRepository.delete(id);

@@ -35,6 +35,10 @@ class SyllabusRepository {
     return !!syllabus;
   }
 
+  async findBySubjectOfferingOrNull(subjectOfferingId) {
+    return Syllabus.findOne({ subjectOfferingId });
+  }
+
   async update(id, data) {
     // Sanitize data using the Zod schema to prevent NoSQL injection
     // and ensure only allowed fields are updated.
