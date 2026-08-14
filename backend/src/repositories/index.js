@@ -18,3 +18,4 @@ export { uploadRepository } from './uploadRepository.js';
 export { bookmarkRepository } from './bookmarkRepository.js';
 export { platformConfigRepository } from './platformConfigRepository.js';
 export { permissionGrantRepository } from './permissionGrantRepository.js';
+export { permissionGrantRequestRepository } from './permissionGrantRequestRepository.js';

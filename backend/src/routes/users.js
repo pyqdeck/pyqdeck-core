@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { z } from 'zod';
 import * as userController from '../controllers/userController.js';
 import * as permissionGrantController from '../controllers/permissionGrantController.js';
+import * as permissionGrantRequestController from '../controllers/permissionGrantRequestController.js';
 import {
   requireAuthentication,
   isAdmin,
@@ -9,6 +10,7 @@ import {
 import { syncUser } from '../middlewares/syncUser.middleware.js';
 import { validateBody } from '../middlewares/validationMiddleware.js';
 import { Capability, ScopeLevel } from '../models/PermissionGrant.js';
+import { permissionGrantRequestZodSchema } from '../models/PermissionGrantRequest.js';
 
 const router = Router();
 
@@ -101,6 +103,100 @@ router.get(
 
 /**
  * @openapi
+ * /users/me/grant-requests:
+ *   get:
+ *     operationId: listMyGrantRequests
+ *     tags: [Users]
+ *     summary: List my own permission grant requests
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: My request history
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       type: object
+ *                       properties:
+ *                         items:
+ *                           type: array
+ *                           items: { $ref: '#/components/schemas/PermissionGrantRequest' }
+ *       401:
+ *         $ref: '#/components/responses/Unauthorized'
+ */
+router.get(
+  '/me/grant-requests',
+  requireAuthentication,
+  syncUser,
+  permissionGrantRequestController.listMyRequests
+);
+
+/**
+ * @openapi
+ * /users/me/grant-requests:
+ *   post:
+ *     operationId: createMyGrantRequest
+ *     tags: [Users]
+ *     summary: Ask an admin for a scoped permission
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required: [capabilities, scopeLevel]
+ *             properties:
+ *               capabilities:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                   enum: [content:create, content:edit, content:moderate, content:delete]
+ *               scopeLevel:
+ *                 type: string
+ *                 enum: [global, university, branch, semester, subjectOffering]
+ *               scopeId:
+ *                 type: string
+ *                 nullable: true
+ *               label:
+ *                 type: string
+ *               reason:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: Request submitted
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       type: object
+ *                       properties:
+ *                         request: { $ref: '#/components/schemas/PermissionGrantRequest' }
+ *       400:
+ *         $ref: '#/components/responses/BadRequest'
+ *       401:
+ *         $ref: '#/components/responses/Unauthorized'
+ */
+router.post(
+  '/me/grant-requests',
+  requireAuthentication,
+  syncUser,
+  validateBody(permissionGrantRequestZodSchema),
+  permissionGrantRequestController.createRequest
+);
+
+/**
+ * @openapi
  * /users/grant-templates:
  *   get:
  *     operationId: listGrantTemplates
@@ -138,6 +234,137 @@ router.get(
   syncUser,
   isAdmin,
   permissionGrantController.listGrantTemplates
+);
+
+/**
+ * @openapi
+ * /users/grant-requests:
+ *   get:
+ *     operationId: listGrantRequests
+ *     tags: [Users]
+ *     summary: List permission grant requests (Admin only)
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: status
+ *         description: Defaults to "pending"; pass "all" for full history
+ *         schema: { type: string, enum: [pending, approved, denied, all] }
+ *     responses:
+ *       200:
+ *         description: List of requests
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       type: object
+ *                       properties:
+ *                         items:
+ *                           type: array
+ *                           items: { $ref: '#/components/schemas/PermissionGrantRequest' }
+ */
+router.get(
+  '/grant-requests',
+  requireAuthentication,
+  syncUser,
+  isAdmin,
+  permissionGrantRequestController.listRequests
+);
+
+/**
+ * @openapi
+ * /users/grant-requests/{requestId}/approve:
+ *   post:
+ *     operationId: approveGrantRequest
+ *     tags: [Users]
+ *     summary: Approve a pending grant request, creating the grant it describes (Admin only)
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: requestId
+ *         required: true
+ *         schema: { type: string }
+ *     responses:
+ *       200:
+ *         description: Request approved
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       type: object
+ *                       properties:
+ *                         request: { $ref: '#/components/schemas/PermissionGrantRequest' }
+ *       400:
+ *         $ref: '#/components/responses/BadRequest'
+ *       404:
+ *         $ref: '#/components/responses/NotFound'
+ */
+router.post(
+  '/grant-requests/:requestId/approve',
+  requireAuthentication,
+  syncUser,
+  isAdmin,
+  permissionGrantRequestController.approveRequest
+);
+
+/**
+ * @openapi
+ * /users/grant-requests/{requestId}/deny:
+ *   post:
+ *     operationId: denyGrantRequest
+ *     tags: [Users]
+ *     summary: Deny a pending grant request (Admin only)
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: requestId
+ *         required: true
+ *         schema: { type: string }
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required: [reason]
+ *             properties:
+ *               reason:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Request denied
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       type: object
+ *                       properties:
+ *                         request: { $ref: '#/components/schemas/PermissionGrantRequest' }
+ *       400:
+ *         $ref: '#/components/responses/BadRequest'
+ *       404:
+ *         $ref: '#/components/responses/NotFound'
+ */
+router.post(
+  '/grant-requests/:requestId/deny',
+  requireAuthentication,
+  syncUser,
+  isAdmin,
+  permissionGrantRequestController.denyRequest
 );
 
 /**

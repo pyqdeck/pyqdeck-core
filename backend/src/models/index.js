@@ -37,3 +37,8 @@ export {
   ScopeLevel,
   permissionGrantZodSchema,
 } from './PermissionGrant.js';
+export {
+  PermissionGrantRequest,
+  RequestStatus,
+  permissionGrantRequestZodSchema,
+} from './PermissionGrantRequest.js';

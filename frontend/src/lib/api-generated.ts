@@ -215,6 +215,46 @@ export interface PermissionGrant {
   updatedAt?: string;
 }
 
+export interface PermissionGrantRequest {
+  /** @example "65a12345b67890cdef555555" */
+  id?: string;
+  /**
+   * Reference to the User asking for access
+   * @example "65b98765a43210fedcba9876"
+   */
+  userId: string;
+  capabilities: (
+    | "content:create"
+    | "content:edit"
+    | "content:moderate"
+    | "content:delete"
+  )[];
+  scopeLevel:
+    | "global"
+    | "university"
+    | "branch"
+    | "semester"
+    | "subjectOffering";
+  scopeId?: string | null;
+  /** Human-readable scope name, set client-side at request time */
+  label?: string;
+  /** Why the requester wants this access */
+  reason?: string;
+  /** @default "pending" */
+  status?: "pending" | "approved" | "denied";
+  /** Reference to the admin who approved or denied this request */
+  reviewedBy?: string | null;
+  /** @format date-time */
+  reviewedAt?: string | null;
+  denialReason?: string | null;
+  /** Reference to the PermissionGrant created when this request was approved */
+  resultingGrantId?: string | null;
+  /** @format date-time */
+  createdAt?: string;
+  /** @format date-time */
+  updatedAt?: string;
+}
+
 export interface PlatformConfig {
   /** @default false */
   devMode?: boolean;
@@ -3114,6 +3154,94 @@ export class Api<
  * No description
  *
  * @tags Users
+ * @name ListMyGrantRequests
+ * @summary List my own permission grant requests
+ * @request GET:/users/me/grant-requests
+ * @secure
+ * @response `200` `(SuccessResponse & {
+    data?: {
+    items?: (PermissionGrantRequest)[],
+
+},
+
+})` My request history
+ * @response `401` `Error`
+ */
+    listMyGrantRequests: (params: RequestParams = {}) =>
+      this.request<
+        SuccessResponse & {
+          data?: {
+            items?: PermissionGrantRequest[];
+          };
+        },
+        Error
+      >({
+        path: `/users/me/grant-requests`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+ * No description
+ *
+ * @tags Users
+ * @name CreateMyGrantRequest
+ * @summary Ask an admin for a scoped permission
+ * @request POST:/users/me/grant-requests
+ * @secure
+ * @response `201` `(SuccessResponse & {
+    data?: {
+    request?: PermissionGrantRequest,
+
+},
+
+})` Request submitted
+ * @response `400` `Error`
+ * @response `401` `Error`
+ */
+    createMyGrantRequest: (
+      data: {
+        capabilities: (
+          | "content:create"
+          | "content:edit"
+          | "content:moderate"
+          | "content:delete"
+        )[];
+        scopeLevel:
+          | "global"
+          | "university"
+          | "branch"
+          | "semester"
+          | "subjectOffering";
+        scopeId?: string | null;
+        label?: string;
+        reason?: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<
+        SuccessResponse & {
+          data?: {
+            request?: PermissionGrantRequest;
+          };
+        },
+        Error
+      >({
+        path: `/users/me/grant-requests`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+ * No description
+ *
+ * @tags Users
  * @name ListGrantTemplates
  * @summary List the preset capability-bundle templates offered when creating a grant (Admin only)
  * @request GET:/users/grant-templates
@@ -3147,6 +3275,121 @@ export class Api<
         path: `/users/grant-templates`,
         method: "GET",
         secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+ * No description
+ *
+ * @tags Users
+ * @name ListGrantRequests
+ * @summary List permission grant requests (Admin only)
+ * @request GET:/users/grant-requests
+ * @secure
+ * @response `200` `(SuccessResponse & {
+    data?: {
+    items?: (PermissionGrantRequest)[],
+
+},
+
+})` List of requests
+ */
+    listGrantRequests: (
+      query?: {
+        /** Defaults to "pending"; pass "all" for full history */
+        status?: "pending" | "approved" | "denied" | "all";
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<
+        SuccessResponse & {
+          data?: {
+            items?: PermissionGrantRequest[];
+          };
+        },
+        any
+      >({
+        path: `/users/grant-requests`,
+        method: "GET",
+        query: query,
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+ * No description
+ *
+ * @tags Users
+ * @name ApproveGrantRequest
+ * @summary Approve a pending grant request, creating the grant it describes (Admin only)
+ * @request POST:/users/grant-requests/{requestId}/approve
+ * @secure
+ * @response `200` `(SuccessResponse & {
+    data?: {
+    request?: PermissionGrantRequest,
+
+},
+
+})` Request approved
+ * @response `400` `Error`
+ * @response `404` `Error`
+ */
+    approveGrantRequest: (requestId: string, params: RequestParams = {}) =>
+      this.request<
+        SuccessResponse & {
+          data?: {
+            request?: PermissionGrantRequest;
+          };
+        },
+        Error
+      >({
+        path: `/users/grant-requests/${requestId}/approve`,
+        method: "POST",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+ * No description
+ *
+ * @tags Users
+ * @name DenyGrantRequest
+ * @summary Deny a pending grant request (Admin only)
+ * @request POST:/users/grant-requests/{requestId}/deny
+ * @secure
+ * @response `200` `(SuccessResponse & {
+    data?: {
+    request?: PermissionGrantRequest,
+
+},
+
+})` Request denied
+ * @response `400` `Error`
+ * @response `404` `Error`
+ */
+    denyGrantRequest: (
+      requestId: string,
+      data: {
+        reason: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<
+        SuccessResponse & {
+          data?: {
+            request?: PermissionGrantRequest;
+          };
+        },
+        Error
+      >({
+        path: `/users/grant-requests/${requestId}/deny`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
         format: "json",
         ...params,
       }),
