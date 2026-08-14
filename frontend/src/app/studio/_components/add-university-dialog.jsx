@@ -8,6 +8,7 @@ import * as z from 'zod';
 import { useApi } from '@/hooks/use-api';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
+import { getErrorMessage } from '@/lib/api-error';
 import { AddUniversityDialogView } from './add-university-dialog-view';
 
 const universitySchema = z.object({
@@ -56,7 +57,7 @@ export function AddUniversityDialog({ trigger }) {
       form.reset();
       router.refresh();
     } catch (error) {
-      toast.error(error?.response?.data?.message || 'Failed to add university');
+      toast.error(getErrorMessage(error, 'Failed to add university'));
     }
   }
 

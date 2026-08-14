@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { toast } from 'sonner';
 import { useApi } from '@/hooks/use-api';
+import { getErrorMessage } from '@/lib/api-error';
 import { AccessRequestsView } from './access-requests-view';
 
 export function AccessRequests({ initialRequests }) {
@@ -19,11 +20,7 @@ export function AccessRequests({ initialRequests }) {
       toast.success('Request approved');
       setRequests((prev) => prev.filter((r) => r.id !== request.id));
     } catch (error) {
-      toast.error(
-        error.response?.data?.message ||
-          error.message ||
-          'Failed to approve request'
-      );
+      toast.error(getErrorMessage(error, 'Failed to approve request'));
     } finally {
       setProcessingId(null);
     }
@@ -47,11 +44,7 @@ export function AccessRequests({ initialRequests }) {
       setRequests((prev) => prev.filter((r) => r.id !== denyTarget.id));
       setDenyTarget(null);
     } catch (error) {
-      toast.error(
-        error.response?.data?.message ||
-          error.message ||
-          'Failed to deny request'
-      );
+      toast.error(getErrorMessage(error, 'Failed to deny request'));
     } finally {
       setProcessingId(null);
     }

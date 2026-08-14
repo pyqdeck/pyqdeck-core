@@ -4,6 +4,7 @@ import * as React from 'react';
 import { useApi } from '@/hooks/use-api';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
+import { getErrorMessage } from '@/lib/api-error';
 import { DeleteUniversityDialogView } from './delete-university-dialog-view';
 
 export function DeleteUniversityDialog({ university, open, onOpenChange }) {
@@ -19,9 +20,7 @@ export function DeleteUniversityDialog({ university, open, onOpenChange }) {
       onOpenChange(false);
       router.refresh();
     } catch (error) {
-      toast.error(
-        error?.response?.data?.message || 'Failed to delete university'
-      );
+      toast.error(getErrorMessage(error, 'Failed to delete university'));
     } finally {
       setLoading(false);
     }

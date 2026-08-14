@@ -4,6 +4,7 @@ import * as React from 'react';
 import { toast } from 'sonner';
 import { GeneralSettingsCardView } from './general-settings-card.view';
 import { useApi } from '@/hooks/use-api';
+import { getErrorMessage } from '@/lib/api-error';
 
 export function GeneralSettingsCard({ initialConfig }) {
   const [settings, setSettings] = React.useState({
@@ -29,9 +30,9 @@ export function GeneralSettingsCard({ initialConfig }) {
         maintenanceMode: updated.maintenanceMode,
       });
       toast.success('Setting updated');
-    } catch {
+    } catch (error) {
       setSettings((s) => ({ ...s, [key]: prev }));
-      toast.error('Failed to update setting');
+      toast.error(getErrorMessage(error, 'Failed to update setting'));
     } finally {
       setIsUpdating(null);
     }

@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { toast } from 'sonner';
+import { getErrorMessage } from '@/lib/api-error';
 import { QuestionFormDialogView } from './question-form-dialog.view';
 
 const questionSchema = z
@@ -124,9 +125,10 @@ export function QuestionFormDialog({
       onOpenChange(false);
     } catch (error) {
       toast.error(
-        error.response?.data?.message ||
-          error.message ||
+        getErrorMessage(
+          error,
           `Failed to ${isEdit ? 'update' : 'add'} question`
+        )
       );
     }
   };

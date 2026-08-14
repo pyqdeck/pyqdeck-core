@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { toast } from 'sonner';
+import { getErrorMessage } from '@/lib/api-error';
 import { EditSemesterDialogView } from './edit-semester-dialog.view';
 
 const semesterSchema = z.object({
@@ -47,7 +48,7 @@ export function EditSemesterDialog({ semester, open, onOpenChange, onUpdate }) {
       toast.success('Semester updated successfully');
       onOpenChange(false);
     } catch (error) {
-      toast.error(error.message || 'Failed to update semester');
+      toast.error(getErrorMessage(error, 'Failed to update semester'));
     }
   };
 

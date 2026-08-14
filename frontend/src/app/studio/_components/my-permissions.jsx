@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { toast } from 'sonner';
 import { useApi } from '@/hooks/use-api';
+import { getErrorMessage } from '@/lib/api-error';
 import { MyPermissionsView } from './my-permissions-view';
 import { RequestPermissionDialog } from './request-permission-dialog';
 
@@ -18,11 +19,7 @@ export function MyPermissions({ role, grants, initialRequests }) {
       const res = await api.users.listMyGrantRequests();
       setRequests(res.data?.data?.items || []);
     } catch (error) {
-      toast.error(
-        error.response?.data?.message ||
-          error.message ||
-          'Failed to submit request'
-      );
+      toast.error(getErrorMessage(error, 'Failed to submit request'));
       throw error;
     }
   };

@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { toast } from 'sonner';
+import { getErrorMessage } from '@/lib/api-error';
 import { AddSemesterDialogView } from './add-semester-dialog.view';
 
 const semesterSchema = z.object({
@@ -65,7 +66,7 @@ export function AddSemesterDialog({
       reset({ branchId: defaultBranchId });
       setOpen(false);
     } catch (error) {
-      toast.error(error.message || 'Failed to create semester');
+      toast.error(getErrorMessage(error, 'Failed to create semester'));
     }
   };
 

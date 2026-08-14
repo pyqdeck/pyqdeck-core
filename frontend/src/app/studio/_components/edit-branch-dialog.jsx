@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { toast } from 'sonner';
+import { getErrorMessage } from '@/lib/api-error';
 import { EditBranchDialogView } from './edit-branch-dialog.view';
 
 const branchSchema = z.object({
@@ -45,7 +46,7 @@ export function EditBranchDialog({ branch, onUpdate, open, onOpenChange }) {
       toast.success(`Branch ${data.name} updated successfully`);
       onOpenChange(false);
     } catch (error) {
-      toast.error(error.message || 'Failed to update branch');
+      toast.error(getErrorMessage(error, 'Failed to update branch'));
     }
   };
 

@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { toast } from 'sonner';
+import { getErrorMessage } from '@/lib/api-error';
 import { AddBranchDialogView } from './add-branch-dialog.view';
 
 const branchSchema = z.object({
@@ -72,7 +73,7 @@ export function AddBranchDialog({
       reset({ universityId: defaultUniversityId });
       setOpen(false);
     } catch (error) {
-      toast.error(error.message || 'Failed to create branch');
+      toast.error(getErrorMessage(error, 'Failed to create branch'));
     }
   };
 

@@ -13,6 +13,7 @@ import { DropdownAction } from '@/components/dropdown-action';
 import { UniversityFilters } from './university-filters';
 import { toast } from 'sonner';
 import { useApi } from '@/hooks/use-api';
+import { getErrorMessage } from '@/lib/api-error';
 import {
   generateCSV,
   downloadCSV,
@@ -33,7 +34,7 @@ export function UniversitiesHeaderActions({ search }) {
       downloadCSV('universities-export.csv', csv);
       toast.success('Universities exported successfully');
     } catch (err) {
-      toast.error('Failed to export universities');
+      toast.error(getErrorMessage(err, 'Failed to export universities'));
     } finally {
       setIsExporting(false);
     }

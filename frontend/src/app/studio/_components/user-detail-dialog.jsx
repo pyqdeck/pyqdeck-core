@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { toast } from 'sonner';
 import { useApi } from '@/hooks/use-api';
+import { getErrorMessage } from '@/lib/api-error';
 import { UserDetailDialogView } from './user-detail-dialog.view';
 import { AddPermissionGrantDialog } from './add-permission-grant-dialog';
 
@@ -62,11 +63,7 @@ export function UserDetailDialog({ user, stats, isLoadingStats, onClose }) {
       setAddGrantOpen(false);
       fetchGrants(user.clerkId, showRevoked);
     } catch (error) {
-      toast.error(
-        error.response?.data?.message ||
-          error.message ||
-          'Failed to grant permission'
-      );
+      toast.error(getErrorMessage(error, 'Failed to grant permission'));
     }
   };
 
@@ -83,11 +80,7 @@ export function UserDetailDialog({ user, stats, isLoadingStats, onClose }) {
         setGrants((prev) => prev.filter((g) => g.id !== grantId));
       }
     } catch (error) {
-      toast.error(
-        error.response?.data?.message ||
-          error.message ||
-          'Failed to revoke permission'
-      );
+      toast.error(getErrorMessage(error, 'Failed to revoke permission'));
     } finally {
       setRevokingGrantId(null);
     }

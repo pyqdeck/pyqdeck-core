@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 import { WipeDbCardView } from './wipe-db-card.view';
 import { useApi } from '@/hooks/use-api';
+import { getErrorMessage } from '@/lib/api-error';
 
 export function WipeDbCard() {
   const [isWiping, setIsWiping] = useState(false);
@@ -18,11 +19,9 @@ export function WipeDbCard() {
       toast.success('Database wiped successfully', { id: toastId });
     } catch (error) {
       console.error('Wipe failed:', error);
-      const errorMessage =
-        error.response?.data?.message ||
-        error.message ||
-        'An error occurred during wipe';
-      toast.error(errorMessage, { id: toastId });
+      toast.error(getErrorMessage(error, 'An error occurred during wipe'), {
+        id: toastId,
+      });
     } finally {
       setIsWiping(false);
     }

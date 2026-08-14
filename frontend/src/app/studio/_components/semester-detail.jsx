@@ -4,6 +4,7 @@ import * as React from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { useApi } from '@/hooks/use-api';
+import { getErrorMessage } from '@/lib/api-error';
 import { StudioBreadcrumb } from './studio-breadcrumb';
 import { OfferingsTable } from './offerings-table';
 import { AddOfferingDialog } from './add-offering-dialog';
@@ -29,9 +30,7 @@ export function SemesterDetail({
       toast.success('Subject offering deleted');
       router.refresh();
     } catch (error) {
-      toast.error(
-        error?.response?.data?.message || 'Failed to delete subject offering'
-      );
+      toast.error(getErrorMessage(error, 'Failed to delete subject offering'));
     }
   };
 

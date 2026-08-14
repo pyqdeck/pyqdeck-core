@@ -6,6 +6,7 @@ import { UsersTableView } from './users-table-view';
 import { UserDetailDialog } from './user-detail-dialog';
 import { useApi } from '@/hooks/use-api';
 import { useRouter } from 'next/navigation';
+import { getErrorMessage } from '@/lib/api-error';
 
 export function UsersTable({ initialUsers = [], pagination }) {
   const [isUpdating, setIsUpdating] = React.useState(false);
@@ -24,7 +25,9 @@ export function UsersTable({ initialUsers = [], pagination }) {
       router.refresh();
     } catch (error) {
       console.error('Failed to update role:', error);
-      toast.error('Failed to update user role', { id: toastId });
+      toast.error(getErrorMessage(error, 'Failed to update user role'), {
+        id: toastId,
+      });
     } finally {
       setIsUpdating(false);
     }
@@ -39,7 +42,9 @@ export function UsersTable({ initialUsers = [], pagination }) {
       router.refresh();
     } catch (error) {
       console.error('Failed to ban user:', error);
-      toast.error('Failed to ban user', { id: toastId });
+      toast.error(getErrorMessage(error, 'Failed to ban user'), {
+        id: toastId,
+      });
     } finally {
       setIsUpdating(false);
     }
@@ -54,7 +59,9 @@ export function UsersTable({ initialUsers = [], pagination }) {
       router.refresh();
     } catch (error) {
       console.error('Failed to restore user access:', error);
-      toast.error('Failed to restore user access', { id: toastId });
+      toast.error(getErrorMessage(error, 'Failed to restore user access'), {
+        id: toastId,
+      });
     } finally {
       setIsUpdating(false);
     }

@@ -4,6 +4,7 @@ import * as React from 'react';
 import { PendingPapersView } from './pending-papers-view';
 import { toast } from 'sonner';
 import { useApi } from '@/hooks/use-api';
+import { getErrorMessage } from '@/lib/api-error';
 
 export function PendingPapers({ papers: initialPapers, loading }) {
   const api = useApi();
@@ -23,7 +24,9 @@ export function PendingPapers({ papers: initialPapers, loading }) {
       toast.success(`${verb} paper: ${paper.title}`);
     } catch (error) {
       console.error(`Failed to ${status} paper:`, error);
-      toast.error(`Could not ${status} "${paper.title}". Please try again.`);
+      toast.error(
+        getErrorMessage(error, `Could not ${status} "${paper.title}".`)
+      );
     }
   };
 

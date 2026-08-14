@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import { toast } from 'sonner';
+import { getErrorMessage } from '@/lib/api-error';
 import { DeleteSemesterDialogView } from './delete-semester-dialog.view';
 
 export function DeleteSemesterDialog({
@@ -21,9 +22,7 @@ export function DeleteSemesterDialog({
       toast.success(`Semester ${semester.number} deleted successfully`);
       onOpenChange(false);
     } catch (error) {
-      toast.error(
-        error?.response?.data?.message || 'Failed to delete semester'
-      );
+      toast.error(getErrorMessage(error, 'Failed to delete semester'));
     } finally {
       setLoading(false);
     }

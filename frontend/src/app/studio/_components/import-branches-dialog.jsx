@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation';
 
 import { useApi } from '@/hooks/use-api';
 import { parseCSV } from '@/lib/csv-utils';
+import { getErrorMessage } from '@/lib/api-error';
 import { ImportBranchesView } from './import-branches-view';
 
 const branchSchema = z.object({
@@ -134,7 +135,7 @@ export function ImportBranchesDialog({
       router.refresh();
       onOpenChange(false);
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Failed to import branches');
+      toast.error(getErrorMessage(err, 'Failed to import branches'));
     } finally {
       setIsImporting(false);
     }

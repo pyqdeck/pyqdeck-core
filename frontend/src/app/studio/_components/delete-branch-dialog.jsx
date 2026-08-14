@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import { toast } from 'sonner';
+import { getErrorMessage } from '@/lib/api-error';
 import { DeleteBranchDialogView } from './delete-branch-dialog.view';
 
 export function DeleteBranchDialog({ branch, onDelete, open, onOpenChange }) {
@@ -17,7 +18,7 @@ export function DeleteBranchDialog({ branch, onDelete, open, onOpenChange }) {
       toast.success(`Branch ${branch.name} deleted successfully`);
       onOpenChange(false);
     } catch (error) {
-      toast.error(error?.response?.data?.message || 'Failed to delete branch');
+      toast.error(getErrorMessage(error, 'Failed to delete branch'));
     } finally {
       setLoading(false);
     }

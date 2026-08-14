@@ -8,6 +8,7 @@ import * as z from 'zod';
 import { useApi } from '@/hooks/use-api';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
+import { getErrorMessage } from '@/lib/api-error';
 import { EditUniversityDialogView } from './edit-university-dialog-view';
 
 const universitySchema = z.object({
@@ -72,9 +73,7 @@ export function EditUniversityDialog({ university, open, onOpenChange }) {
       onOpenChange(false);
       router.refresh();
     } catch (error) {
-      toast.error(
-        error?.response?.data?.message || 'Failed to update university'
-      );
+      toast.error(getErrorMessage(error, 'Failed to update university'));
     }
   }
 
