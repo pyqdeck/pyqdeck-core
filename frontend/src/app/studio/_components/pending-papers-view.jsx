@@ -46,7 +46,7 @@ export function PendingPapersView({ papers, onApprove, onReject, loading }) {
   const header = (
     <CardHeader className="flex flex-row items-center justify-between pb-4">
       <div className="flex items-center gap-4">
-        <div className="bg-warning/10 text-warning dark:bg-warning/10 dark:text-warning flex h-12 w-12 items-center justify-center rounded-xl shadow-sm">
+        <div className="bg-warning/10 text-warning dark:bg-warning/10 dark:text-warning flex h-12 w-12 items-center justify-center rounded-xl">
           <Clock className="h-6 w-6" />
         </div>
         <div>

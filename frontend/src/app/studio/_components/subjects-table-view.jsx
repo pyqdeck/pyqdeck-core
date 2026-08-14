@@ -99,7 +99,7 @@ export function SubjectsTableView({
   }
 
   return (
-    <Card className="border-border/50 bg-background overflow-hidden rounded-3xl border p-0 shadow-sm">
+    <Card className="border-border/50 bg-background overflow-hidden rounded-3xl border p-0 shadow-none">
       <CardContent className="overflow-x-auto p-0">
         <Table className="min-w-[400px]">
           {/* HEADER */}
@@ -151,7 +151,7 @@ export function SubjectsTableView({
               subjects.map((subject) => (
                 <TableRow
                   key={subject.id}
-                  className="group border-border/40 odd:bg-background even:bg-muted/[0.015] hover:bg-muted/50 border-b transition-all hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.02)]"
+                  className="group border-border/40 odd:bg-background even:bg-muted/[0.015] hover:bg-muted/50 border-b transition-all"
                 >
                   {/* SUBJECT */}
                   <TableCell className="px-6 py-5">

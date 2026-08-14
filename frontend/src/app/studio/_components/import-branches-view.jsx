@@ -115,7 +115,7 @@ function ResizableSheetContent({ children, className, ...props }) {
       {...props}
       style={{ width, maxWidth: '100vw' }}
       className={cn(
-        'flex h-full flex-col gap-0 overflow-hidden border-l p-0 shadow-sm',
+        'flex h-full flex-col gap-0 overflow-hidden border-l p-0 shadow-none',
         '[&]:sm:max-w-none',
         className
       )}
@@ -366,7 +366,7 @@ export function ImportBranchesView({
                         <Button
                           variant="secondary"
                           size="sm"
-                          className="absolute top-3 right-3 h-7 border px-2 text-xs font-bold shadow-sm"
+                          className="absolute top-3 right-3 h-7 border px-2 text-xs font-bold shadow-none"
                           onClick={() => onPastedTextChange('')}
                         >
                           Clear
