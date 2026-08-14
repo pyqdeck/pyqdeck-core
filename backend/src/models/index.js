@@ -31,3 +31,9 @@ export {
 export { Upload, uploadZodSchema } from './Upload.js';
 export { Bookmark, BookmarkTargetType, bookmarkZodSchema } from './Bookmark.js';
 export { PlatformConfig, platformConfigZodSchema } from './PlatformConfig.js';
+export {
+  PermissionGrant,
+  Capability,
+  ScopeLevel,
+  permissionGrantZodSchema,
+} from './PermissionGrant.js';

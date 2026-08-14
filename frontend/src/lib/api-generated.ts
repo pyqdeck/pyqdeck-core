@@ -164,6 +164,52 @@ export interface Paper {
   updatedAt?: string;
 }
 
+export interface PermissionGrant {
+  /** @example "65a12345b67890cdef444444" */
+  id?: string;
+  /**
+   * Reference to User this grant belongs to
+   * @example "65b98765a43210fedcba9876"
+   */
+  userId: string;
+  /** @example ["content:create","content:moderate"] */
+  capabilities: (
+    | "content:create"
+    | "content:edit"
+    | "content:moderate"
+    | "content:delete"
+  )[];
+  /** @example "branch" */
+  scopeLevel:
+    | "global"
+    | "university"
+    | "branch"
+    | "semester"
+    | "subjectOffering";
+  /**
+   * Required unless scopeLevel is "global" -- points at the University/Branch/Semester/SubjectOffering this grant is scoped to
+   * @example "65a12345b67890cdef111111"
+   */
+  scopeId?: string | null;
+  /**
+   * Human-readable name set at creation time, e.g. "Content Moderator -- Computer Engineering"
+   * @example "Content Moderator -- Computer Engineering"
+   */
+  label?: string;
+  /** @default true */
+  isActive?: boolean;
+  /** Reference to the admin User who created this grant */
+  grantedBy?: string;
+  revokedBy?: string | null;
+  /** @format date-time */
+  revokedAt?: string | null;
+  notes?: string;
+  /** @format date-time */
+  createdAt?: string;
+  /** @format date-time */
+  updatedAt?: string;
+}
+
 export interface PlatformConfig {
   /** @default false */
   devMode?: boolean;
@@ -3112,6 +3158,140 @@ export class Api<
         body: data,
         secure: true,
         type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+ * No description
+ *
+ * @tags Users
+ * @name ListUserGrants
+ * @summary List a user's scoped permission grants (Admin only)
+ * @request GET:/users/{clerkId}/grants
+ * @secure
+ * @response `200` `(SuccessResponse & {
+    data?: {
+    items?: (PermissionGrant)[],
+
+},
+
+})` List of permission grants
+ * @response `404` `Error`
+ */
+    listUserGrants: (
+      clerkId: string,
+      query?: {
+        /** @default false */
+        includeRevoked?: boolean;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<
+        SuccessResponse & {
+          data?: {
+            items?: PermissionGrant[];
+          };
+        },
+        Error
+      >({
+        path: `/users/${clerkId}/grants`,
+        method: "GET",
+        query: query,
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+ * No description
+ *
+ * @tags Users
+ * @name CreateUserGrant
+ * @summary Grant a user a scoped permission (Admin only)
+ * @request POST:/users/{clerkId}/grants
+ * @secure
+ * @response `201` `(SuccessResponse & {
+    data?: {
+    grant?: PermissionGrant,
+
+},
+
+})` Grant created
+ * @response `400` `Error`
+ * @response `404` `Error`
+ */
+    createUserGrant: (
+      clerkId: string,
+      data: {
+        capabilities: (
+          | "content:create"
+          | "content:edit"
+          | "content:moderate"
+          | "content:delete"
+        )[];
+        scopeLevel:
+          | "global"
+          | "university"
+          | "branch"
+          | "semester"
+          | "subjectOffering";
+        scopeId?: string | null;
+        label?: string;
+        notes?: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<
+        SuccessResponse & {
+          data?: {
+            grant?: PermissionGrant;
+          };
+        },
+        Error
+      >({
+        path: `/users/${clerkId}/grants`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+ * No description
+ *
+ * @tags Users
+ * @name RevokeUserGrant
+ * @summary Revoke a user's scoped permission grant (Admin only)
+ * @request DELETE:/users/{clerkId}/grants/{grantId}
+ * @secure
+ * @response `200` `(SuccessResponse & {
+    data?: {
+    grant?: PermissionGrant,
+
+},
+
+})` Grant revoked
+ * @response `404` `Error`
+ */
+    revokeUserGrant: (
+      clerkId: string,
+      grantId: string,
+      params: RequestParams = {},
+    ) =>
+      this.request<
+        SuccessResponse & {
+          data?: {
+            grant?: PermissionGrant;
+          };
+        },
+        Error
+      >({
+        path: `/users/${clerkId}/grants/${grantId}`,
+        method: "DELETE",
+        secure: true,
         format: "json",
         ...params,
       }),

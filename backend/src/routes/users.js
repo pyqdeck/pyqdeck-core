@@ -1,12 +1,32 @@
 import { Router } from 'express';
+import { z } from 'zod';
 import * as userController from '../controllers/userController.js';
+import * as permissionGrantController from '../controllers/permissionGrantController.js';
 import {
   requireAuthentication,
   isAdmin,
 } from '../middlewares/auth.middleware.js';
 import { syncUser } from '../middlewares/syncUser.middleware.js';
+import { validateBody } from '../middlewares/validationMiddleware.js';
+import { Capability, ScopeLevel } from '../models/PermissionGrant.js';
 
 const router = Router();
+
+const createGrantSchema = z
+  .object({
+    capabilities: z.array(Capability).min(1, 'At least one capability is required'),
+    scopeLevel: ScopeLevel,
+    scopeId: z.string().nullable().optional(),
+    label: z.string().max(200).optional(),
+    notes: z.string().max(500).optional(),
+  })
+  .refine(
+    (data) => (data.scopeLevel === 'global' ? !data.scopeId : !!data.scopeId),
+    {
+      message: 'scopeId is required unless scopeLevel is "global"',
+      path: ['scopeId'],
+    }
+  );
 
 /**
  * @openapi
@@ -190,6 +210,158 @@ router.patch(
   syncUser,
   isAdmin,
   userController.updateUser
+);
+
+/**
+ * @openapi
+ * /users/{clerkId}/grants:
+ *   get:
+ *     operationId: listUserGrants
+ *     tags: [Users]
+ *     summary: List a user's scoped permission grants (Admin only)
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: clerkId
+ *         required: true
+ *         schema: { type: string }
+ *       - in: query
+ *         name: includeRevoked
+ *         schema: { type: boolean, default: false }
+ *     responses:
+ *       200:
+ *         description: List of permission grants
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       type: object
+ *                       properties:
+ *                         items:
+ *                           type: array
+ *                           items: { $ref: '#/components/schemas/PermissionGrant' }
+ *       404:
+ *         $ref: '#/components/responses/NotFound'
+ */
+router.get(
+  '/:clerkId/grants',
+  requireAuthentication,
+  syncUser,
+  isAdmin,
+  permissionGrantController.listGrants
+);
+
+/**
+ * @openapi
+ * /users/{clerkId}/grants:
+ *   post:
+ *     operationId: createUserGrant
+ *     tags: [Users]
+ *     summary: Grant a user a scoped permission (Admin only)
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: clerkId
+ *         required: true
+ *         schema: { type: string }
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required: [capabilities, scopeLevel]
+ *             properties:
+ *               capabilities:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                   enum: [content:create, content:edit, content:moderate, content:delete]
+ *               scopeLevel:
+ *                 type: string
+ *                 enum: [global, university, branch, semester, subjectOffering]
+ *               scopeId:
+ *                 type: string
+ *                 nullable: true
+ *               label:
+ *                 type: string
+ *               notes:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: Grant created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       type: object
+ *                       properties:
+ *                         grant: { $ref: '#/components/schemas/PermissionGrant' }
+ *       400:
+ *         $ref: '#/components/responses/BadRequest'
+ *       404:
+ *         $ref: '#/components/responses/NotFound'
+ */
+router.post(
+  '/:clerkId/grants',
+  requireAuthentication,
+  syncUser,
+  isAdmin,
+  validateBody(createGrantSchema),
+  permissionGrantController.createGrant
+);
+
+/**
+ * @openapi
+ * /users/{clerkId}/grants/{grantId}:
+ *   delete:
+ *     operationId: revokeUserGrant
+ *     tags: [Users]
+ *     summary: Revoke a user's scoped permission grant (Admin only)
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: clerkId
+ *         required: true
+ *         schema: { type: string }
+ *       - in: path
+ *         name: grantId
+ *         required: true
+ *         schema: { type: string }
+ *     responses:
+ *       200:
+ *         description: Grant revoked
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       type: object
+ *                       properties:
+ *                         grant: { $ref: '#/components/schemas/PermissionGrant' }
+ *       404:
+ *         $ref: '#/components/responses/NotFound'
+ */
+router.delete(
+  '/:clerkId/grants/:grantId',
+  requireAuthentication,
+  syncUser,
+  isAdmin,
+  permissionGrantController.revokeGrant
 );
 
 export default router;

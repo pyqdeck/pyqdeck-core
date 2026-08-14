@@ -449,6 +449,91 @@
           }
         }
       },
+      "PermissionGrant": {
+        "type": "object",
+        "required": [
+          "userId",
+          "capabilities",
+          "scopeLevel"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "65a12345b67890cdef444444"
+          },
+          "userId": {
+            "type": "string",
+            "description": "Reference to User this grant belongs to",
+            "example": "65b98765a43210fedcba9876"
+          },
+          "capabilities": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "content:create",
+                "content:edit",
+                "content:moderate",
+                "content:delete"
+              ]
+            },
+            "example": [
+              "content:create",
+              "content:moderate"
+            ]
+          },
+          "scopeLevel": {
+            "type": "string",
+            "enum": [
+              "global",
+              "university",
+              "branch",
+              "semester",
+              "subjectOffering"
+            ],
+            "example": "branch"
+          },
+          "scopeId": {
+            "type": "string",
+            "nullable": true,
+            "description": "Required unless scopeLevel is \"global\" -- points at the University/Branch/Semester/SubjectOffering this grant is scoped to",
+            "example": "65a12345b67890cdef111111"
+          },
+          "label": {
+            "type": "string",
+            "description": "Human-readable name set at creation time, e.g. \"Content Moderator -- Computer Engineering\"",
+            "example": "Content Moderator -- Computer Engineering"
+          },
+          "isActive": {
+            "type": "boolean",
+            "default": true
+          },
+          "grantedBy": {
+            "type": "string",
+            "description": "Reference to the admin User who created this grant"
+          },
+          "revokedBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "revokedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "notes": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
       "PlatformConfig": {
         "type": "object",
         "properties": {
@@ -5236,6 +5321,242 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/users/{clerkId}/grants": {
+      "get": {
+        "operationId": "listUserGrants",
+        "tags": [
+          "Users"
+        ],
+        "summary": "List a user's scoped permission grants (Admin only)",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "clerkId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "includeRevoked",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of permission grants",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/SuccessResponse"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "type": "object",
+                          "properties": {
+                            "items": {
+                              "type": "array",
+                              "items": {
+                                "$ref": "#/components/schemas/PermissionGrant"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      },
+      "post": {
+        "operationId": "createUserGrant",
+        "tags": [
+          "Users"
+        ],
+        "summary": "Grant a user a scoped permission (Admin only)",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "clerkId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "capabilities",
+                  "scopeLevel"
+                ],
+                "properties": {
+                  "capabilities": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "content:create",
+                        "content:edit",
+                        "content:moderate",
+                        "content:delete"
+                      ]
+                    }
+                  },
+                  "scopeLevel": {
+                    "type": "string",
+                    "enum": [
+                      "global",
+                      "university",
+                      "branch",
+                      "semester",
+                      "subjectOffering"
+                    ]
+                  },
+                  "scopeId": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "label": {
+                    "type": "string"
+                  },
+                  "notes": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Grant created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/SuccessResponse"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "type": "object",
+                          "properties": {
+                            "grant": {
+                              "$ref": "#/components/schemas/PermissionGrant"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/users/{clerkId}/grants/{grantId}": {
+      "delete": {
+        "operationId": "revokeUserGrant",
+        "tags": [
+          "Users"
+        ],
+        "summary": "Revoke a user's scoped permission grant (Admin only)",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "clerkId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "grantId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Grant revoked",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/SuccessResponse"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "type": "object",
+                          "properties": {
+                            "grant": {
+                              "$ref": "#/components/schemas/PermissionGrant"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
           }
         }
       }

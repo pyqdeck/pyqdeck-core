@@ -3,6 +3,9 @@ import {
   requireAuthentication,
   isEditor,
 } from '../middlewares/auth.middleware.js';
+import { authorizeAny } from '../middlewares/authorizeAny.middleware.js';
+import { requireCapability } from '../middlewares/requireCapability.middleware.js';
+import { resolveFromPaperParam } from '../middlewares/scopeResolvers.js';
 import { paginate } from '../middlewares/pagination.middleware.js';
 import { validateBody } from '../middlewares/validationMiddleware.js';
 import { questionZodSchema } from '../models/Question.js';
@@ -88,7 +91,10 @@ router.get('/', paginate(), questionController.listByPaper);
 router.post(
   '/',
   requireAuthentication,
-  isEditor,
+  authorizeAny(
+    isEditor,
+    requireCapability('content:create', resolveFromPaperParam)
+  ),
   validateBody(questionZodSchema),
   questionController.createForPaper
 );
@@ -137,7 +143,10 @@ router.post(
 router.post(
   '/:questionId/link',
   requireAuthentication,
-  isEditor,
+  authorizeAny(
+    isEditor,
+    requireCapability('content:create', resolveFromPaperParam)
+  ),
   questionController.linkToPaper
 );
 

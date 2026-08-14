@@ -13,7 +13,6 @@ import {
   ChevronsUpDown,
   Ban,
   ShieldOff,
-  Bookmark,
 } from 'lucide-react';
 import Link from 'next/link';
 import { useSearchParams, usePathname } from 'next/navigation';
@@ -29,8 +28,6 @@ import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import { Skeleton } from '@/components/ui/skeleton';
-import { Separator } from '@/components/ui/separator';
 import {
   Pagination,
   PaginationContent,
@@ -48,12 +45,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
 import { cn } from '@/lib/utils';
 
 const ROLE_TABS = [
@@ -92,121 +83,6 @@ function RoleBadge({ role }) {
   );
 }
 
-function UserDetailDialog({ user, stats, isLoadingStats, onClose }) {
-  return (
-    <Dialog open={!!user} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="font-roboto border shadow-none sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle className="font-roboto text-lg font-bold">
-            User Profile
-          </DialogTitle>
-        </DialogHeader>
-
-        {user && (
-          <div className="flex flex-col gap-5">
-            {/* Identity */}
-            <div className="flex items-center gap-4">
-              <Avatar className="border-muted bg-muted/50 h-16 w-16 rounded-full border">
-                <AvatarImage
-                  src={user.avatarUrl}
-                  alt={user.name}
-                  className="rounded-full"
-                />
-                <AvatarFallback className="rounded-full text-lg font-bold">
-                  {user.name?.charAt(0)}
-                </AvatarFallback>
-              </Avatar>
-              <div className="flex flex-col gap-1">
-                <div className="flex flex-wrap items-center gap-1.5">
-                  <span className="text-foreground font-roboto text-base font-bold">
-                    {user.name}
-                  </span>
-                  {user.isMe && (
-                    <Badge className="bg-primary/10 text-primary hover:bg-primary/10 h-4 rounded-full border-none px-1.5 text-[9px] font-bold">
-                      YOU
-                    </Badge>
-                  )}
-                  {user.isActive === false && (
-                    <Badge className="bg-destructive/10 text-destructive hover:bg-destructive/10 h-4 rounded-full border-none px-1.5 text-[9px] font-bold">
-                      BANNED
-                    </Badge>
-                  )}
-                </div>
-                <span className="text-muted-foreground font-roboto text-xs lowercase">
-                  {user.email}
-                </span>
-              </div>
-            </div>
-
-            <Separator />
-
-            {/* Details */}
-            <div className="grid grid-cols-2 gap-4">
-              <div className="flex flex-col gap-1">
-                <span className="text-muted-foreground font-roboto text-[10px] font-bold tracking-wider uppercase">
-                  Role
-                </span>
-                <RoleBadge role={user.role} />
-              </div>
-              <div className="flex flex-col gap-1">
-                <span className="text-muted-foreground font-roboto text-[10px] font-bold tracking-wider uppercase">
-                  Joined
-                </span>
-                <span className="text-foreground font-roboto flex items-center gap-1.5 text-sm">
-                  <Calendar className="text-muted-foreground h-3.5 w-3.5" />
-                  {new Date(user.createdAt).toLocaleDateString(undefined, {
-                    month: 'short',
-                    day: 'numeric',
-                    year: 'numeric',
-                  })}
-                </span>
-              </div>
-              <div className="flex flex-col gap-1">
-                <span className="text-muted-foreground font-roboto text-[10px] font-bold tracking-wider uppercase">
-                  University
-                </span>
-                <span className="text-foreground font-roboto text-sm font-medium">
-                  {user.university?.shortName || 'Independent'}
-                </span>
-              </div>
-              <div className="flex flex-col gap-1">
-                <span className="text-muted-foreground font-roboto text-[10px] font-bold tracking-wider uppercase">
-                  Branch
-                </span>
-                <span className="text-foreground font-roboto text-sm font-medium">
-                  {user.branch?.name || 'Global'}
-                </span>
-              </div>
-            </div>
-
-            <Separator />
-
-            {/* Activity stats */}
-            <div>
-              <span className="text-muted-foreground font-roboto mb-3 block text-[10px] font-bold tracking-wider uppercase">
-                Activity
-              </span>
-              {isLoadingStats ? (
-                <Skeleton className="h-16 rounded-lg" />
-              ) : (
-                <div className="bg-muted/40 flex flex-col items-center gap-1 rounded-lg border py-3">
-                  <Bookmark className="text-muted-foreground h-4 w-4" />
-                  <span className="text-foreground font-roboto text-2xl font-bold">
-                    {stats?.bookmarksCount ?? '—'}
-                  </span>
-                  <span className="text-muted-foreground font-roboto text-[10px] font-semibold tracking-wider uppercase">
-                    Bookmarks
-                  </span>
-                </div>
-              )}
-            </div>
-          </div>
-        )}
-      </DialogContent>
-    </Dialog>
-  );
-}
-
 export function UsersTableView({
   users = [],
   pagination,
@@ -214,10 +90,6 @@ export function UsersTableView({
   onBanUser,
   onUnbanUser,
   onOpenDetail,
-  onCloseDetail,
-  selectedUser,
-  userStats,
-  isLoadingStats,
   isUpdating,
 }) {
   const searchParams = useSearchParams();
@@ -630,13 +502,6 @@ export function UsersTableView({
           </CardFooter>
         )}
       </Card>
-
-      <UserDetailDialog
-        user={selectedUser}
-        stats={userStats}
-        isLoadingStats={isLoadingStats}
-        onClose={onCloseDetail}
-      />
     </div>
   );
 }

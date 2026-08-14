@@ -4,6 +4,9 @@ import {
   isAdmin,
   isEditor,
 } from '../middlewares/auth.middleware.js';
+import { authorizeAny } from '../middlewares/authorizeAny.middleware.js';
+import { requireCapability } from '../middlewares/requireCapability.middleware.js';
+import { resolveFromSubjectOfferingBody } from '../middlewares/scopeResolvers.js';
 import * as paperController from '../controllers/paperController.js';
 import { paginate } from '../middlewares/pagination.middleware.js';
 import { validateBody } from '../middlewares/validationMiddleware.js';
@@ -131,7 +134,10 @@ router.get('/:slug', paperController.getBySlug);
 router.post(
   '/',
   requireAuthentication,
-  isEditor,
+  authorizeAny(
+    isEditor,
+    requireCapability('content:create', resolveFromSubjectOfferingBody)
+  ),
   checkContentFreeze,
   validateBody(paperZodSchema),
   paperController.create

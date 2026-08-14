@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { toast } from 'sonner';
 import { UsersTableView } from './users-table-view';
+import { UserDetailDialog } from './user-detail-dialog';
 import { useApi } from '@/hooks/use-api';
 import { useRouter } from 'next/navigation';
 
@@ -79,18 +80,22 @@ export function UsersTable({ initialUsers = [], pagination }) {
   };
 
   return (
-    <UsersTableView
-      users={initialUsers}
-      pagination={pagination}
-      onUpdateRole={handleUpdateRole}
-      onBanUser={handleBanUser}
-      onUnbanUser={handleUnbanUser}
-      onOpenDetail={handleOpenDetail}
-      onCloseDetail={handleCloseDetail}
-      selectedUser={selectedUser}
-      userStats={userStats}
-      isLoadingStats={isLoadingStats}
-      isUpdating={isUpdating}
-    />
+    <>
+      <UsersTableView
+        users={initialUsers}
+        pagination={pagination}
+        onUpdateRole={handleUpdateRole}
+        onBanUser={handleBanUser}
+        onUnbanUser={handleUnbanUser}
+        onOpenDetail={handleOpenDetail}
+        isUpdating={isUpdating}
+      />
+      <UserDetailDialog
+        user={selectedUser}
+        stats={userStats}
+        isLoadingStats={isLoadingStats}
+        onClose={handleCloseDetail}
+      />
+    </>
   );
 }
