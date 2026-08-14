@@ -2388,7 +2388,7 @@
           {
             "in": "query",
             "name": "status",
-            "description": "Filter by status (admin/editor only; ignored otherwise)",
+            "description": "Filter by status (admin/editor, or a scoped content:moderate grant; ignored otherwise)",
             "schema": {
               "type": "string"
             }
@@ -2548,7 +2548,7 @@
         "tags": [
           "Papers"
         ],
-        "summary": "Update a paper (Editor / Admin)",
+        "summary": "Update a paper (Editor / Admin, or a scoped content:edit grant)",
         "security": [
           {
             "bearerAuth": []
@@ -2610,7 +2610,7 @@
         "tags": [
           "Papers"
         ],
-        "summary": "Delete a paper (Admin only)",
+        "summary": "Delete a paper (Admin, or a scoped content:delete grant)",
         "security": [
           {
             "bearerAuth": []
@@ -2645,7 +2645,7 @@
         "tags": [
           "Papers"
         ],
-        "summary": "Approve or reject a paper (Admin only)",
+        "summary": "Approve or reject a paper (Admin, or a scoped content:moderate grant)",
         "security": [
           {
             "bearerAuth": []
@@ -3053,7 +3053,7 @@
         "tags": [
           "Questions"
         ],
-        "summary": "Update a question (Editor or Admin)",
+        "summary": "Update a question (Editor/Admin, or a scoped content:edit grant)",
         "security": [
           {
             "bearerAuth": []
@@ -3115,7 +3115,7 @@
         "tags": [
           "Questions"
         ],
-        "summary": "Delete a question (Admin only)",
+        "summary": "Delete a question (Admin, or a scoped content:delete grant)",
         "security": [
           {
             "bearerAuth": []

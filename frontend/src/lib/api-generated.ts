@@ -1816,7 +1816,7 @@ export class Api<
         subjectOfferingId?: string;
         /** Case-insensitive search on paper title */
         q?: string;
-        /** Filter by status (admin/editor only; ignored otherwise) */
+        /** Filter by status (admin/editor, or a scoped content:moderate grant; ignored otherwise) */
         status?: string;
         /** @default 1 */
         page?: number;
@@ -1902,7 +1902,7 @@ export class Api<
  *
  * @tags Papers
  * @name UpdatePaper
- * @summary Update a paper (Editor / Admin)
+ * @summary Update a paper (Editor / Admin, or a scoped content:edit grant)
  * @request PATCH:/papers/{id}
  * @secure
  * @response `200` `(SuccessResponse & {
@@ -1933,7 +1933,7 @@ export class Api<
      *
      * @tags Papers
      * @name DeletePaper
-     * @summary Delete a paper (Admin only)
+     * @summary Delete a paper (Admin, or a scoped content:delete grant)
      * @request DELETE:/papers/{id}
      * @secure
      * @response `204` `void` Paper deleted
@@ -1953,7 +1953,7 @@ export class Api<
  *
  * @tags Papers
  * @name UpdatePaperStatus
- * @summary Approve or reject a paper (Admin only)
+ * @summary Approve or reject a paper (Admin, or a scoped content:moderate grant)
  * @request PATCH:/papers/{id}/status
  * @secure
  * @response `200` `(SuccessResponse & {
@@ -2185,7 +2185,7 @@ export class Api<
  *
  * @tags Questions
  * @name UpdateQuestion
- * @summary Update a question (Editor or Admin)
+ * @summary Update a question (Editor/Admin, or a scoped content:edit grant)
  * @request PATCH:/questions/{id}
  * @secure
  * @response `200` `(SuccessResponse & {
@@ -2216,7 +2216,7 @@ export class Api<
      *
      * @tags Questions
      * @name DeleteQuestion
-     * @summary Delete a question (Admin only)
+     * @summary Delete a question (Admin, or a scoped content:delete grant)
      * @request DELETE:/questions/{id}
      * @secure
      * @response `200` `void` Deleted
