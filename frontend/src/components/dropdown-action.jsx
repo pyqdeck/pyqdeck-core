@@ -43,7 +43,7 @@ export function DropdownAction({
     <Button
       variant="outline"
       size="icon"
-      className="h-8 w-8 border-2 shadow-none"
+      className="h-8 w-8 border shadow-none"
     >
       <MoreVertical className="h-4 w-4" />
       <span className="sr-only">Open actions</span>
@@ -54,7 +54,7 @@ export function DropdownAction({
     <DropdownMenuContent
       align={align}
       className={cn(
-        'font-roboto w-56 border-2 p-2 shadow-none',
+        'font-roboto w-56 border p-2 shadow-none',
         contentClassName
       )}
     >

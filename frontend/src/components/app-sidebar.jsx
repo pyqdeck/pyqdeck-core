@@ -73,6 +73,11 @@ const navData = {
       url: '/studio/syllabus',
       icon: <FileTextIcon />,
     },
+    {
+      title: 'Papers',
+      url: '/studio/papers',
+      icon: <FileTextIcon />,
+    },
   ],
   security: [
     {
