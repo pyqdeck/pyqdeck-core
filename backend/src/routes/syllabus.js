@@ -6,6 +6,16 @@ import {
   isEditor,
   isAdmin,
 } from '../middlewares/auth.middleware.js';
+import { authorizeAny } from '../middlewares/authorizeAny.middleware.js';
+import { requireCapability } from '../middlewares/requireCapability.middleware.js';
+import {
+  resolveFromSubjectOfferingBody,
+  resolveFromSyllabusId,
+  resolveFromModuleBody,
+  resolveFromModuleId,
+  resolveFromTopicBody,
+  resolveFromTopicId,
+} from '../middlewares/scopeResolvers.js';
 import { validateBody } from '../middlewares/validationMiddleware.js';
 import { syllabusZodSchema } from '../models/Syllabus.js';
 import { moduleZodSchema } from '../models/Module.js';
@@ -59,7 +69,7 @@ const router = Router();
  *   post:
  *     operationId: createSyllabus
  *     tags: [Syllabus]
- *     summary: Initialize a new syllabus
+ *     summary: Initialize a new syllabus (Editor/Admin, or a scoped content:create grant)
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -77,7 +87,10 @@ const router = Router();
 router.post(
   '/syllabus',
   requireAuthentication,
-  isEditor,
+  authorizeAny(
+    isEditor,
+    requireCapability('content:create', resolveFromSubjectOfferingBody)
+  ),
   validateBody(syllabusZodSchema),
   syllabusController.createSyllabus
 );
@@ -93,7 +106,7 @@ router.get(
  *   patch:
  *     operationId: updateSyllabus
  *     tags: [Syllabus]
- *     summary: Update syllabus metadata
+ *     summary: Update syllabus metadata (Editor/Admin, or a scoped content:edit grant)
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -113,7 +126,10 @@ router.get(
 router.patch(
   '/syllabus/:id',
   requireAuthentication,
-  isEditor,
+  authorizeAny(
+    isEditor,
+    requireCapability('content:edit', resolveFromSyllabusId)
+  ),
   validateBody(syllabusZodSchema.partial()),
   syllabusController.updateSyllabus
 );
@@ -125,7 +141,7 @@ router.patch(
  *   post:
  *     operationId: createModule
  *     tags: [Syllabus]
- *     summary: Add a module to a syllabus
+ *     summary: Add a module to a syllabus (Editor/Admin, or a scoped content:create grant)
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -140,7 +156,10 @@ router.patch(
 router.post(
   '/modules',
   requireAuthentication,
-  isEditor,
+  authorizeAny(
+    isEditor,
+    requireCapability('content:create', resolveFromModuleBody)
+  ),
   validateBody(moduleZodSchema),
   syllabusController.createModule
 );
@@ -153,7 +172,7 @@ router.get('/modules', paginate(), syllabusController.listModules);
  *   patch:
  *     operationId: updateModule
  *     tags: [Syllabus]
- *     summary: Update a module
+ *     summary: Update a module (Editor/Admin, or a scoped content:edit grant)
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -173,7 +192,10 @@ router.get('/modules', paginate(), syllabusController.listModules);
 router.patch(
   '/modules/:id',
   requireAuthentication,
-  isEditor,
+  authorizeAny(
+    isEditor,
+    requireCapability('content:edit', resolveFromModuleId)
+  ),
   validateBody(moduleZodSchema.partial()),
   syllabusController.updateModule
 );
@@ -184,7 +206,7 @@ router.patch(
  *   delete:
  *     operationId: deleteModule
  *     tags: [Syllabus]
- *     summary: Delete a module
+ *     summary: Delete a module (Admin, or a scoped content:delete grant)
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -199,7 +221,10 @@ router.patch(
 router.delete(
   '/modules/:id',
   requireAuthentication,
-  isAdmin,
+  authorizeAny(
+    isAdmin,
+    requireCapability('content:delete', resolveFromModuleId)
+  ),
   syllabusController.deleteModule
 );
 
@@ -210,7 +235,7 @@ router.delete(
  *   post:
  *     operationId: createTopic
  *     tags: [Syllabus]
- *     summary: Add a topic to a module
+ *     summary: Add a topic to a module (Editor/Admin, or a scoped content:create grant)
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -225,7 +250,10 @@ router.delete(
 router.post(
   '/topics',
   requireAuthentication,
-  isEditor,
+  authorizeAny(
+    isEditor,
+    requireCapability('content:create', resolveFromTopicBody)
+  ),
   validateBody(topicZodSchema),
   syllabusController.createTopic
 );
@@ -236,7 +264,7 @@ router.post(
  *   patch:
  *     operationId: updateTopic
  *     tags: [Syllabus]
- *     summary: Update a topic
+ *     summary: Update a topic (Editor/Admin, or a scoped content:edit grant)
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -256,7 +284,7 @@ router.post(
 router.patch(
   '/topics/:id',
   requireAuthentication,
-  isEditor,
+  authorizeAny(isEditor, requireCapability('content:edit', resolveFromTopicId)),
   validateBody(topicZodSchema.partial()),
   syllabusController.updateTopic
 );
@@ -267,7 +295,7 @@ router.patch(
  *   delete:
  *     operationId: deleteTopic
  *     tags: [Syllabus]
- *     summary: Delete a topic
+ *     summary: Delete a topic (Admin, or a scoped content:delete grant)
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -282,7 +310,10 @@ router.patch(
 router.delete(
   '/topics/:id',
   requireAuthentication,
-  isAdmin,
+  authorizeAny(
+    isAdmin,
+    requireCapability('content:delete', resolveFromTopicId)
+  ),
   syllabusController.deleteTopic
 );
 

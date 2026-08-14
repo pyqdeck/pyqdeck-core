@@ -3796,7 +3796,7 @@
         "tags": [
           "SubjectOfferings"
         ],
-        "summary": "Create a subject offering (Editor or Admin)",
+        "summary": "Create a subject offering (Editor/Admin, or a scoped content:create grant)",
         "security": [
           {
             "bearerAuth": []
@@ -3939,7 +3939,7 @@
         "tags": [
           "SubjectOfferings"
         ],
-        "summary": "Update a subject offering (Admin only)",
+        "summary": "Update a subject offering (Admin, or a scoped content:edit grant)",
         "security": [
           {
             "bearerAuth": []
@@ -4001,7 +4001,7 @@
         "tags": [
           "SubjectOfferings"
         ],
-        "summary": "Delete a subject offering (Admin only)",
+        "summary": "Delete a subject offering (Admin, or a scoped content:delete grant)",
         "security": [
           {
             "bearerAuth": []
@@ -4342,7 +4342,7 @@
         "tags": [
           "Syllabus"
         ],
-        "summary": "Initialize a new syllabus",
+        "summary": "Initialize a new syllabus (Editor/Admin, or a scoped content:create grant)",
         "security": [
           {
             "bearerAuth": []
@@ -4378,7 +4378,7 @@
         "tags": [
           "Syllabus"
         ],
-        "summary": "Update syllabus metadata",
+        "summary": "Update syllabus metadata (Editor/Admin, or a scoped content:edit grant)",
         "security": [
           {
             "bearerAuth": []
@@ -4417,7 +4417,7 @@
         "tags": [
           "Syllabus"
         ],
-        "summary": "Add a module to a syllabus",
+        "summary": "Add a module to a syllabus (Editor/Admin, or a scoped content:create grant)",
         "security": [
           {
             "bearerAuth": []
@@ -4446,7 +4446,7 @@
         "tags": [
           "Syllabus"
         ],
-        "summary": "Update a module",
+        "summary": "Update a module (Editor/Admin, or a scoped content:edit grant)",
         "security": [
           {
             "bearerAuth": []
@@ -4483,7 +4483,7 @@
         "tags": [
           "Syllabus"
         ],
-        "summary": "Delete a module",
+        "summary": "Delete a module (Admin, or a scoped content:delete grant)",
         "security": [
           {
             "bearerAuth": []
@@ -4512,7 +4512,7 @@
         "tags": [
           "Syllabus"
         ],
-        "summary": "Add a topic to a module",
+        "summary": "Add a topic to a module (Editor/Admin, or a scoped content:create grant)",
         "security": [
           {
             "bearerAuth": []
@@ -4541,7 +4541,7 @@
         "tags": [
           "Syllabus"
         ],
-        "summary": "Update a topic",
+        "summary": "Update a topic (Editor/Admin, or a scoped content:edit grant)",
         "security": [
           {
             "bearerAuth": []
@@ -4578,7 +4578,7 @@
         "tags": [
           "Syllabus"
         ],
-        "summary": "Delete a topic",
+        "summary": "Delete a topic (Admin, or a scoped content:delete grant)",
         "security": [
           {
             "bearerAuth": []

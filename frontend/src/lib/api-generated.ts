@@ -2465,7 +2465,7 @@ export class Api<
  *
  * @tags SubjectOfferings
  * @name CreateSubjectOffering
- * @summary Create a subject offering (Editor or Admin)
+ * @summary Create a subject offering (Editor/Admin, or a scoped content:create grant)
  * @request POST:/subject-offerings
  * @secure
  * @response `201` `(SuccessResponse & {
@@ -2550,7 +2550,7 @@ export class Api<
  *
  * @tags SubjectOfferings
  * @name UpdateSubjectOffering
- * @summary Update a subject offering (Admin only)
+ * @summary Update a subject offering (Admin, or a scoped content:edit grant)
  * @request PATCH:/subject-offerings/{id}
  * @secure
  * @response `200` `(SuccessResponse & {
@@ -2585,7 +2585,7 @@ export class Api<
      *
      * @tags SubjectOfferings
      * @name DeleteSubjectOffering
-     * @summary Delete a subject offering (Admin only)
+     * @summary Delete a subject offering (Admin, or a scoped content:delete grant)
      * @request DELETE:/subject-offerings/{id}
      * @secure
      * @response `200` `void` Deleted
@@ -2790,7 +2790,7 @@ export class Api<
      *
      * @tags Syllabus
      * @name CreateSyllabus
-     * @summary Initialize a new syllabus
+     * @summary Initialize a new syllabus (Editor/Admin, or a scoped content:create grant)
      * @request POST:/syllabus
      * @secure
      * @response `201` `SuccessResponse` Syllabus initialized
@@ -2811,7 +2811,7 @@ export class Api<
      *
      * @tags Syllabus
      * @name UpdateSyllabus
-     * @summary Update syllabus metadata
+     * @summary Update syllabus metadata (Editor/Admin, or a scoped content:edit grant)
      * @request PATCH:/syllabus/{id}
      * @secure
      * @response `200` `void` Syllabus updated
@@ -2832,7 +2832,7 @@ export class Api<
      *
      * @tags Syllabus
      * @name CreateModule
-     * @summary Add a module to a syllabus
+     * @summary Add a module to a syllabus (Editor/Admin, or a scoped content:create grant)
      * @request POST:/modules
      * @secure
      * @response `201` `void` Module created
@@ -2852,7 +2852,7 @@ export class Api<
      *
      * @tags Syllabus
      * @name UpdateModule
-     * @summary Update a module
+     * @summary Update a module (Editor/Admin, or a scoped content:edit grant)
      * @request PATCH:/modules/{id}
      * @secure
      * @response `200` `void` Module updated
@@ -2872,7 +2872,7 @@ export class Api<
      *
      * @tags Syllabus
      * @name DeleteModule
-     * @summary Delete a module
+     * @summary Delete a module (Admin, or a scoped content:delete grant)
      * @request DELETE:/modules/{id}
      * @secure
      * @response `204` `void` Module deleted
@@ -2933,7 +2933,7 @@ export class Api<
      *
      * @tags Syllabus
      * @name CreateTopic
-     * @summary Add a topic to a module
+     * @summary Add a topic to a module (Editor/Admin, or a scoped content:create grant)
      * @request POST:/topics
      * @secure
      * @response `201` `void` Topic created
@@ -2953,7 +2953,7 @@ export class Api<
      *
      * @tags Syllabus
      * @name UpdateTopic
-     * @summary Update a topic
+     * @summary Update a topic (Editor/Admin, or a scoped content:edit grant)
      * @request PATCH:/topics/{id}
      * @secure
      * @response `200` `void` Topic updated
@@ -2973,7 +2973,7 @@ export class Api<
      *
      * @tags Syllabus
      * @name DeleteTopic
-     * @summary Delete a topic
+     * @summary Delete a topic (Admin, or a scoped content:delete grant)
      * @request DELETE:/topics/{id}
      * @secure
      * @response `204` `void` Topic deleted

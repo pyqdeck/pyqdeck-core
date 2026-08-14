@@ -1,6 +1,9 @@
 import { Paper } from '../models/Paper.js';
 import { SubjectOffering } from '../models/SubjectOffering.js';
 import { QuestionPaperMap } from '../models/QuestionPaperMap.js';
+import { Syllabus } from '../models/Syllabus.js';
+import { Module } from '../models/Module.js';
+import { Topic } from '../models/Topic.js';
 import { NotFoundError } from '../utils/errors/index.js';
 
 function toScope(offering) {
@@ -10,6 +13,24 @@ function toScope(offering) {
     semesterId: offering.semesterId,
     subjectOfferingId: offering._id,
   };
+}
+
+async function scopeFromOfferingId(subjectOfferingId) {
+  const offering = await SubjectOffering.findById(subjectOfferingId).lean();
+  if (!offering) throw new NotFoundError('Subject offering not found');
+  return toScope(offering);
+}
+
+async function scopeFromSyllabusId(syllabusId) {
+  const syllabus = await Syllabus.findById(syllabusId).lean();
+  if (!syllabus) throw new NotFoundError('Syllabus not found');
+  return scopeFromOfferingId(syllabus.subjectOfferingId);
+}
+
+async function scopeFromModuleId(moduleId) {
+  const module_ = await Module.findById(moduleId).lean();
+  if (!module_) throw new NotFoundError('Module not found');
+  return scopeFromSyllabusId(module_.syllabusId);
 }
 
 /**
@@ -77,4 +98,63 @@ export async function resolveFromQuestionId(req) {
     );
   }
   return resolveFromPaperParam({ params: { paperId: mapping.paperId } });
+}
+
+/**
+ * For POST /subject-offerings -- the offering doesn't exist yet, so its
+ * ancestor scope is read directly off the create body rather than looked
+ * up. A subjectOffering-level grant can never match here (there's no
+ * subjectOfferingId yet); university/branch/semester-level grants still
+ * work normally.
+ */
+export async function resolveFromOfferingCreateBody(req) {
+  return {
+    universityId: req.body.universityId,
+    branchId: req.body.branchId,
+    semesterId: req.body.semesterId,
+  };
+}
+
+/**
+ * For PATCH/DELETE /subject-offerings/:id.
+ */
+export async function resolveFromSubjectOfferingId(req) {
+  return scopeFromOfferingId(req.params.id);
+}
+
+/**
+ * For PATCH /syllabus/:id.
+ */
+export async function resolveFromSyllabusId(req) {
+  return scopeFromSyllabusId(req.params.id);
+}
+
+/**
+ * For POST /modules -- scope comes from the syllabus named in the body.
+ */
+export async function resolveFromModuleBody(req) {
+  return scopeFromSyllabusId(req.body.syllabusId);
+}
+
+/**
+ * For PATCH/DELETE /modules/:id.
+ */
+export async function resolveFromModuleId(req) {
+  return scopeFromModuleId(req.params.id);
+}
+
+/**
+ * For POST /topics -- scope comes from the module named in the body.
+ */
+export async function resolveFromTopicBody(req) {
+  return scopeFromModuleId(req.body.moduleId);
+}
+
+/**
+ * For PATCH/DELETE /topics/:id.
+ */
+export async function resolveFromTopicId(req) {
+  const topic = await Topic.findById(req.params.id).lean();
+  if (!topic) throw new NotFoundError('Topic not found');
+  return scopeFromModuleId(topic.moduleId);
 }

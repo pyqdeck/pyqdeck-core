@@ -4,6 +4,12 @@ import {
   isAdmin,
   isEditor,
 } from '../middlewares/auth.middleware.js';
+import { authorizeAny } from '../middlewares/authorizeAny.middleware.js';
+import { requireCapability } from '../middlewares/requireCapability.middleware.js';
+import {
+  resolveFromOfferingCreateBody,
+  resolveFromSubjectOfferingId,
+} from '../middlewares/scopeResolvers.js';
 import { paginate } from '../middlewares/pagination.middleware.js';
 import { validateBody } from '../middlewares/validationMiddleware.js';
 import { subjectOfferingZodSchema } from '../models/SubjectOffering.js';
@@ -133,7 +139,7 @@ router.get('/:slug', subjectOfferingController.getBySlug);
  *   post:
  *     operationId: createSubjectOffering
  *     tags: [SubjectOfferings]
- *     summary: Create a subject offering (Editor or Admin)
+ *     summary: Create a subject offering (Editor/Admin, or a scoped content:create grant)
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -160,7 +166,10 @@ router.get('/:slug', subjectOfferingController.getBySlug);
 router.post(
   '/',
   requireAuthentication,
-  isEditor,
+  authorizeAny(
+    isEditor,
+    requireCapability('content:create', resolveFromOfferingCreateBody)
+  ),
   validateBody(subjectOfferingZodSchema),
   subjectOfferingController.create
 );
@@ -171,7 +180,7 @@ router.post(
  *   patch:
  *     operationId: updateSubjectOffering
  *     tags: [SubjectOfferings]
- *     summary: Update a subject offering (Admin only)
+ *     summary: Update a subject offering (Admin, or a scoped content:edit grant)
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -205,7 +214,10 @@ router.post(
 router.patch(
   '/:id',
   requireAuthentication,
-  isAdmin,
+  authorizeAny(
+    isAdmin,
+    requireCapability('content:edit', resolveFromSubjectOfferingId)
+  ),
   validateBody(updateSchema),
   subjectOfferingController.update
 );
@@ -216,7 +228,7 @@ router.patch(
  *   delete:
  *     operationId: deleteSubjectOffering
  *     tags: [SubjectOfferings]
- *     summary: Delete a subject offering (Admin only)
+ *     summary: Delete a subject offering (Admin, or a scoped content:delete grant)
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -235,7 +247,10 @@ router.patch(
 router.delete(
   '/:id',
   requireAuthentication,
-  isAdmin,
+  authorizeAny(
+    isAdmin,
+    requireCapability('content:delete', resolveFromSubjectOfferingId)
+  ),
   subjectOfferingController.remove
 );
 
