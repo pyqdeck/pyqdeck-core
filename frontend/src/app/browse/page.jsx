@@ -32,7 +32,7 @@ export default async function BrowseUniversitiesPage() {
   }
 
   return (
-    <div className="mx-auto w-full max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
+    <div className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
       <div className="mb-8">
         <h1 className="text-3xl font-bold tracking-tight">
           Choose Your University
@@ -55,7 +55,7 @@ export default async function BrowseUniversitiesPage() {
           </EmptyHeader>
         </Empty>
       ) : (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {universities.map((university) => (
             <Link key={university.id} href={`/browse/${university.slug}`}>
               <Card className="h-full transition-shadow hover:shadow-md">

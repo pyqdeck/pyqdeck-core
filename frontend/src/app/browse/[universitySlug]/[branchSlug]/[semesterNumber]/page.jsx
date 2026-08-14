@@ -105,7 +105,7 @@ export default async function SemesterSubjectsPage({ params }) {
   ];
 
   return (
-    <div className="mx-auto w-full max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
+    <div className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
       <BreadcrumbJsonLd trail={trail} />
       <BreadcrumbNav trail={trail} />
 
@@ -129,7 +129,7 @@ export default async function SemesterSubjectsPage({ params }) {
           </EmptyHeader>
         </Empty>
       ) : (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {offerings.map((offering) => {
             const subject = subjectMap.get(offering.subjectId);
             return (

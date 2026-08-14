@@ -71,7 +71,7 @@ export default async function BranchSemestersPage({ params }) {
   ];
 
   return (
-    <div className="mx-auto w-full max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
+    <div className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
       <BreadcrumbJsonLd trail={trail} />
       <BreadcrumbNav trail={trail} />
 
@@ -93,7 +93,7 @@ export default async function BranchSemestersPage({ params }) {
           </EmptyHeader>
         </Empty>
       ) : (
-        <div className="grid gap-4 sm:grid-cols-3 lg:grid-cols-4">
+        <div className="grid gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
           {semesters.map((semester) => (
             <Link
               key={semester.id}
