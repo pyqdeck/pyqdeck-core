@@ -34,6 +34,14 @@ class PermissionGrantService {
     return permissionGrantRepository.revoke(id, revokedBy);
   }
 
+  async revokeAllForScope(scopeLevel, scopeId, revokedBy) {
+    return permissionGrantRepository.revokeAllForScope(
+      scopeLevel,
+      scopeId,
+      revokedBy
+    );
+  }
+
   /**
    * Does this user hold `capability` somewhere that covers `targetScope`?
    * Admins bypass entirely. Otherwise a grant matches if it's global, or its

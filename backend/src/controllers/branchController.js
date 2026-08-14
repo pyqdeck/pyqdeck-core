@@ -110,6 +110,6 @@ export const update = catchAsync(async (req, res, next) => {
  * Admin only
  */
 export const remove = catchAsync(async (req, res, next) => {
-  await branchService.delete(req.params.id);
+  await branchService.delete(req.params.id, req.dbUser?._id);
   res.status(204).send();
 });

@@ -1,4 +1,5 @@
 import universityRepository from '../repositories/universityRepository.js';
+import permissionGrantService from './permissionGrantService.js';
 
 class UniversityService {
   async list(query = {}, pagination) {
@@ -46,8 +47,10 @@ class UniversityService {
     return universityRepository.update(id, data);
   }
 
-  async delete(id) {
-    return universityRepository.delete(id);
+  async delete(id, deletedBy) {
+    const university = await universityRepository.delete(id);
+    await permissionGrantService.revokeAllForScope('university', id, deletedBy);
+    return university;
   }
 }
 

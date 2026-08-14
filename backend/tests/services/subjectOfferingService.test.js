@@ -15,6 +15,12 @@ vi.mock('../../src/repositories/subjectOfferingRepository.js', () => ({
   },
 }));
 
+vi.mock('../../src/services/permissionGrantService.js', () => ({
+  default: {
+    revokeAllForScope: vi.fn(),
+  },
+}));
+
 describe('SubjectOfferingService', () => {
   const sampleOffering = {
     _id: 'offering_1',

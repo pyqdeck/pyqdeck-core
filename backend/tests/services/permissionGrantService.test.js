@@ -12,6 +12,7 @@ vi.mock('../../src/repositories/permissionGrantRepository.js', () => ({
     findByUserId: vi.fn(),
     findActiveByUserAndCapability: vi.fn(),
     revoke: vi.fn(),
+    revokeAllForScope: vi.fn(),
   },
 }));
 
@@ -217,6 +218,26 @@ describe('PermissionGrantService', () => {
 
       expect(permissionGrantRepository.revoke).toHaveBeenCalledWith(
         'g1',
+        'admin1'
+      );
+    });
+  });
+
+  describe('revokeAllForScope', () => {
+    it('delegates to the repository with the scope level, id, and revoking admin', async () => {
+      permissionGrantRepository.revokeAllForScope.mockResolvedValue({
+        modifiedCount: 2,
+      });
+
+      await permissionGrantService.revokeAllForScope(
+        'branch',
+        'branch-1',
+        'admin1'
+      );
+
+      expect(permissionGrantRepository.revokeAllForScope).toHaveBeenCalledWith(
+        'branch',
+        'branch-1',
         'admin1'
       );
     });

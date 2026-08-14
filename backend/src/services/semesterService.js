@@ -1,4 +1,5 @@
 import semesterRepository from '../repositories/semesterRepository.js';
+import permissionGrantService from './permissionGrantService.js';
 
 class SemesterService {
   async listByBranch(branchId) {
@@ -25,8 +26,10 @@ class SemesterService {
     return semesterRepository.update(id, data);
   }
 
-  async delete(id) {
-    return semesterRepository.delete(id);
+  async delete(id, deletedBy) {
+    const semester = await semesterRepository.delete(id);
+    await permissionGrantService.revokeAllForScope('semester', id, deletedBy);
+    return semester;
   }
 }
 

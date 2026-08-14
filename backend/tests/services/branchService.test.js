@@ -17,6 +17,12 @@ vi.mock('../../src/repositories/branchRepository.js', () => ({
   },
 }));
 
+vi.mock('../../src/services/permissionGrantService.js', () => ({
+  default: {
+    revokeAllForScope: vi.fn(),
+  },
+}));
+
 describe('BranchService', () => {
   const sampleBranch = {
     _id: 'branch_1',

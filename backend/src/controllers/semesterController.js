@@ -63,6 +63,6 @@ export const update = catchAsync(async (req, res, next) => {
  * Admin only
  */
 export const remove = catchAsync(async (req, res, next) => {
-  await semesterService.delete(req.params.id);
+  await semesterService.delete(req.params.id, req.dbUser?._id);
   res.status(204).send();
 });

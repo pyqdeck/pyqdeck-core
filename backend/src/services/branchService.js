@@ -1,4 +1,5 @@
 import branchRepository from '../repositories/branchRepository.js';
+import permissionGrantService from './permissionGrantService.js';
 
 class BranchService {
   async listByUniversity(universityId, pagination, query = {}) {
@@ -52,8 +53,10 @@ class BranchService {
     return branchRepository.update(id, data);
   }
 
-  async delete(id) {
-    return branchRepository.delete(id);
+  async delete(id, deletedBy) {
+    const branch = await branchRepository.delete(id);
+    await permissionGrantService.revokeAllForScope('branch', id, deletedBy);
+    return branch;
   }
 }
 

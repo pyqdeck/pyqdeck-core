@@ -1,4 +1,5 @@
 import subjectOfferingRepository from '../repositories/subjectOfferingRepository.js';
+import permissionGrantService from './permissionGrantService.js';
 
 class SubjectOfferingService {
   async list(filter = {}, pagination) {
@@ -35,8 +36,14 @@ class SubjectOfferingService {
     return subjectOfferingRepository.update(id, data);
   }
 
-  async delete(id) {
-    return subjectOfferingRepository.delete(id);
+  async delete(id, deletedBy) {
+    const offering = await subjectOfferingRepository.delete(id);
+    await permissionGrantService.revokeAllForScope(
+      'subjectOffering',
+      id,
+      deletedBy
+    );
+    return offering;
   }
 }
 

@@ -43,6 +43,19 @@ class PermissionGrantRepository {
     if (!grant) throw new NotFoundError('Permission grant not found');
     return grant;
   }
+
+  /**
+   * Soft-revokes every active grant scoped to a specific entity. Used when
+   * that entity (a University/Branch/Semester/SubjectOffering) is deleted,
+   * so the Permissions UI never shows a grant as active when there's
+   * nothing left for it to apply to.
+   */
+  async revokeAllForScope(scopeLevel, scopeId, revokedBy) {
+    return PermissionGrant.updateMany(
+      { scopeLevel, scopeId, isActive: true },
+      { $set: { isActive: false, revokedBy, revokedAt: new Date() } }
+    );
+  }
 }
 
 export const permissionGrantRepository = new PermissionGrantRepository();

@@ -14,6 +14,12 @@ vi.mock('../../src/repositories/semesterRepository.js', () => ({
   },
 }));
 
+vi.mock('../../src/services/permissionGrantService.js', () => ({
+  default: {
+    revokeAllForScope: vi.fn(),
+  },
+}));
+
 describe('SemesterService', () => {
   const sampleSemester = {
     _id: 'sem_1',
