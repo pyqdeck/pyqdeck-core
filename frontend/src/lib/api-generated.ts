@@ -227,8 +227,11 @@ export interface PlatformConfig {
 export interface Question {
   /** @example "65a12345b67890cdef123456" */
   id?: string;
-  /** @example "Explain the architecture of a compiler in detail." */
-  text: string;
+  /**
+   * Question text, in Markdown
+   * @example "Explain the architecture of a compiler in detail."
+   */
+  mdText: string;
   /**
    * Cleaned text used for deduplication and search
    * @example "explain the architecture of a compiler in detail"

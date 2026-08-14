@@ -50,7 +50,7 @@ export function QuestionsTableView({ questions = [], onEdit, onDelete }) {
                 Q{index + 1}
               </span>
               <div className="flex-1 space-y-2">
-                <p className="text-sm leading-relaxed">{question.text}</p>
+                <p className="text-sm leading-relaxed">{question.mdText}</p>
                 <div className="flex flex-wrap gap-1.5">
                   <Badge variant="secondary" className="capitalize">
                     {question.type}

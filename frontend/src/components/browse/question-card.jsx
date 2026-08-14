@@ -7,7 +7,8 @@ import { getCoursifyAskUrl } from '@/lib/coursify';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Bookmark, BookmarkCheck, Sparkles } from 'lucide-react';
+import { Bookmark, BookmarkCheck, Sparkles, CheckCircle2 } from 'lucide-react';
+import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 
 export function QuestionCard({
@@ -45,7 +46,7 @@ export function QuestionCard({
 
   const handleAskAI = () => {
     window.open(
-      getCoursifyAskUrl(question.text),
+      getCoursifyAskUrl(question.mdText),
       '_blank',
       'noopener,noreferrer'
     );
@@ -97,8 +98,33 @@ export function QuestionCard({
 
       <CardContent>
         <p className="text-sm leading-relaxed whitespace-pre-wrap">
-          {question.text}
+          {question.mdText}
         </p>
+
+        {question.type === 'mcq' && question.options?.length > 0 && (
+          <ul className="mt-3 flex flex-col gap-1.5">
+            {question.options.map((option, index) => (
+              <li
+                key={index}
+                className={cn(
+                  'flex items-center gap-2 rounded-md border px-3 py-1.5 text-sm',
+                  option.isCorrect
+                    ? 'border-primary/30 bg-primary/5 text-primary font-medium'
+                    : 'border-border'
+                )}
+              >
+                {option.isCorrect ? (
+                  <CheckCircle2 className="size-4 shrink-0" />
+                ) : (
+                  <span className="text-muted-foreground size-4 shrink-0 text-center text-xs leading-4">
+                    {String.fromCharCode(65 + index)}
+                  </span>
+                )}
+                <span>{option.text}</span>
+              </li>
+            ))}
+          </ul>
+        )}
 
         <div className="mt-4 border-t pt-3">
           <Button

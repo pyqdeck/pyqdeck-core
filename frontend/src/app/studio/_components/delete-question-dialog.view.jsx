@@ -34,7 +34,7 @@ export function DeleteQuestionDialogView({
             You are about to permanently delete this question:
             <br />
             <span className="text-foreground mt-2 line-clamp-2 block font-medium">
-              &ldquo;{question?.text}&rdquo;
+              &ldquo;{question?.mdText}&rdquo;
             </span>
             <br />
             <span className="font-bold">This action cannot be undone.</span>
