@@ -26,6 +26,7 @@ import {
   GraduationCapIcon,
   LayoutDashboardIcon,
   KeyRoundIcon,
+  InboxIcon,
 } from 'lucide-react';
 
 import { Skeleton } from '@/components/ui/skeleton';
@@ -69,6 +70,11 @@ const navData = {
       title: 'User Directory',
       url: '/studio/users',
       icon: <UsersIcon />,
+    },
+    {
+      title: 'Access Requests',
+      url: '/studio/access-requests',
+      icon: <InboxIcon />,
     },
     {
       title: 'Settings',

@@ -1,5 +1,6 @@
-import { KeyRound, ShieldCheck } from 'lucide-react';
+import { KeyRound, ShieldCheck, Plus, Clock, X, Check } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 
@@ -41,16 +42,67 @@ function formatDate(value) {
   });
 }
 
-export function MyPermissionsView({ role, grants = [] }) {
+function RequestStatusBadge({ status }) {
+  const config = {
+    pending: {
+      icon: Clock,
+      className: 'text-warning border-warning/30',
+      label: 'PENDING',
+    },
+    approved: {
+      icon: Check,
+      className: 'text-success border-success/30',
+      label: 'APPROVED',
+    },
+    denied: {
+      icon: X,
+      className: 'text-destructive border-destructive/30',
+      label: 'DENIED',
+    },
+  }[status] || { icon: Clock, className: '', label: status.toUpperCase() };
+
+  const Icon = config.icon;
+  return (
+    <Badge
+      variant="outline"
+      className={cn(
+        'h-4 gap-1 rounded-full px-1.5 text-[9px] font-bold',
+        config.className
+      )}
+    >
+      <Icon className="size-2.5" />
+      {config.label}
+    </Badge>
+  );
+}
+
+export function MyPermissionsView({
+  role,
+  grants = [],
+  requests = [],
+  onRequestAccess,
+}) {
   return (
     <div className="flex max-w-2xl flex-col gap-6">
-      <div className="space-y-2">
-        <h1 className="text-foreground text-3xl font-bold tracking-tight">
-          My Permissions
-        </h1>
-        <p className="text-muted-foreground text-base">
-          What your account can do in the studio right now.
-        </p>
+      <div className="flex items-start justify-between gap-4">
+        <div className="space-y-2">
+          <h1 className="text-foreground text-3xl font-bold tracking-tight">
+            My Permissions
+          </h1>
+          <p className="text-muted-foreground text-base">
+            What your account can do in the studio right now.
+          </p>
+        </div>
+        {role !== 'admin' && (
+          <Button
+            size="sm"
+            className="font-roboto shrink-0 gap-1.5 border font-bold shadow-none"
+            onClick={onRequestAccess}
+          >
+            <Plus className="h-3.5 w-3.5" />
+            Request Access
+          </Button>
+        )}
       </div>
 
       <div className="flex items-center gap-3">
@@ -120,6 +172,45 @@ export function MyPermissionsView({ role, grants = [] }) {
               </Card>
             );
           })}
+        </div>
+      )}
+
+      {role !== 'admin' && requests.length > 0 && (
+        <div className="flex flex-col gap-2">
+          <span className="text-muted-foreground font-roboto text-xs font-bold tracking-wider uppercase">
+            My Requests
+          </span>
+          {requests.map((request) => (
+            <Card key={request.id} className="border shadow-none">
+              <CardContent className="flex flex-col gap-1.5 py-3">
+                <div className="flex flex-wrap items-center gap-1.5">
+                  <span className="text-foreground font-roboto text-sm font-bold">
+                    {scopeSummary(request)}
+                  </span>
+                  <RequestStatusBadge status={request.status} />
+                </div>
+                <div className="flex flex-wrap gap-1">
+                  {request.capabilities.map((cap) => (
+                    <Badge
+                      key={cap}
+                      variant="outline"
+                      className="font-roboto h-5 rounded-full px-2 text-[10px] font-bold"
+                    >
+                      {CAPABILITY_LABELS[cap] || cap}
+                    </Badge>
+                  ))}
+                </div>
+                {request.status === 'denied' && request.denialReason && (
+                  <span className="text-destructive font-roboto text-[11px]">
+                    {request.denialReason}
+                  </span>
+                )}
+                <span className="text-muted-foreground font-roboto text-[11px]">
+                  Requested {formatDate(request.createdAt)}
+                </span>
+              </CardContent>
+            </Card>
+          ))}
         </div>
       )}
     </div>
