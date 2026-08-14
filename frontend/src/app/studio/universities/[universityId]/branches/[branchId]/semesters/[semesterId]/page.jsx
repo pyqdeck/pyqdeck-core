@@ -48,14 +48,12 @@ export default async function SemesterDetailPage({ params }) {
   }
 
   return (
-    <div className="p-4">
-      <SemesterDetail
-        university={university}
-        branch={branch}
-        semester={semester}
-        offerings={offerings}
-        subjects={subjects}
-      />
-    </div>
+    <SemesterDetail
+      university={university}
+      branch={branch}
+      semester={semester}
+      offerings={offerings}
+      subjects={subjects}
+    />
   );
 }

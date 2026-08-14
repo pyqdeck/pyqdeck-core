@@ -94,7 +94,7 @@ export default async function StudioLayout({ children }) {
             </Breadcrumb>
           </div>
         </header>
-        <main className="p-4 pt-0">{children}</main>
+        <main className="p-4">{children}</main>
       </SidebarInset>
     </SidebarProvider>
   );

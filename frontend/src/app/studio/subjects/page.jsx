@@ -35,8 +35,6 @@ export default async function SubjectsPage({ searchParams }) {
   }
 
   return (
-    <div className="p-4">
-      <SubjectManagement initialSubjects={subjects} pagination={pagination} />
-    </div>
+    <SubjectManagement initialSubjects={subjects} pagination={pagination} />
   );
 }

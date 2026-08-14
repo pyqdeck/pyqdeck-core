@@ -24,7 +24,7 @@ export function Hero() {
   }, [api]);
 
   return (
-    <section className="relative flex-1 overflow-hidden px-4 pt-8 pb-24 lg:pt-12 lg:pb-32">
+    <section className="relative flex-1 overflow-hidden px-4 pt-8 pb-16 lg:pt-12 lg:pb-20">
       {/* Background wash */}
       <div className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_90%_60%_at_50%_-10%,oklch(0.72_0.15_250/0.08),transparent)]" />

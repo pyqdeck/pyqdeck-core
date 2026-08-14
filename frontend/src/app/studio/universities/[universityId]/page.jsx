@@ -31,9 +31,5 @@ export default async function UniversityDetailPage({ params }) {
     return notFound();
   }
 
-  return (
-    <div className="p-4">
-      <UniversityDetail university={university} branches={branches} />
-    </div>
-  );
+  return <UniversityDetail university={university} branches={branches} />;
 }

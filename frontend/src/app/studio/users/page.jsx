@@ -45,7 +45,7 @@ export default async function UsersPage({ searchParams }) {
   }
 
   return (
-    <div className="flex flex-col gap-6 p-4">
+    <div className="flex flex-col gap-6">
       <div className="flex items-center justify-between">
         <div className="flex flex-col gap-1">
           <h1 className="font-roboto text-foreground text-3xl font-bold tracking-tight">

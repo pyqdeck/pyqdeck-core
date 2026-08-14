@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 
 export function FinalCTA() {
   return (
-    <section className="relative overflow-hidden border-t px-4 py-28">
+    <section className="relative overflow-hidden border-t px-4 py-20">
       <motion.div
         initial={{ opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}

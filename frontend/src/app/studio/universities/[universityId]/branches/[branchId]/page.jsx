@@ -36,12 +36,10 @@ export default async function BranchDetailPage({ params }) {
   }
 
   return (
-    <div className="p-4">
-      <BranchDetail
-        university={university}
-        branch={branch}
-        semesters={semesters}
-      />
-    </div>
+    <BranchDetail
+      university={university}
+      branch={branch}
+      semesters={semesters}
+    />
   );
 }

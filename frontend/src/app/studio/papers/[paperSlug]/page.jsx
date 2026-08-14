@@ -43,12 +43,6 @@ export default async function PaperDetailPage({ params }) {
   }
 
   return (
-    <div className="p-4">
-      <PaperDetail
-        paper={paper}
-        questions={questions}
-        backHref={offeringHref}
-      />
-    </div>
+    <PaperDetail paper={paper} questions={questions} backHref={offeringHref} />
   );
 }

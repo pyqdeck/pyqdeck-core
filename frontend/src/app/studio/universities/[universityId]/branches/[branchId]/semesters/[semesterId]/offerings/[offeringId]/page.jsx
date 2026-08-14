@@ -61,18 +61,16 @@ export default async function OfferingDetailPage({ params, searchParams }) {
   }
 
   return (
-    <div className="p-4">
-      <OfferingDetail
-        university={university}
-        branch={branch}
-        semester={semester}
-        offering={offering}
-        subject={subject}
-        syllabus={syllabus}
-        modules={modules}
-        papers={papers}
-        initialTab={tab}
-      />
-    </div>
+    <OfferingDetail
+      university={university}
+      branch={branch}
+      semester={semester}
+      offering={offering}
+      subject={subject}
+      syllabus={syllabus}
+      modules={modules}
+      papers={papers}
+      initialTab={tab}
+    />
   );
 }

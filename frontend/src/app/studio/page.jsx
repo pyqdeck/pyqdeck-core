@@ -38,7 +38,7 @@ export default async function StudioPage() {
   };
 
   return (
-    <div className="flex flex-col gap-8 p-4 lg:p-6">
+    <div className="flex flex-col gap-8">
       <div className="space-y-2">
         <h1 className="text-foreground text-4xl font-bold tracking-tight">
           Studio Overview

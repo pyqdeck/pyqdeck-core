@@ -6,7 +6,7 @@ import { PenLine } from 'lucide-react';
 
 export function Testimonials() {
   return (
-    <section className="border-border bg-muted/30 border-y py-24">
+    <section className="border-border bg-muted/30 border-y py-16">
       <div className="mx-auto max-w-2xl px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

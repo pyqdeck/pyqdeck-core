@@ -86,7 +86,7 @@ function DrillDownVisual() {
 
 export function HowItWorks() {
   return (
-    <section id="how-it-works" className="py-24 lg:py-32">
+    <section id="how-it-works" className="py-16 lg:py-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-20 grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
           <motion.div

@@ -20,7 +20,7 @@ export default async function SettingsPage() {
   }
 
   return (
-    <div className="flex flex-col gap-6 p-4">
+    <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-1">
         <h1 className="font-roboto text-foreground text-3xl font-bold tracking-tight">
           Studio Settings

@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 
 export function PartnerSpotlight() {
   return (
-    <section className="mx-auto w-full max-w-4xl px-4 py-24">
+    <section className="mx-auto w-full max-w-4xl px-4 py-16">
       <motion.a
         href="https://coursify-website.vercel.app/"
         target="_blank"
