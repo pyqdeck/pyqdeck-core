@@ -62,6 +62,7 @@ export function UniversityDetail({ university, branches = [] }) {
         onAdd={handleAdd}
         isOpen={addOpen}
         onOpenChange={setAddOpen}
+        trigger={false}
       />
     </div>
   );

@@ -23,6 +23,7 @@ export function AddSemesterDialog({
   onAdd,
   isOpen,
   onOpenChange,
+  trigger = true,
 }) {
   'use no memo';
   const [internalOpen, setInternalOpen] = React.useState(false);
@@ -75,6 +76,7 @@ export function AddSemesterDialog({
       onSubmit={onSubmit}
       open={open}
       onOpenChange={setOpen}
+      trigger={trigger}
     />
   );
 }
