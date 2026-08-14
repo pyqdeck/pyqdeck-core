@@ -1,15 +1,4 @@
-import { auth } from '@clerk/nextjs/server';
-import { redirect } from 'next/navigation';
-
-export const dynamic = 'force-dynamic';
-
-export default async function DashboardLayout({ children }) {
-  const { userId } = await auth();
-
-  if (!userId) {
-    redirect('/sign-in');
-  }
-
+export default function DashboardLayout({ children }) {
   return (
     <div className="bg-muted/30 flex min-h-screen flex-col">
       <header className="bg-background flex h-16 shrink-0 items-center border-b px-6">

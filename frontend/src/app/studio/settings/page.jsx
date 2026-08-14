@@ -1,9 +1,12 @@
 import { SettingsTabs } from '../_components/settings-tabs';
 import { getApiServer } from '@/lib/api-server';
+import { requireAdmin } from '@/lib/studio-auth';
 
 export const dynamic = 'force-dynamic';
 
 export default async function SettingsPage() {
+  await requireAdmin();
+
   let health = null;
   let platformConfig = null;
 

@@ -10,9 +10,14 @@ export default async function StudioPage() {
   const api = await getApiServer();
 
   let dashboardData = null;
+  let isAdmin = false;
   try {
-    const res = await api.analytics.studioOverviewList();
-    dashboardData = res.data.data;
+    const [overviewRes, currentUserRes] = await Promise.all([
+      api.analytics.studioOverviewList(),
+      api.users.getCurrentUser(),
+    ]);
+    dashboardData = overviewRes.data.data;
+    isAdmin = currentUserRes.data?.data?.user?.role === 'admin';
   } catch (error) {
     console.error(
       'Failed to fetch studio overview data:',
@@ -82,7 +87,7 @@ export default async function StudioPage() {
         <PopularityChart data={charts.subjectPopularity} />
       </div>
 
-      <PendingPapers papers={queues.pendingPapers} />
+      {isAdmin && <PendingPapers papers={queues.pendingPapers} />}
     </div>
   );
 }

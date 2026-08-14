@@ -1,10 +1,13 @@
 import { UsersTable } from '../_components/users-table';
 import { StudioSearch } from '../_components/studio-search';
 import { getApiServer } from '@/lib/api-server';
+import { requireAdmin } from '@/lib/studio-auth';
 
 export const dynamic = 'force-dynamic';
 
 export default async function UsersPage({ searchParams }) {
+  await requireAdmin();
+
   const params = await searchParams;
   const search = params.search || '';
   const page = parseInt(params.page) || 1;

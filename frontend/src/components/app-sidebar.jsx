@@ -74,6 +74,7 @@ const navData = {
 
 export function AppSidebar({ userRole, ...props }) {
   const { user, isLoaded } = useUser();
+  const isAdmin = userRole === 'admin';
 
   const userData = {
     name: user?.fullName || 'User',
@@ -143,21 +144,23 @@ export function AppSidebar({ userRole, ...props }) {
           </SidebarMenu>
         </SidebarGroup>
 
-        <SidebarGroup>
-          <SidebarGroupLabel>Security</SidebarGroupLabel>
-          <SidebarMenu>
-            {navData.security.map((item) => (
-              <SidebarMenuItem key={item.title}>
-                <SidebarMenuButton asChild tooltip={item.title}>
-                  <a href={item.url}>
-                    {item.icon}
-                    <span>{item.title}</span>
-                  </a>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            ))}
-          </SidebarMenu>
-        </SidebarGroup>
+        {isAdmin && (
+          <SidebarGroup>
+            <SidebarGroupLabel>Security</SidebarGroupLabel>
+            <SidebarMenu>
+              {navData.security.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton asChild tooltip={item.title}>
+                    <a href={item.url}>
+                      {item.icon}
+                      <span>{item.title}</span>
+                    </a>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroup>
+        )}
       </SidebarContent>
       <SidebarFooter>
         {!isLoaded ? (
