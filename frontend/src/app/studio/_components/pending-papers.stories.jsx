@@ -45,21 +45,24 @@ export default meta;
 
 const mockPapers = [
   {
-    _id: '65f1a2b3c4d5e6f7a8b9c0d1',
+    id: '65f1a2b3c4d5e6f7a8b9c0d1',
+    slug: 'math-201-calculus-ii-final-2023',
     title: 'Mathematics Final Exam 2023 - Calculus II',
     subjectOfferingId: { slug: 'math-201-calculus-ii' },
     status: 'Pending Review',
     createdAt: new Date().toISOString(),
   },
   {
-    _id: '65f1a2b3c4d5e6f7a8b9c0d2',
+    id: '65f1a2b3c4d5e6f7a8b9c0d2',
+    slug: 'phy-302-electromagnetism-midterm-2024',
     title: 'Physics Midterm 2024 - Electromagnetism',
     subjectOfferingId: { slug: 'phy-302-electromagnetism' },
     status: 'Flagged',
     createdAt: new Date(Date.now() - 86400000).toISOString(),
   },
   {
-    _id: '65f1a2b3c4d5e6f7a8b9c0d3',
+    id: '65f1a2b3c4d5e6f7a8b9c0d3',
+    slug: 'cs-401-algorithms-quiz-1',
     title: 'Computer Science Quiz 1 - Algorithms',
     subjectOfferingId: { slug: 'cs-401-algorithms' },
     status: 'Pending Review',

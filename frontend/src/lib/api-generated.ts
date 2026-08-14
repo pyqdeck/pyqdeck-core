@@ -1875,6 +1875,48 @@ export class Api<
  * No description
  *
  * @tags Papers
+ * @name GetModerationQueue
+ * @summary Pending papers the caller can moderate (admin, or their scoped content:moderate grant)
+ * @request GET:/papers/moderation-queue
+ * @secure
+ * @response `200` `(SuccessResponse & {
+    data?: {
+    canModerate?: boolean,
+    items?: (Paper)[],
+
+},
+
+})` The caller's moderation queue
+ * @response `401` `Error`
+ */
+    getModerationQueue: (
+      query?: {
+        /** @default 5 */
+        limit?: number;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<
+        SuccessResponse & {
+          data?: {
+            canModerate?: boolean;
+            items?: Paper[];
+          };
+        },
+        Error
+      >({
+        path: `/papers/moderation-queue`,
+        method: "GET",
+        query: query,
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+ * No description
+ *
+ * @tags Papers
  * @name GetPaperBySlug
  * @summary Get a paper by slug
  * @request GET:/papers/{slug}

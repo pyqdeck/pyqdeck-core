@@ -57,6 +57,48 @@ export const list = catchAsync(async (req, res, next) => {
 });
 
 /**
+ * GET /api/v1/papers/moderation-queue
+ * Returns pending papers the caller can actually moderate: all of them for
+ * admins or a global content:moderate grant, only those within their
+ * scope for a scoped grant holder, or an empty (canModerate: false) result
+ * for anyone else -- e.g. a plain editor, who has never had approve/reject
+ * rights regardless of this session's permission-grant work.
+ */
+export const moderationQueue = catchAsync(async (req, res, next) => {
+  const limit = req.query.limit ? Number(req.query.limit) : 5;
+  const filter = { status: 'pending' };
+  let canModerate = req.dbUser?.role === 'admin';
+
+  if (!canModerate) {
+    const offeringIds =
+      await permissionGrantService.resolveModeratorOfferingIds(req.dbUser);
+    if (offeringIds === null) {
+      canModerate = true;
+    } else if (offeringIds.length > 0) {
+      canModerate = true;
+      filter.subjectOfferingId = { $in: offeringIds };
+    }
+  }
+
+  if (!canModerate) {
+    return res.json(
+      successFormatter.formatSuccess(
+        { items: [], canModerate: false },
+        'Moderation queue fetched'
+      )
+    );
+  }
+
+  const { items } = await paperService.list(filter, { page: 1, limit });
+  res.json(
+    successFormatter.formatSuccess(
+      { items, canModerate: true },
+      'Moderation queue fetched'
+    )
+  );
+});
+
+/**
  * GET /api/v1/papers/:slug
  */
 export const getBySlug = catchAsync(async (req, res, next) => {

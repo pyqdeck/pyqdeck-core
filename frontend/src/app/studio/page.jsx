@@ -10,14 +10,14 @@ export default async function StudioPage() {
   const api = await getApiServer();
 
   let dashboardData = null;
-  let isAdmin = false;
+  let moderationQueue = { items: [], canModerate: false };
   try {
-    const [overviewRes, currentUserRes] = await Promise.all([
+    const [overviewRes, moderationRes] = await Promise.all([
       api.analytics.studioOverviewList(),
-      api.users.getCurrentUser(),
+      api.papers.getModerationQueue({ limit: 5 }),
     ]);
     dashboardData = overviewRes.data.data;
-    isAdmin = currentUserRes.data?.data?.user?.role === 'admin';
+    moderationQueue = moderationRes.data?.data || moderationQueue;
   } catch (error) {
     console.error(
       'Failed to fetch studio overview data:',
@@ -36,10 +36,6 @@ export default async function StudioPage() {
   const charts = dashboardData?.charts || {
     contentVelocity: [],
     subjectPopularity: [],
-  };
-
-  const queues = dashboardData?.queues || {
-    pendingPapers: [],
   };
 
   return (
@@ -87,7 +83,9 @@ export default async function StudioPage() {
         <PopularityChart data={charts.subjectPopularity} />
       </div>
 
-      {isAdmin && <PendingPapers papers={queues.pendingPapers} />}
+      {moderationQueue.canModerate && (
+        <PendingPapers papers={moderationQueue.items} />
+      )}
     </div>
   );
 }

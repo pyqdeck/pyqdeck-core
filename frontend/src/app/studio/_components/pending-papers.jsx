@@ -18,8 +18,8 @@ export function PendingPapers({ papers: initialPapers, loading }) {
 
   const updateStatus = async (paper, status, verb) => {
     try {
-      await api.papers.updatePaperStatus(paper._id, { status });
-      setPapers((prev) => prev.filter((p) => p._id !== paper._id));
+      await api.papers.updatePaperStatus(paper.id, { status });
+      setPapers((prev) => prev.filter((p) => p.id !== paper.id));
       toast.success(`${verb} paper: ${paper.title}`);
     } catch (error) {
       console.error(`Failed to ${status} paper:`, error);

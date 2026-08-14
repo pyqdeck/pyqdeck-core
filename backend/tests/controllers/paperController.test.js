@@ -404,4 +404,112 @@ describe('paperController', () => {
       expect(next).toHaveBeenCalledWith(expect.any(NotFoundError));
     });
   });
+
+  // ─── moderationQueue ─────────────────────────────────────────────────────────
+
+  describe('moderationQueue', () => {
+    it('returns the full pending queue for an admin without checking grants', async () => {
+      req.dbUser = { _id: 'admin_1', role: 'admin' };
+      paperService.list.mockResolvedValue({
+        items: [samplePaper],
+        total: 1,
+        page: 1,
+        limit: 5,
+      });
+
+      await paperController.moderationQueue(req, res, next);
+
+      expect(
+        permissionGrantService.resolveModeratorOfferingIds
+      ).not.toHaveBeenCalled();
+      expect(paperService.list).toHaveBeenCalledWith(
+        { status: 'pending' },
+        { page: 1, limit: 5 }
+      );
+      expect(res.json).toHaveBeenCalledWith(
+        expect.objectContaining({
+          data: { items: [samplePaper], canModerate: true },
+        })
+      );
+    });
+
+    it('returns an unrestricted queue for a global content:moderate grant', async () => {
+      req.dbUser = { _id: 'mod_1', role: 'normal' };
+      permissionGrantService.resolveModeratorOfferingIds.mockResolvedValue(
+        null
+      );
+      paperService.list.mockResolvedValue({
+        items: [samplePaper],
+        total: 1,
+        page: 1,
+        limit: 5,
+      });
+
+      await paperController.moderationQueue(req, res, next);
+
+      expect(paperService.list).toHaveBeenCalledWith(
+        { status: 'pending' },
+        { page: 1, limit: 5 }
+      );
+    });
+
+    it('restricts the queue to the granted offerings for a scoped moderator', async () => {
+      req.dbUser = { _id: 'mod_1', role: 'normal' };
+      permissionGrantService.resolveModeratorOfferingIds.mockResolvedValue([
+        'off_1',
+      ]);
+      paperService.list.mockResolvedValue({
+        items: [],
+        total: 0,
+        page: 1,
+        limit: 5,
+      });
+
+      await paperController.moderationQueue(req, res, next);
+
+      expect(paperService.list).toHaveBeenCalledWith(
+        { status: 'pending', subjectOfferingId: { $in: ['off_1'] } },
+        { page: 1, limit: 5 }
+      );
+    });
+
+    it('returns an empty, unmoderatable result without querying papers when there are no grants', async () => {
+      req.dbUser = { _id: 'editor_1', role: 'editor' };
+      permissionGrantService.resolveModeratorOfferingIds.mockResolvedValue([]);
+
+      await paperController.moderationQueue(req, res, next);
+
+      expect(paperService.list).not.toHaveBeenCalled();
+      expect(res.json).toHaveBeenCalledWith(
+        expect.objectContaining({
+          data: { items: [], canModerate: false },
+        })
+      );
+    });
+
+    it('respects a custom limit', async () => {
+      req.dbUser = { _id: 'admin_1', role: 'admin' };
+      req.query.limit = '10';
+      paperService.list.mockResolvedValue({
+        items: [],
+        total: 0,
+        page: 1,
+        limit: 10,
+      });
+
+      await paperController.moderationQueue(req, res, next);
+
+      expect(paperService.list).toHaveBeenCalledWith(
+        { status: 'pending' },
+        { page: 1, limit: 10 }
+      );
+    });
+
+    it('should call next on error', async () => {
+      req.dbUser = { _id: 'admin_1', role: 'admin' };
+      paperService.list.mockRejectedValue(new Error('DB error'));
+      await paperController.moderationQueue(req, res, next);
+      expect(next).toHaveBeenCalledWith(expect.any(Error));
+    });
+  });
 });

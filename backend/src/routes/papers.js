@@ -77,6 +77,47 @@ router.get('/', paginate(), paperController.list);
 
 /**
  * @openapi
+ * /papers/moderation-queue:
+ *   get:
+ *     operationId: getModerationQueue
+ *     tags: [Papers]
+ *     summary: Pending papers the caller can moderate (admin, or their scoped content:moderate grant)
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: limit
+ *         schema: { type: integer, default: 5 }
+ *     responses:
+ *       200:
+ *         description: The caller's moderation queue
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       type: object
+ *                       properties:
+ *                         canModerate:
+ *                           type: boolean
+ *                         items:
+ *                           type: array
+ *                           items:
+ *                             $ref: '#/components/schemas/Paper'
+ *       401:
+ *         $ref: '#/components/responses/Unauthorized'
+ */
+router.get(
+  '/moderation-queue',
+  requireAuthentication,
+  paperController.moderationQueue
+);
+
+/**
+ * @openapi
  * /papers/{slug}:
  *   get:
  *     operationId: getPaperBySlug

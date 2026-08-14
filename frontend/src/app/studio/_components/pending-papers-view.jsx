@@ -169,7 +169,7 @@ export function PendingPapersView({ papers, onApprove, onReject, loading }) {
           <TableBody>
             {papers.map((paper) => (
               <TableRow
-                key={paper._id}
+                key={paper.id}
                 className="group hover:bg-warning/[0.02] transition-colors"
               >
                 <TableCell className="py-4">
@@ -224,7 +224,7 @@ export function PendingPapersView({ papers, onApprove, onReject, loading }) {
                       <DropdownMenuSeparator />
                       <DropdownMenuItem asChild>
                         <Link
-                          href={`/studio/papers/${paper._id}`}
+                          href={`/studio/papers/${paper.slug}`}
                           className="flex cursor-pointer items-center gap-2"
                         >
                           <ExternalLink className="h-4 w-4" />
