@@ -14,7 +14,9 @@ const router = Router();
 
 const createGrantSchema = z
   .object({
-    capabilities: z.array(Capability).min(1, 'At least one capability is required'),
+    capabilities: z
+      .array(Capability)
+      .min(1, 'At least one capability is required'),
     scopeLevel: ScopeLevel,
     scopeId: z.string().nullable().optional(),
     label: z.string().max(200).optional(),

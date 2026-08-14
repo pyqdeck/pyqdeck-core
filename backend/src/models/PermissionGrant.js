@@ -184,15 +184,16 @@ export default PermissionGrant;
 export const permissionGrantZodSchema = z
   .object({
     userId: z.string().min(1, 'User ID is required'),
-    capabilities: z.array(Capability).min(1, 'At least one capability is required'),
+    capabilities: z
+      .array(Capability)
+      .min(1, 'At least one capability is required'),
     scopeLevel: ScopeLevel,
     scopeId: z.string().nullable().optional(),
     label: z.string().max(200).optional(),
     notes: z.string().max(500).optional(),
   })
   .refine(
-    (data) =>
-      data.scopeLevel === 'global' ? !data.scopeId : !!data.scopeId,
+    (data) => (data.scopeLevel === 'global' ? !data.scopeId : !!data.scopeId),
     {
       message: 'scopeId is required unless scopeLevel is "global"',
       path: ['scopeId'],

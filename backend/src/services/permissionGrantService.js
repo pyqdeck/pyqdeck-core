@@ -45,10 +45,11 @@ class PermissionGrantService {
     if (dbUser?.role === 'admin') return true;
     if (!dbUser) return false;
 
-    const grants = await permissionGrantRepository.findActiveByUserAndCapability(
-      dbUser._id,
-      capability
-    );
+    const grants =
+      await permissionGrantRepository.findActiveByUserAndCapability(
+        dbUser._id,
+        capability
+      );
 
     return grants.some((grant) => {
       if (grant.scopeLevel === 'global') return true;

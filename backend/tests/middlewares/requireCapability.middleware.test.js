@@ -56,7 +56,9 @@ describe('requireCapability', () => {
   });
 
   it('propagates a NotFoundError thrown by the scope resolver instead of a 500', async () => {
-    const scopeResolver = vi.fn().mockRejectedValue(new NotFoundError('Paper not found'));
+    const scopeResolver = vi
+      .fn()
+      .mockRejectedValue(new NotFoundError('Paper not found'));
     const mw = requireCapability('content:create', scopeResolver);
 
     await mw(req, res, next);

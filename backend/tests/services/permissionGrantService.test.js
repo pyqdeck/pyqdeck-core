@@ -41,7 +41,9 @@ describe('PermissionGrantService', () => {
         {}
       );
       expect(result).toBe(true);
-      expect(permissionGrantRepository.findActiveByUserAndCapability).not.toHaveBeenCalled();
+      expect(
+        permissionGrantRepository.findActiveByUserAndCapability
+      ).not.toHaveBeenCalled();
     });
 
     it('returns false when no dbUser is provided', async () => {
@@ -54,14 +56,19 @@ describe('PermissionGrantService', () => {
     });
 
     it('matches a global-scope grant regardless of target scope', async () => {
-      permissionGrantRepository.findActiveByUserAndCapability.mockResolvedValue([
-        { scopeLevel: 'global', scopeId: null },
-      ]);
+      permissionGrantRepository.findActiveByUserAndCapability.mockResolvedValue(
+        [{ scopeLevel: 'global', scopeId: null }]
+      );
 
       const result = await permissionGrantService.userHasCapability(
         { _id: 'u1', role: 'normal' },
         'content:create',
-        { universityId: 'uni1', branchId: 'b1', semesterId: 's1', subjectOfferingId: 'so1' }
+        {
+          universityId: 'uni1',
+          branchId: 'b1',
+          semesterId: 's1',
+          subjectOfferingId: 'so1',
+        }
       );
       expect(result).toBe(true);
     });
@@ -71,43 +78,49 @@ describe('PermissionGrantService', () => {
       ['branch', 'branchId'],
       ['semester', 'semesterId'],
       ['subjectOffering', 'subjectOfferingId'],
-    ])('matches a %s-scope grant when the target scope id equals it', async (scopeLevel, scopeKey) => {
-      permissionGrantRepository.findActiveByUserAndCapability.mockResolvedValue([
-        { scopeLevel, scopeId: 'match-id' },
-      ]);
+    ])(
+      'matches a %s-scope grant when the target scope id equals it',
+      async (scopeLevel, scopeKey) => {
+        permissionGrantRepository.findActiveByUserAndCapability.mockResolvedValue(
+          [{ scopeLevel, scopeId: 'match-id' }]
+        );
 
-      const targetScope = { [scopeKey]: 'match-id' };
-      const result = await permissionGrantService.userHasCapability(
-        { _id: 'u1', role: 'normal' },
-        'content:create',
-        targetScope
-      );
-      expect(result).toBe(true);
-    });
+        const targetScope = { [scopeKey]: 'match-id' };
+        const result = await permissionGrantService.userHasCapability(
+          { _id: 'u1', role: 'normal' },
+          'content:create',
+          targetScope
+        );
+        expect(result).toBe(true);
+      }
+    );
 
     it.each([
       ['university', 'universityId'],
       ['branch', 'branchId'],
       ['semester', 'semesterId'],
       ['subjectOffering', 'subjectOfferingId'],
-    ])('does not match a %s-scope grant when the target scope id differs', async (scopeLevel, scopeKey) => {
-      permissionGrantRepository.findActiveByUserAndCapability.mockResolvedValue([
-        { scopeLevel, scopeId: 'grant-id' },
-      ]);
+    ])(
+      'does not match a %s-scope grant when the target scope id differs',
+      async (scopeLevel, scopeKey) => {
+        permissionGrantRepository.findActiveByUserAndCapability.mockResolvedValue(
+          [{ scopeLevel, scopeId: 'grant-id' }]
+        );
 
-      const targetScope = { [scopeKey]: 'different-id' };
-      const result = await permissionGrantService.userHasCapability(
-        { _id: 'u1', role: 'normal' },
-        'content:create',
-        targetScope
-      );
-      expect(result).toBe(false);
-    });
+        const targetScope = { [scopeKey]: 'different-id' };
+        const result = await permissionGrantService.userHasCapability(
+          { _id: 'u1', role: 'normal' },
+          'content:create',
+          targetScope
+        );
+        expect(result).toBe(false);
+      }
+    );
 
     it('does not let a branch-level grant leak into a sibling branch', async () => {
-      permissionGrantRepository.findActiveByUserAndCapability.mockResolvedValue([
-        { scopeLevel: 'branch', scopeId: 'branch-A' },
-      ]);
+      permissionGrantRepository.findActiveByUserAndCapability.mockResolvedValue(
+        [{ scopeLevel: 'branch', scopeId: 'branch-A' }]
+      );
 
       const result = await permissionGrantService.userHasCapability(
         { _id: 'u1', role: 'normal' },
@@ -118,7 +131,9 @@ describe('PermissionGrantService', () => {
     });
 
     it('returns false when the user has no grants for that capability', async () => {
-      permissionGrantRepository.findActiveByUserAndCapability.mockResolvedValue([]);
+      permissionGrantRepository.findActiveByUserAndCapability.mockResolvedValue(
+        []
+      );
 
       const result = await permissionGrantService.userHasCapability(
         { _id: 'u1', role: 'normal' },
@@ -131,7 +146,9 @@ describe('PermissionGrantService', () => {
     it('only queries grants that are already filtered to isActive:true by the repository', async () => {
       // revoked grants never come back from findActiveByUserAndCapability, so an
       // empty result here (as if the only grant was revoked) must yield false
-      permissionGrantRepository.findActiveByUserAndCapability.mockResolvedValue([]);
+      permissionGrantRepository.findActiveByUserAndCapability.mockResolvedValue(
+        []
+      );
 
       const result = await permissionGrantService.userHasCapability(
         { _id: 'u1', role: 'normal' },
@@ -191,11 +208,17 @@ describe('PermissionGrantService', () => {
 
   describe('revoke', () => {
     it('delegates to the repository with the revoking admin id', async () => {
-      permissionGrantRepository.revoke.mockResolvedValue({ id: 'g1', isActive: false });
+      permissionGrantRepository.revoke.mockResolvedValue({
+        id: 'g1',
+        isActive: false,
+      });
 
       await permissionGrantService.revoke('g1', 'admin1');
 
-      expect(permissionGrantRepository.revoke).toHaveBeenCalledWith('g1', 'admin1');
+      expect(permissionGrantRepository.revoke).toHaveBeenCalledWith(
+        'g1',
+        'admin1'
+      );
     });
   });
 });
