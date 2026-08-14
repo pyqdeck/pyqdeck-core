@@ -14,12 +14,16 @@ export default async function PapersPage({ searchParams }) {
   const page = parseInt(resolvedSearchParams?.page || '1', 10);
   const limit = parseInt(resolvedSearchParams?.limit || '10', 10);
   const q = resolvedSearchParams?.q || undefined;
+  const status =
+    resolvedSearchParams?.status && resolvedSearchParams.status !== 'all'
+      ? resolvedSearchParams.status
+      : undefined;
 
   let papers = [];
   let pagination = { total: 0, pages: 1, current: 1, limit };
 
   try {
-    const res = await api.papers.listPapers({ page, limit, q });
+    const res = await api.papers.listPapers({ page, limit, q, status });
 
     papers = res.data.data.items || [];
     const backendPagination = res.data.data.pagination;

@@ -1,18 +1,40 @@
 'use client';
 
 import * as React from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useApi } from '@/hooks/use-api';
 import { PapersTable } from './papers-table';
 import { AddPaperDialog } from './add-paper-dialog';
 import { StudioSearch } from './studio-search';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+
+const STATUS_FILTERS = [
+  { value: 'all', label: 'All' },
+  { value: 'pending', label: 'Pending' },
+  { value: 'approved', label: 'Approved' },
+  { value: 'rejected', label: 'Rejected' },
+  { value: 'draft', label: 'Draft' },
+];
 
 export function PapersManagement({ initialPapers = [], pagination }) {
   const router = useRouter();
+  const pathname = usePathname();
   const searchParams = useSearchParams();
   const api = useApi();
 
   const search = searchParams.get('q') || '';
+  const status = searchParams.get('status') || 'all';
+
+  const handleStatusChange = (value) => {
+    const params = new URLSearchParams(searchParams.toString());
+    if (value === 'all') {
+      params.delete('status');
+    } else {
+      params.set('status', value);
+    }
+    params.set('page', '1');
+    router.push(`${pathname}?${params.toString()}`);
+  };
 
   const handleAdd = async (data) => {
     await api.papers.createPaper(data);
@@ -54,6 +76,16 @@ export function PapersManagement({ initialPapers = [], pagination }) {
           <AddPaperDialog onAdd={handleAdd} />
         </div>
       </div>
+
+      <Tabs value={status} onValueChange={handleStatusChange}>
+        <TabsList variant="pill" className="w-fit">
+          {STATUS_FILTERS.map((filter) => (
+            <TabsTrigger key={filter.value} value={filter.value}>
+              {filter.label}
+            </TabsTrigger>
+          ))}
+        </TabsList>
+      </Tabs>
 
       <PapersTable
         papers={initialPapers}
