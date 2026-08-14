@@ -4,28 +4,14 @@ import * as React from 'react';
 import { useApi } from '@/hooks/use-api';
 import { AddPermissionGrantDialogView } from './add-permission-grant-dialog.view';
 
-export const ROLE_TEMPLATES = [
-  {
-    value: 'moderator',
-    label: 'Content Moderator',
-    capabilities: ['content:create', 'content:moderate'],
-  },
-  {
-    value: 'contributor',
-    label: 'Content Contributor',
-    capabilities: ['content:create', 'content:edit'],
-  },
-  { value: 'custom', label: 'Custom', capabilities: [] },
-];
-
 export function AddPermissionGrantDialog({ open, onOpenChange, onAdd }) {
   const api = useApi();
 
+  const [templates, setTemplates] = React.useState([]);
   const [scopeLevel, setScopeLevel] = React.useState('branch');
-  const [templateValue, setTemplateValue] = React.useState('moderator');
-  const [capabilities, setCapabilities] = React.useState(
-    ROLE_TEMPLATES[0].capabilities
-  );
+  const [templateValue, setTemplateValue] = React.useState('');
+  const [capabilities, setCapabilities] = React.useState([]);
+  const [expiresAt, setExpiresAt] = React.useState('');
 
   const [universities, setUniversities] = React.useState([]);
   const [branches, setBranches] = React.useState([]);
@@ -43,6 +29,15 @@ export function AddPermissionGrantDialog({ open, onOpenChange, onAdd }) {
     api.universities
       .listUniversities({ limit: 100 })
       .then((res) => setUniversities(res.data?.data?.items || []));
+    api.users.listGrantTemplates().then((res) => {
+      const items = res.data?.data?.items || [];
+      setTemplates(items);
+      const defaultTemplate = items.find((t) => t.value !== 'custom');
+      if (defaultTemplate) {
+        setTemplateValue(defaultTemplate.value);
+        setCapabilities(defaultTemplate.capabilities);
+      }
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
@@ -72,8 +67,10 @@ export function AddPermissionGrantDialog({ open, onOpenChange, onAdd }) {
 
   const resetForm = () => {
     setScopeLevel('branch');
-    setTemplateValue('moderator');
-    setCapabilities(ROLE_TEMPLATES[0].capabilities);
+    const defaultTemplate = templates.find((t) => t.value !== 'custom');
+    setTemplateValue(defaultTemplate?.value || '');
+    setCapabilities(defaultTemplate?.capabilities || []);
+    setExpiresAt('');
     setUniversityId('');
     setBranchId('');
     setSemesterId('');
@@ -125,7 +122,7 @@ export function AddPermissionGrantDialog({ open, onOpenChange, onAdd }) {
 
   const handleTemplateChange = (value) => {
     setTemplateValue(value);
-    const template = ROLE_TEMPLATES.find((t) => t.value === value);
+    const template = templates.find((t) => t.value === value);
     if (template && template.value !== 'custom') {
       setCapabilities(template.capabilities);
     }
@@ -176,7 +173,7 @@ export function AddPermissionGrantDialog({ open, onOpenChange, onAdd }) {
     if (!isReady) return;
     setIsSubmitting(true);
     try {
-      const template = ROLE_TEMPLATES.find((t) => t.value === templateValue);
+      const template = templates.find((t) => t.value === templateValue);
       const templateName =
         template && template.value !== 'custom' ? `${template.label} — ` : '';
       await onAdd({
@@ -184,6 +181,7 @@ export function AddPermissionGrantDialog({ open, onOpenChange, onAdd }) {
         scopeLevel,
         scopeId: scopeLevel === 'global' ? undefined : scopeId,
         label: `${templateName}${scopeLabel || 'Global'}`,
+        expiresAt: expiresAt || undefined,
       });
     } finally {
       setIsSubmitting(false);
@@ -194,12 +192,15 @@ export function AddPermissionGrantDialog({ open, onOpenChange, onAdd }) {
     <AddPermissionGrantDialogView
       open={open}
       onOpenChange={handleOpenChange}
+      templates={templates}
       scopeLevel={scopeLevel}
       onScopeLevelChange={handleScopeLevelChange}
       templateValue={templateValue}
       onTemplateChange={handleTemplateChange}
       capabilities={capabilities}
       onToggleCapability={toggleCapability}
+      expiresAt={expiresAt}
+      onExpiresAtChange={setExpiresAt}
       universities={universities}
       branches={branches}
       semesters={semesters}

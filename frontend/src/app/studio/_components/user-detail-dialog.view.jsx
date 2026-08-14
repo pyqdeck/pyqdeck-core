@@ -7,6 +7,8 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Separator } from '@/components/ui/separator';
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
 import {
   Dialog,
   DialogContent,
@@ -45,13 +47,61 @@ function scopeSummary(grant) {
   return `${grant.scopeLevel} scope`;
 }
 
+function formatDate(value) {
+  return new Date(value).toLocaleDateString(undefined, {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  });
+}
+
+function grantAuditLine(grant) {
+  const grantedByName = grant.grantedBy?.name || 'someone';
+  const grantedLine = grant.createdAt
+    ? `Granted by ${grantedByName} on ${formatDate(grant.createdAt)}`
+    : `Granted by ${grantedByName}`;
+
+  if (grant.revokedAt) {
+    const revokedByName = grant.revokedBy?.name || 'someone';
+    return `${grantedLine} · Revoked by ${revokedByName} on ${formatDate(grant.revokedAt)}`;
+  }
+  return grantedLine;
+}
+
 function GrantRow({ grant, onRevoke, isRevoking }) {
+  const isRevoked = grant.isActive === false;
+  const isExpired =
+    !isRevoked && grant.expiresAt && new Date(grant.expiresAt) < new Date();
+
   return (
-    <div className="border-border/50 flex items-center justify-between gap-3 rounded-lg border px-3 py-2">
+    <div
+      className={cn(
+        'border-border/50 flex items-center justify-between gap-3 rounded-lg border px-3 py-2',
+        (isRevoked || isExpired) && 'opacity-60'
+      )}
+    >
       <div className="flex min-w-0 flex-col gap-1">
-        <span className="text-foreground font-roboto truncate text-sm font-bold">
-          {scopeSummary(grant)}
-        </span>
+        <div className="flex flex-wrap items-center gap-1.5">
+          <span className="text-foreground font-roboto truncate text-sm font-bold">
+            {scopeSummary(grant)}
+          </span>
+          {isRevoked && (
+            <Badge
+              variant="outline"
+              className="text-destructive border-destructive/30 h-4 rounded-full px-1.5 text-[9px] font-bold"
+            >
+              REVOKED
+            </Badge>
+          )}
+          {isExpired && (
+            <Badge
+              variant="outline"
+              className="text-warning border-warning/30 h-4 rounded-full px-1.5 text-[9px] font-bold"
+            >
+              EXPIRED
+            </Badge>
+          )}
+        </div>
         <div className="flex flex-wrap gap-1">
           {grant.capabilities.map((cap) => (
             <Badge
@@ -63,17 +113,25 @@ function GrantRow({ grant, onRevoke, isRevoking }) {
             </Badge>
           ))}
         </div>
+        <span className="text-muted-foreground font-roboto text-[11px]">
+          {grantAuditLine(grant)}
+          {!isRevoked && grant.expiresAt && !isExpired && (
+            <> · Expires {formatDate(grant.expiresAt)}</>
+          )}
+        </span>
       </div>
-      <Button
-        variant="ghost"
-        size="icon"
-        className="text-muted-foreground hover:text-destructive shrink-0"
-        disabled={isRevoking}
-        onClick={() => onRevoke(grant.id)}
-      >
-        <X className="h-4 w-4" />
-        <span className="sr-only">Revoke permission</span>
-      </Button>
+      {!isRevoked && (
+        <Button
+          variant="ghost"
+          size="icon"
+          className="text-muted-foreground hover:text-destructive shrink-0"
+          disabled={isRevoking}
+          onClick={() => onRevoke(grant.id)}
+        >
+          <X className="h-4 w-4" />
+          <span className="sr-only">Revoke permission</span>
+        </Button>
+      )}
     </div>
   );
 }
@@ -88,6 +146,8 @@ export function UserDetailDialogView({
   onRevokeGrant,
   revokingGrantId,
   onAddGrant,
+  showRevoked,
+  onToggleShowRevoked,
 }) {
   return (
     <Dialog open={!!user} onOpenChange={(open) => !open && onClose()}>
@@ -215,6 +275,22 @@ export function UserDetailDialogView({
                   Add
                 </Button>
               </div>
+
+              {user.role !== 'admin' && (
+                <div className="flex items-center justify-end gap-2">
+                  <Label
+                    htmlFor="show-revoked-grants"
+                    className="text-muted-foreground font-roboto text-xs font-medium"
+                  >
+                    Show revoked
+                  </Label>
+                  <Switch
+                    id="show-revoked-grants"
+                    checked={!!showRevoked}
+                    onCheckedChange={onToggleShowRevoked}
+                  />
+                </div>
+              )}
 
               {user.role === 'admin' ? (
                 <div className="bg-muted/40 text-muted-foreground flex items-center gap-2 rounded-lg border px-3 py-2 text-sm">

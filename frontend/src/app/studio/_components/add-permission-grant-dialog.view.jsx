@@ -20,7 +20,7 @@ import {
 } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
-import { ROLE_TEMPLATES } from './add-permission-grant-dialog';
+import { Input } from '@/components/ui/input';
 
 const SCOPE_LEVELS = [
   { value: 'global', label: 'Global (everywhere)' },
@@ -45,12 +45,15 @@ const SHOW_OFFERING = ['subjectOffering'];
 export function AddPermissionGrantDialogView({
   open,
   onOpenChange,
+  templates = [],
   scopeLevel,
   onScopeLevelChange,
   templateValue,
   onTemplateChange,
   capabilities,
   onToggleCapability,
+  expiresAt,
+  onExpiresAtChange,
   universities = [],
   branches = [],
   semesters = [],
@@ -208,7 +211,7 @@ export function AddPermissionGrantDialogView({
                 <SelectValue placeholder="Select a role" />
               </SelectTrigger>
               <SelectContent className="border shadow-none">
-                {ROLE_TEMPLATES.map((template) => (
+                {templates.map((template) => (
                   <SelectItem
                     key={template.value}
                     value={template.value}
@@ -237,6 +240,23 @@ export function AddPermissionGrantDialogView({
                 </label>
               ))}
             </div>
+          </div>
+
+          <div className="grid gap-2">
+            <Label htmlFor="grant-expires-at" className="font-roboto font-bold">
+              Expires{' '}
+              <span className="text-muted-foreground font-normal">
+                (optional)
+              </span>
+            </Label>
+            <Input
+              id="grant-expires-at"
+              type="date"
+              className="font-roboto w-full border focus-visible:ring-0"
+              value={expiresAt || ''}
+              min={new Date().toISOString().split('T')[0]}
+              onChange={(e) => onExpiresAtChange(e.target.value)}
+            />
           </div>
         </div>
 

@@ -25,6 +25,7 @@ import {
   UsersIcon,
   GraduationCapIcon,
   LayoutDashboardIcon,
+  KeyRoundIcon,
 } from 'lucide-react';
 
 import { Skeleton } from '@/components/ui/skeleton';
@@ -37,6 +38,11 @@ const navData = {
       url: '/studio',
       icon: <LayoutDashboardIcon />,
       isActive: true,
+    },
+    {
+      title: 'My Permissions',
+      url: '/studio/my-permissions',
+      icon: <KeyRoundIcon />,
     },
   ],
   academics: [
