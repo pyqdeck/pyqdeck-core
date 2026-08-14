@@ -68,7 +68,7 @@ export function PaperFormDialogView({
               : 'Add a past exam paper to this subject offering.'}
           </DialogDescription>
         </DialogHeader>
-        <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4 py-2">
+        <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4">
           <div className="grid gap-2">
             <Label htmlFor="title" className={labelClass}>
               Title
@@ -191,7 +191,7 @@ export function PaperFormDialogView({
             )}
           </div>
 
-          <DialogFooter className="mt-2">
+          <DialogFooter>
             <Button
               type="submit"
               disabled={isSubmitting}

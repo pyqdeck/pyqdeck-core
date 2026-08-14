@@ -49,7 +49,7 @@ export function EditSubjectDialogView({
             Modify subject metadata and core requirements.
           </DialogDescription>
         </DialogHeader>
-        <form onSubmit={handleSubmit(onSubmit)} className="grid gap-5 py-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="grid gap-5">
           <div className="grid gap-2">
             <Label htmlFor="edit-name" className="font-roboto font-bold">
               Subject Name
@@ -175,7 +175,7 @@ export function EditSubjectDialogView({
             />
           </div>
 
-          <DialogFooter className="pt-4">
+          <DialogFooter>
             <Button
               type="submit"
               disabled={isSubmitting}

@@ -81,7 +81,7 @@ export function AddOfferingDialogView({
             Map a subject to a specific semester, branch, and regulation.
           </DialogDescription>
         </DialogHeader>
-        <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4 py-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4">
           {/* Hierarchy Selection */}
           <div className="grid grid-cols-2 gap-4">
             <div className="grid gap-2">
@@ -260,7 +260,7 @@ export function AddOfferingDialogView({
             </div>
           </div>
 
-          <DialogFooter className="pt-4">
+          <DialogFooter>
             <Button
               type="submit"
               disabled={isSubmitting}

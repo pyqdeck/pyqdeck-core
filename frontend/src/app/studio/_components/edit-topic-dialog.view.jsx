@@ -45,7 +45,7 @@ export function EditTopicDialogView({ form, onSubmit, open, onOpenChange }) {
             Update the title or details of this specific learning point.
           </DialogDescription>
         </DialogHeader>
-        <form onSubmit={handleSubmit(onSubmit)} className="py-4">
+        <form onSubmit={handleSubmit(onSubmit)}>
           <FieldGroup>
             <div className="grid grid-cols-3 gap-4">
               <div className="col-span-2">

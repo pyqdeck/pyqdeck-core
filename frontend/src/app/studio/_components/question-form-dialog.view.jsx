@@ -62,7 +62,7 @@ export function QuestionFormDialogView({
               : 'This question will be added and linked to this paper.'}
           </DialogDescription>
         </DialogHeader>
-        <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4 py-2">
+        <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4">
           <div className="grid gap-2">
             <Label htmlFor="text" className={labelClass}>
               Question text
@@ -173,7 +173,7 @@ export function QuestionFormDialogView({
             </Label>
           </div>
 
-          <DialogFooter className="mt-2">
+          <DialogFooter>
             <Button
               type="submit"
               disabled={isSubmitting}

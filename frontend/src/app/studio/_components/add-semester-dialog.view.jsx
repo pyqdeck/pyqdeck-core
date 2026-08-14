@@ -61,7 +61,7 @@ export function AddSemesterDialogView({
             Define a new academic period for the selected course branch.
           </DialogDescription>
         </DialogHeader>
-        <form onSubmit={handleSubmit(onSubmit)} className="grid gap-5 py-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="grid gap-5">
           <div className="grid gap-2">
             <Label htmlFor="branchId" className="font-roboto font-bold">
               Target Branch
@@ -163,7 +163,7 @@ export function AddSemesterDialogView({
             />
           </div>
 
-          <DialogFooter className="pt-4">
+          <DialogFooter>
             <Button
               type="submit"
               disabled={isSubmitting}

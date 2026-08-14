@@ -48,7 +48,7 @@ export function EditSyllabusDialogView({
           </DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 pt-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           <div className="grid gap-2">
             <Label className="font-roboto text-muted-foreground text-xs font-bold tracking-widest uppercase">
               Description
@@ -92,7 +92,7 @@ export function EditSyllabusDialogView({
             />
           </div>
 
-          <DialogFooter className="pt-4">
+          <DialogFooter>
             <Button
               type="button"
               variant="outline"

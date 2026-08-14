@@ -39,7 +39,7 @@ export function EditBranchDialogView({
             Update the settings for {branch?.name}.
           </DialogDescription>
         </DialogHeader>
-        <form onSubmit={handleSubmit(onSubmit)} className="grid gap-5 py-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="grid gap-5">
           <div className="grid gap-2">
             <Label htmlFor="edit-name" className="font-roboto font-bold">
               Branch Name
@@ -131,7 +131,7 @@ export function EditBranchDialogView({
             )}
           </div>
 
-          <DialogFooter className="pt-4">
+          <DialogFooter>
             <Button
               type="submit"
               disabled={isSubmitting}

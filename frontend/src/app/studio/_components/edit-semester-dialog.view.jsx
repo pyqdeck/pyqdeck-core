@@ -39,7 +39,7 @@ export function EditSemesterDialogView({
             Update the settings for Semester {semester?.number}.
           </DialogDescription>
         </DialogHeader>
-        <form onSubmit={handleSubmit(onSubmit)} className="grid gap-5 py-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="grid gap-5">
           <div className="grid grid-cols-2 gap-4">
             <div className="grid gap-2">
               <Label htmlFor="edit-number" className="font-roboto font-bold">
@@ -103,7 +103,7 @@ export function EditSemesterDialogView({
             />
           </div>
 
-          <DialogFooter className="pt-4">
+          <DialogFooter>
             <Button
               type="submit"
               disabled={isSubmitting}

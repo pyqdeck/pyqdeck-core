@@ -46,7 +46,7 @@ export function EditModuleDialogView({ form, onSubmit, open, onOpenChange }) {
             Modify the properties and objectives of this curriculum unit.
           </DialogDescription>
         </DialogHeader>
-        <form onSubmit={handleSubmit(onSubmit)} className="py-4">
+        <form onSubmit={handleSubmit(onSubmit)}>
           <FieldGroup>
             <div className="grid grid-cols-2 gap-4">
               <Field data-invalid={!!errors.moduleNumber}>
