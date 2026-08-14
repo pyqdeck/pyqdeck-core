@@ -31,7 +31,7 @@ export function AddPaperDialog({ onAdd }) {
 
   React.useEffect(() => {
     if (!universityId) return;
-    api.branches
+    api.universities
       .listBranches(universityId, { limit: 100 })
       .then((res) => setBranches(res.data?.data?.items || []));
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -39,7 +39,7 @@ export function AddPaperDialog({ onAdd }) {
 
   React.useEffect(() => {
     if (!branchId) return;
-    api.semesters
+    api.branches
       .listSemesters(branchId)
       .then((res) => setSemesters(res.data?.data?.items || []));
     // eslint-disable-next-line react-hooks/exhaustive-deps
