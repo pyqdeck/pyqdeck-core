@@ -3,9 +3,19 @@ import { notFound } from 'next/navigation';
 import { getApiServer } from '@/lib/api-server';
 import { getSubjectMap } from '@/lib/browse-helpers';
 import { BreadcrumbNav } from '@/components/browse/breadcrumb-nav';
-import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Empty, EmptyHeader, EmptyTitle, EmptyDescription } from '@/components/ui/empty';
+import {
+  Empty,
+  EmptyHeader,
+  EmptyTitle,
+  EmptyDescription,
+} from '@/components/ui/empty';
 import { BookOpen } from 'lucide-react';
 
 export default async function SemesterSubjectsPage({ params }) {
@@ -78,7 +88,7 @@ export default async function SemesterSubjectsPage({ params }) {
       </div>
 
       {offerings.length === 0 ? (
-        <Empty className="border rounded-xl">
+        <Empty className="rounded-xl border">
           <EmptyHeader>
             <EmptyTitle>No subjects added yet</EmptyTitle>
             <EmptyDescription>

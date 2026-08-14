@@ -5,7 +5,13 @@ import { PapersTableView } from './papers-table-view';
 import { PaperFormDialog } from './paper-form-dialog';
 import { DeletePaperDialog } from './delete-paper-dialog';
 
-export function PapersTable({ papers = [], offering, onUpdate, onDelete, onSetStatus }) {
+export function PapersTable({
+  papers = [],
+  offering,
+  onUpdate,
+  onDelete,
+  onSetStatus,
+}) {
   const [editingPaper, setEditingPaper] = React.useState(null);
   const [deletingPaper, setDeletingPaper] = React.useState(null);
 

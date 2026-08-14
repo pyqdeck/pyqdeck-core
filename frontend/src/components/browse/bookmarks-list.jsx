@@ -8,7 +8,9 @@ export function BookmarksList({ initialItems }) {
 
   const handleBookmarkChange = (questionId, bookmarked) => {
     if (!bookmarked) {
-      setItems((prev) => prev.filter((item) => item.question.id !== questionId));
+      setItems((prev) =>
+        prev.filter((item) => item.question.id !== questionId)
+      );
     }
   };
 

@@ -2,12 +2,13 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getApiServer } from '@/lib/api-server';
 import { BreadcrumbNav } from '@/components/browse/breadcrumb-nav';
+import { Card, CardHeader, CardTitle } from '@/components/ui/card';
 import {
-  Card,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
-import { Empty, EmptyHeader, EmptyTitle, EmptyDescription } from '@/components/ui/empty';
+  Empty,
+  EmptyHeader,
+  EmptyTitle,
+  EmptyDescription,
+} from '@/components/ui/empty';
 import { CalendarDays } from 'lucide-react';
 
 export default async function BranchSemestersPage({ params }) {
@@ -56,7 +57,7 @@ export default async function BranchSemestersPage({ params }) {
       </div>
 
       {semesters.length === 0 ? (
-        <Empty className="border rounded-xl">
+        <Empty className="rounded-xl border">
           <EmptyHeader>
             <EmptyTitle>No semesters added yet</EmptyTitle>
             <EmptyDescription>

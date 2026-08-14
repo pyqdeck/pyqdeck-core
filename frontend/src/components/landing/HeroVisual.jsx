@@ -28,10 +28,10 @@ export function HeroVisual() {
         <div className="border-border bg-card text-card-foreground relative z-10 -mt-2 rounded-2xl border shadow-xl">
           {/* Header strip — mimics a mark-sheet header */}
           <div className="border-border flex items-center justify-between border-b px-6 py-3">
-            <span className="font-mono text-[11px] tracking-widest uppercase text-muted-foreground">
+            <span className="text-muted-foreground font-mono text-[11px] tracking-widest uppercase">
               BEU · CSE · Sem 5
             </span>
-            <span className="font-mono text-[11px] tracking-widest uppercase text-muted-foreground">
+            <span className="text-muted-foreground font-mono text-[11px] tracking-widest uppercase">
               2021
             </span>
           </div>

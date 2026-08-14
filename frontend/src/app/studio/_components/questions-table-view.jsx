@@ -20,7 +20,10 @@ export function QuestionsTableView({ questions = [], onEdit, onDelete }) {
       <Card className="border shadow-none">
         <CardContent className="py-16">
           <Empty className="border-none shadow-none">
-            <EmptyMedia variant="icon" className="bg-muted h-16 w-16 rounded-2xl">
+            <EmptyMedia
+              variant="icon"
+              className="bg-muted h-16 w-16 rounded-2xl"
+            >
               <HelpCircle className="text-muted-foreground h-8 w-8" />
             </EmptyMedia>
             <EmptyHeader>

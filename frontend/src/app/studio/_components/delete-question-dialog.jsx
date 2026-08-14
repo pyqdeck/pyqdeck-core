@@ -3,7 +3,12 @@
 import * as React from 'react';
 import { DeleteQuestionDialogView } from './delete-question-dialog.view';
 
-export function DeleteQuestionDialog({ question, open, onOpenChange, onDelete }) {
+export function DeleteQuestionDialog({
+  question,
+  open,
+  onOpenChange,
+  onDelete,
+}) {
   const [loading, setLoading] = React.useState(false);
 
   const handleDelete = async () => {

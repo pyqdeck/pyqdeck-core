@@ -165,7 +165,10 @@ export function QuestionFormDialogView({
                 />
               )}
             />
-            <Label htmlFor="isVerified" className="font-roboto text-sm font-bold">
+            <Label
+              htmlFor="isVerified"
+              className="font-roboto text-sm font-bold"
+            >
               Mark as verified
             </Label>
           </div>

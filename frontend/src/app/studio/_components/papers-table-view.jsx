@@ -43,7 +43,9 @@ const STATUS_STYLES = {
 
 function StatusBadge({ status }) {
   return (
-    <Badge className={`font-roboto border font-bold capitalize ${STATUS_STYLES[status] || STATUS_STYLES.draft}`}>
+    <Badge
+      className={`font-roboto border font-bold capitalize ${STATUS_STYLES[status] || STATUS_STYLES.draft}`}
+    >
       {status}
     </Badge>
   );
@@ -60,7 +62,10 @@ export function PapersTableView({
       <Card className="border shadow-none">
         <CardContent className="py-16">
           <Empty className="border-none shadow-none">
-            <EmptyMedia variant="icon" className="bg-muted h-16 w-16 rounded-2xl">
+            <EmptyMedia
+              variant="icon"
+              className="bg-muted h-16 w-16 rounded-2xl"
+            >
               <FileText className="text-muted-foreground h-8 w-8" />
             </EmptyMedia>
             <EmptyHeader>
@@ -122,8 +127,14 @@ export function PapersTableView({
                 </TableCell>
                 <TableCell className="px-6 py-4 text-right">
                   <DropdownAction tooltip="Paper actions">
-                    <DropdownMenuItem asChild className="cursor-pointer rounded-md py-2.5">
-                      <Link href={`/studio/papers/${paper.slug}`} className="flex w-full items-center">
+                    <DropdownMenuItem
+                      asChild
+                      className="cursor-pointer rounded-md py-2.5"
+                    >
+                      <Link
+                        href={`/studio/papers/${paper.slug}`}
+                        className="flex w-full items-center"
+                      >
                         <ListOrdered className="text-muted-foreground mr-3 h-4 w-4" />
                         <span className="font-medium">Manage Questions</span>
                       </Link>
@@ -142,7 +153,9 @@ export function PapersTableView({
                         onClick={() => onSetStatus(paper, 'approved')}
                       >
                         <CheckCircle2 className="text-success mr-3 h-4 w-4" />
-                        <span className="text-success font-medium">Approve</span>
+                        <span className="text-success font-medium">
+                          Approve
+                        </span>
                       </DropdownMenuItem>
                     )}
                     {paper.status !== 'rejected' && (
@@ -151,7 +164,9 @@ export function PapersTableView({
                         onClick={() => onSetStatus(paper, 'rejected')}
                       >
                         <XCircle className="text-destructive mr-3 h-4 w-4" />
-                        <span className="text-destructive font-medium">Reject</span>
+                        <span className="text-destructive font-medium">
+                          Reject
+                        </span>
                       </DropdownMenuItem>
                     )}
                     <DropdownMenuSeparator className="my-1 border-b" />

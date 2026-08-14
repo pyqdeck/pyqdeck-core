@@ -16,10 +16,10 @@ export function Testimonials() {
         >
           <PenLine className="text-correction mx-auto mb-5 size-6" />
           <p className="font-display text-xl leading-relaxed font-medium tracking-tight sm:text-2xl">
-            &ldquo;I built this because I was tired of digging through
-            WhatsApp groups for last year&apos;s paper the night before an
-            exam. It&apos;s still early — most of the good stuff is what
-            happens after real students start adding their own papers.&rdquo;
+            &ldquo;I built this because I was tired of digging through WhatsApp
+            groups for last year&apos;s paper the night before an exam.
+            It&apos;s still early — most of the good stuff is what happens after
+            real students start adding their own papers.&rdquo;
           </p>
           <p className="text-muted-foreground mt-5 text-sm">
             Raiyan Hasan, builder of PyqDeck

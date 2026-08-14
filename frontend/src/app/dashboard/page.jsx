@@ -3,8 +3,8 @@ import Link from 'next/link';
 export default function DashboardComingSoonPage() {
   return (
     <section className="mx-auto flex w-full max-w-4xl flex-col gap-6 py-6">
-      <div className="rounded-2xl border bg-gradient-to-br from-primary/10 via-background to-background p-8 shadow-sm">
-        <p className="text-primary mb-3 inline-flex rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide">
+      <div className="from-primary/10 via-background to-background rounded-2xl border bg-gradient-to-br p-8 shadow-sm">
+        <p className="text-primary border-primary/30 bg-primary/10 mb-3 inline-flex rounded-full border px-3 py-1 text-xs font-semibold tracking-wide uppercase">
           Student Dashboard
         </p>
 
@@ -27,7 +27,7 @@ export default function DashboardComingSoonPage() {
           ].map((feature) => (
             <div
               key={feature}
-              className="bg-background/80 text-sm text-foreground rounded-lg border px-3 py-2"
+              className="bg-background/80 text-foreground rounded-lg border px-3 py-2 text-sm"
             >
               ✅ {feature}
             </div>

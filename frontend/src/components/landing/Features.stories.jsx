@@ -1,5 +1,12 @@
 import { Features } from './Features';
-import { Layers, Building2, Bookmark, Sparkles, Ban, Users } from 'lucide-react';
+import {
+  Layers,
+  Building2,
+  Bookmark,
+  Sparkles,
+  Ban,
+  Users,
+} from 'lucide-react';
 
 /**
  * The Features component highlights the key capabilities of the PyqDeck platform.
@@ -77,7 +84,8 @@ export const Default = {
   args: {
     badgeText: 'What you get',
     title: 'Everything you need to find a paper fast',
-    description: 'No account required to browse. Sign up only if you want bookmarks.',
+    description:
+      'No account required to browse. Sign up only if you want bookmarks.',
     features: defaultFeatures,
   },
 };

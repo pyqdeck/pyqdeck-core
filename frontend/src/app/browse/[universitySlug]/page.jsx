@@ -8,7 +8,12 @@ import {
   CardTitle,
   CardDescription,
 } from '@/components/ui/card';
-import { Empty, EmptyHeader, EmptyTitle, EmptyDescription } from '@/components/ui/empty';
+import {
+  Empty,
+  EmptyHeader,
+  EmptyTitle,
+  EmptyDescription,
+} from '@/components/ui/empty';
 import { Layers } from 'lucide-react';
 
 export default async function UniversityBranchesPage({ params }) {
@@ -37,16 +42,14 @@ export default async function UniversityBranchesPage({ params }) {
       <BreadcrumbNav trail={[{ label: university.name }]} />
 
       <div className="mt-4 mb-8">
-        <h1 className="text-3xl font-bold tracking-tight">
-          {university.name}
-        </h1>
+        <h1 className="text-3xl font-bold tracking-tight">{university.name}</h1>
         <p className="text-muted-foreground mt-2">
           Choose your branch to see available semesters.
         </p>
       </div>
 
       {branches.length === 0 ? (
-        <Empty className="border rounded-xl">
+        <Empty className="rounded-xl border">
           <EmptyHeader>
             <EmptyTitle>No branches added yet</EmptyTitle>
             <EmptyDescription>

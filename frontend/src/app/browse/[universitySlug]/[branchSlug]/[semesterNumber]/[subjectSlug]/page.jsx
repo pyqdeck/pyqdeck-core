@@ -3,9 +3,19 @@ import { notFound } from 'next/navigation';
 import { getApiServer } from '@/lib/api-server';
 import { getSubjectMap, formatExamType } from '@/lib/browse-helpers';
 import { BreadcrumbNav } from '@/components/browse/breadcrumb-nav';
-import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Empty, EmptyHeader, EmptyTitle, EmptyDescription } from '@/components/ui/empty';
+import {
+  Empty,
+  EmptyHeader,
+  EmptyTitle,
+  EmptyDescription,
+} from '@/components/ui/empty';
 import {
   Accordion,
   AccordionItem,
@@ -111,7 +121,7 @@ export default async function SubjectOfferingPage({ params }) {
       <section className="mb-10">
         <h2 className="mb-4 text-xl font-semibold">Past Papers</h2>
         {papers.length === 0 ? (
-          <Empty className="border rounded-xl">
+          <Empty className="rounded-xl border">
             <EmptyHeader>
               <EmptyTitle>No papers uploaded yet</EmptyTitle>
               <EmptyDescription>

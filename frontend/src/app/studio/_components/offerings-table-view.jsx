@@ -235,7 +235,9 @@ export function OfferingsTableView({
                             className="flex w-full items-center"
                           >
                             <Layers className="text-muted-foreground group-hover:text-primary mr-3 h-4 w-4 transition-colors" />
-                            <span className="text-primary font-medium">Papers</span>
+                            <span className="text-primary font-medium">
+                              Papers
+                            </span>
                           </Link>
                         </DropdownMenuItem>
                         <DropdownMenuSeparator className="my-1 border-b" />

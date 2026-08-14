@@ -4,7 +4,12 @@ import { getSubjectMap, formatExamType } from '@/lib/browse-helpers';
 import { BreadcrumbNav } from '@/components/browse/breadcrumb-nav';
 import { PaperQuestions } from '@/components/browse/paper-questions';
 import { Badge } from '@/components/ui/badge';
-import { Empty, EmptyHeader, EmptyTitle, EmptyDescription } from '@/components/ui/empty';
+import {
+  Empty,
+  EmptyHeader,
+  EmptyTitle,
+  EmptyDescription,
+} from '@/components/ui/empty';
 
 export default async function PaperPage({ params }) {
   const { paperSlug } = await params;
@@ -97,7 +102,7 @@ export default async function PaperPage({ params }) {
       </div>
 
       {questions.length === 0 ? (
-        <Empty className="border rounded-xl">
+        <Empty className="rounded-xl border">
           <EmptyHeader>
             <EmptyTitle>No questions added yet</EmptyTitle>
             <EmptyDescription>

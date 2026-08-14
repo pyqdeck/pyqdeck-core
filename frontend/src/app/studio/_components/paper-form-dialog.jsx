@@ -9,7 +9,13 @@ import { PaperFormDialogView } from './paper-form-dialog.view';
 const paperSchema = z.object({
   title: z.string().min(1, 'Title is required').max(300),
   examYear: z.coerce.number().int().min(2000).max(2100),
-  examType: z.enum(['regular', 're-exam', 'supplementary', 'end-sem', 'internal']),
+  examType: z.enum([
+    'regular',
+    're-exam',
+    'supplementary',
+    'end-sem',
+    'internal',
+  ]),
   session: z.string().max(50).optional(),
   regulation: z.string().max(20).optional(),
   duration: z.coerce.number().int().min(0).optional().or(z.literal('')),

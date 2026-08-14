@@ -33,7 +33,7 @@ export function DeleteQuestionDialogView({
           <AlertDialogDescription className="font-roboto text-sm">
             You are about to permanently delete this question:
             <br />
-            <span className="text-foreground mt-2 block line-clamp-2 font-medium">
+            <span className="text-foreground mt-2 line-clamp-2 block font-medium">
               &ldquo;{question?.text}&rdquo;
             </span>
             <br />

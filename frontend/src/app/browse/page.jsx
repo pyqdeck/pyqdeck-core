@@ -6,7 +6,12 @@ import {
   CardTitle,
   CardDescription,
 } from '@/components/ui/card';
-import { Empty, EmptyHeader, EmptyTitle, EmptyDescription } from '@/components/ui/empty';
+import {
+  Empty,
+  EmptyHeader,
+  EmptyTitle,
+  EmptyDescription,
+} from '@/components/ui/empty';
 import { GraduationCap } from 'lucide-react';
 
 export const metadata = {
@@ -32,13 +37,12 @@ export default async function BrowseUniversitiesPage() {
           Choose Your University
         </h1>
         <p className="text-muted-foreground mt-2">
-          Browse past year questions organized by branch, semester, and
-          subject.
+          Browse past year questions organized by branch, semester, and subject.
         </p>
       </div>
 
       {universities.length === 0 ? (
-        <Empty className="border rounded-xl">
+        <Empty className="rounded-xl border">
           <EmptyHeader>
             <EmptyTitle>No universities available yet</EmptyTitle>
             <EmptyDescription>

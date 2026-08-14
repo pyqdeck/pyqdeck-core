@@ -44,7 +44,11 @@ export function QuestionCard({
   };
 
   const handleAskAI = () => {
-    window.open(getCoursifyAskUrl(question.text), '_blank', 'noopener,noreferrer');
+    window.open(
+      getCoursifyAskUrl(question.text),
+      '_blank',
+      'noopener,noreferrer'
+    );
     toast.info('Opening Coursify in a new tab…');
   };
 
@@ -92,7 +96,7 @@ export function QuestionCard({
       </CardHeader>
 
       <CardContent>
-        <p className="whitespace-pre-wrap text-sm leading-relaxed">
+        <p className="text-sm leading-relaxed whitespace-pre-wrap">
           {question.text}
         </p>
 

@@ -49,8 +49,8 @@ export function HeroContent() {
         className="text-muted-foreground mx-auto mb-8 max-w-xl text-lg leading-relaxed sm:text-xl lg:mx-0"
       >
         Browse exam papers by university, branch, semester, and subject.
-        Bookmark what matters, and hop over to Coursify when a question has
-        you stuck — no more scrolling through dead WhatsApp links.
+        Bookmark what matters, and hop over to Coursify when a question has you
+        stuck — no more scrolling through dead WhatsApp links.
       </motion.p>
 
       <motion.div
@@ -81,17 +81,19 @@ export function HeroContent() {
         variants={fadeUp}
         className="mt-6 flex flex-wrap items-center justify-center gap-4 lg:justify-start"
       >
-        {['No account needed to browse', 'Always free', 'No app to install'].map(
-          (text) => (
-            <span
-              key={text}
-              className="text-muted-foreground flex items-center gap-1.5 text-xs"
-            >
-              <CheckCircle2 className="text-success size-3.5" />
-              {text}
-            </span>
-          )
-        )}
+        {[
+          'No account needed to browse',
+          'Always free',
+          'No app to install',
+        ].map((text) => (
+          <span
+            key={text}
+            className="text-muted-foreground flex items-center gap-1.5 text-xs"
+          >
+            <CheckCircle2 className="text-success size-3.5" />
+            {text}
+          </span>
+        ))}
       </motion.div>
     </motion.div>
   );
