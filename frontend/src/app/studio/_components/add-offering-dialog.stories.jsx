@@ -34,14 +34,14 @@ const meta = {
     onSubmit: {
       description: 'Callback when form is submitted',
     },
-    universities: {
-      description: 'List of available universities',
+    university: {
+      description: 'The university this offering is scoped to',
     },
-    branches: {
-      description: 'List of available branches',
+    branch: {
+      description: 'The branch this offering is scoped to',
     },
-    semesters: {
-      description: 'List of available semesters',
+    semester: {
+      description: 'The semester this offering is scoped to',
     },
     subjects: {
       description: 'List of available subjects',
@@ -83,42 +83,20 @@ const FormWrapper = ({ mockSubmitting = false, ...args }) => {
   return <AddOfferingDialogView {...args} form={proxiedForm} />;
 };
 
-const mockUniversities = [
-  { id: 'u1', name: 'University of Mumbai', shortName: 'MU' },
-  {
-    id: 'u2',
-    name: 'Indian Institute of Technology Bombay',
-    shortName: 'IITB',
-  },
-];
+const mockUniversity = {
+  id: 'u1',
+  name: 'University of Mumbai',
+  shortName: 'MU',
+};
 
-const mockBranches = [
-  {
-    id: 'b1',
-    name: 'Computer Engineering',
-    shortName: 'COMP',
-    universityId: 'u1',
-  },
-  {
-    id: 'b2',
-    name: 'Information Technology',
-    shortName: 'IT',
-    universityId: 'u1',
-  },
-  {
-    id: 'b3',
-    name: 'Mechanical Engineering',
-    shortName: 'MECH',
-    universityId: 'u2',
-  },
-];
+const mockBranch = {
+  id: 'b1',
+  name: 'Computer Engineering',
+  shortName: 'COMP',
+  universityId: 'u1',
+};
 
-const mockSemesters = [
-  { id: 's1', number: 1, branchId: 'b1' },
-  { id: 's2', number: 2, branchId: 'b1' },
-  { id: 's3', number: 3, branchId: 'b1' },
-  { id: 's4', number: 1, branchId: 'b3' },
-];
+const mockSemester = { id: 's1', number: 5, branchId: 'b1' };
 
 const mockSubjects = [
   {
@@ -147,9 +125,9 @@ export const Default = {
     open: true,
     onOpenChange: fn(),
     onSubmit: fn(),
-    universities: mockUniversities,
-    branches: mockBranches,
-    semesters: mockSemesters,
+    university: mockUniversity,
+    branch: mockBranch,
+    semester: mockSemester,
     subjects: mockSubjects,
   },
 };

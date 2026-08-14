@@ -25,9 +25,9 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
 export function AddOfferingDialogView({
-  universities = [],
-  branches = [],
-  semesters = [],
+  university,
+  branch,
+  semester,
   subjects = [],
   form,
   onSubmit,
@@ -39,24 +39,16 @@ export function AddOfferingDialogView({
   const {
     control,
     handleSubmit,
-    watch,
     formState: { errors = {}, isSubmitting = false } = {},
   } = form || {};
 
-  const selectedUniId = watch('universityId');
-  const selectedBranchId = watch('branchId');
-
-  const filteredBranches = selectedUniId
-    ? branches.filter(
-        (b) => (b.universityId?.id || b.universityId) === selectedUniId
-      )
-    : [];
-
-  const filteredSemesters = selectedBranchId
-    ? semesters.filter(
-        (s) => (s.branchId?.id || s.branchId) === selectedBranchId
-      )
-    : [];
+  const contextLabel = [
+    university?.shortName || university?.name,
+    branch?.shortName || branch?.name,
+    semester ? `Semester ${semester.number}` : null,
+  ]
+    .filter(Boolean)
+    .join(' · ');
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -78,143 +70,51 @@ export function AddOfferingDialogView({
             </DialogTitle>
           </div>
           <DialogDescription className="font-roboto text-sm">
-            Map a subject to a specific semester, branch, and regulation.
+            Map a subject to this semester.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4">
-          {/* Hierarchy Selection */}
-          <div className="grid grid-cols-2 gap-4">
-            <div className="grid gap-2">
-              <Label
-                htmlFor="universityId"
-                className="font-roboto text-xs font-bold tracking-wider uppercase"
-              >
-                Institution
-              </Label>
-              <Controller
-                name="universityId"
-                control={control}
-                render={({ field }) => (
-                  <Select onValueChange={field.onChange} value={field.value}>
-                    <SelectTrigger className="font-roboto w-full border focus:ring-0">
-                      <SelectValue placeholder="Select University" />
-                    </SelectTrigger>
-                    <SelectContent className="border shadow-none">
-                      {universities.map((uni) => (
-                        <SelectItem
-                          key={uni.id}
-                          value={uni.id}
-                          className="font-roboto"
-                        >
-                          {uni.shortName || uni.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                )}
-              />
+          {contextLabel && (
+            <div className="bg-muted/40 text-muted-foreground font-roboto rounded-md border px-3 py-2 text-sm">
+              Adding to{' '}
+              <span className="text-foreground font-bold">{contextLabel}</span>
             </div>
-            <div className="grid gap-2">
-              <Label
-                htmlFor="branchId"
-                className="font-roboto text-xs font-bold tracking-wider uppercase"
-              >
-                Branch
-              </Label>
-              <Controller
-                name="branchId"
-                control={control}
-                render={({ field }) => (
-                  <Select
-                    onValueChange={field.onChange}
-                    value={field.value}
-                    disabled={!selectedUniId}
-                  >
-                    <SelectTrigger className="font-roboto w-full border focus:ring-0">
-                      <SelectValue placeholder="Select Branch" />
-                    </SelectTrigger>
-                    <SelectContent className="border shadow-none">
-                      {filteredBranches.map((branch) => (
-                        <SelectItem
-                          key={branch.id}
-                          value={branch.id}
-                          className="font-roboto"
-                        >
-                          {branch.shortName || branch.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                )}
-              />
-            </div>
-          </div>
+          )}
 
-          <div className="grid grid-cols-2 gap-4">
-            <div className="grid gap-2">
-              <Label
-                htmlFor="semesterId"
-                className="font-roboto text-xs font-bold tracking-wider uppercase"
-              >
-                Semester
-              </Label>
-              <Controller
-                name="semesterId"
-                control={control}
-                render={({ field }) => (
-                  <Select
-                    onValueChange={field.onChange}
-                    value={field.value}
-                    disabled={!selectedBranchId}
-                  >
-                    <SelectTrigger className="font-roboto w-full border focus:ring-0">
-                      <SelectValue placeholder="Select Semester" />
-                    </SelectTrigger>
-                    <SelectContent className="border shadow-none">
-                      {filteredSemesters.map((sem) => (
-                        <SelectItem
-                          key={sem.id}
-                          value={sem.id}
-                          className="font-roboto"
-                        >
-                          Semester {sem.number}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                )}
-              />
-            </div>
-            <div className="grid gap-2">
-              <Label
-                htmlFor="subjectId"
-                className="font-roboto text-xs font-bold tracking-wider uppercase"
-              >
-                Global Subject
-              </Label>
-              <Controller
-                name="subjectId"
-                control={control}
-                render={({ field }) => (
-                  <Select onValueChange={field.onChange} value={field.value}>
-                    <SelectTrigger className="font-roboto w-full border focus:ring-0">
-                      <SelectValue placeholder="Select Subject" />
-                    </SelectTrigger>
-                    <SelectContent className="border shadow-none">
-                      {subjects.map((sub) => (
-                        <SelectItem
-                          key={sub.id}
-                          value={sub.id}
-                          className="font-roboto"
-                        >
-                          {sub.name} ({sub.subjectCode || 'N/A'})
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                )}
-              />
-            </div>
+          <div className="grid gap-2">
+            <Label
+              htmlFor="subjectId"
+              className="font-roboto text-xs font-bold tracking-wider uppercase"
+            >
+              Subject
+            </Label>
+            <Controller
+              name="subjectId"
+              control={control}
+              render={({ field }) => (
+                <Select onValueChange={field.onChange} value={field.value}>
+                  <SelectTrigger className="font-roboto w-full border focus:ring-0">
+                    <SelectValue placeholder="Select Subject" />
+                  </SelectTrigger>
+                  <SelectContent className="border shadow-none">
+                    {subjects.map((sub) => (
+                      <SelectItem
+                        key={sub.id}
+                        value={sub.id}
+                        className="font-roboto"
+                      >
+                        {sub.name} ({sub.subjectCode || 'N/A'})
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
+            />
+            {errors.subjectId && (
+              <p className="font-roboto text-destructive text-xs font-bold">
+                {errors.subjectId.message}
+              </p>
+            )}
           </div>
 
           <div className="grid grid-cols-2 gap-4">

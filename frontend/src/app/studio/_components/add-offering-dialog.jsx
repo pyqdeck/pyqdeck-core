@@ -27,12 +27,16 @@ export function AddOfferingDialog({
   'use no memo';
   const [open, setOpen] = React.useState(false);
 
+  const university = universities[0];
+  const branch = branches[0];
+  const semester = semesters[0];
+
   const form = useForm({
     resolver: zodResolver(offeringSchema),
     defaultValues: {
-      universityId: '',
-      branchId: '',
-      semesterId: '',
+      universityId: university?.id || '',
+      branchId: branch?.id || '',
+      semesterId: semester?.id || '',
       subjectId: '',
       regulation: '',
       academicYear: '',
@@ -41,22 +45,27 @@ export function AddOfferingDialog({
     },
   });
 
+  // Context (university/branch/semester) is fixed by the page this dialog
+  // opens from -- keep the form in sync if that context ever changes.
+  React.useEffect(() => {
+    form.setValue('universityId', university?.id || '');
+    form.setValue('branchId', branch?.id || '');
+    form.setValue('semesterId', semester?.id || '');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [university?.id, branch?.id, semester?.id]);
+
   const { watch, setValue } = form;
   const watched = watch();
 
   // Auto-generate slug: {uni}-{branch}-sem{num}-{subject}-{regulation}
   React.useEffect(() => {
-    const { universityId, branchId, semesterId, subjectId, regulation } =
-      watched;
+    const { subjectId, regulation } = watched;
 
-    if (universityId && branchId && semesterId && subjectId && regulation) {
-      const uni = universities.find((u) => u.id === universityId);
-      const branch = branches.find((b) => b.id === branchId);
-      const sem = semesters.find((s) => s.id === semesterId);
+    if (university && branch && semester && subjectId && regulation) {
       const sub = subjects.find((s) => s.id === subjectId);
 
-      if (uni && branch && sem && sub) {
-        const uniPart = (uni.shortName || uni.name)
+      if (sub) {
+        const uniPart = (university.shortName || university.name)
           .toLowerCase()
           .replace(/[^a-z0-9]+/g, '-');
         const branchPart = (branch.shortName || branch.name)
@@ -66,19 +75,16 @@ export function AddOfferingDialog({
           sub.slug || sub.name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
         const regPart = regulation.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 
-        const generatedSlug = `${uniPart}-${branchPart}-sem${sem.number}-${subPart}-${regPart}`;
+        const generatedSlug = `${uniPart}-${branchPart}-sem${semester.number}-${subPart}-${regPart}`;
         setValue('slug', generatedSlug, { shouldValidate: true });
       }
     }
   }, [
-    watched.universityId,
-    watched.branchId,
-    watched.semesterId,
     watched.subjectId,
     watched.regulation,
-    universities,
-    branches,
-    semesters,
+    university,
+    branch,
+    semester,
     subjects,
     setValue,
   ]);
@@ -95,9 +101,9 @@ export function AddOfferingDialog({
 
   return (
     <AddOfferingDialogView
-      universities={universities}
-      branches={branches}
-      semesters={semesters}
+      university={university}
+      branch={branch}
+      semester={semester}
       subjects={subjects}
       form={form}
       onSubmit={onSubmit}
