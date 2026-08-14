@@ -104,7 +104,7 @@ export function SyllabusTable({
               and all its associated topics. This action cannot be undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
-          <AlertDialogFooter className="mt-2">
+          <AlertDialogFooter>
             <AlertDialogCancel className="font-roboto h-10 border font-bold">
               Cancel
             </AlertDialogCancel>
@@ -133,7 +133,7 @@ export function SyllabusTable({
               from the module. This action cannot be undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
-          <AlertDialogFooter className="mt-2">
+          <AlertDialogFooter>
             <AlertDialogCancel className="font-roboto h-10 border font-bold">
               Cancel
             </AlertDialogCancel>
