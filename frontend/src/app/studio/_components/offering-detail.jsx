@@ -47,9 +47,17 @@ export function OfferingDetail({
 
   const handleTabChange = (value) => {
     setTab(value);
+    // Use the browser History API directly instead of router.replace() --
+    // this page reads `searchParams`, so a Next.js navigation (even just a
+    // query-string change) re-runs the entire server-side fetch chain
+    // (university/branch/semester/offering/subject/papers/syllabus) on
+    // every tab click. That's wasted work, and any transient failure in
+    // that re-fetch would 404 the whole page instead of just switching
+    // tabs. Tab state only needs to live in the URL for shareable links
+    // and refreshes, not to round-trip through the server on every click.
     const params = new URLSearchParams(searchParams);
     params.set('tab', value);
-    router.replace(`${pathname}?${params.toString()}`);
+    window.history.replaceState(null, '', `${pathname}?${params.toString()}`);
   };
 
   const handleInitializeSyllabus = async () => {
