@@ -1,14 +1,17 @@
 'use client';
 
-import * as React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useApi } from '@/hooks/use-api';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, Plus } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { ArrowLeft, Bot } from 'lucide-react';
+import { toast } from 'sonner';
 import { QuestionsTable } from './questions-table';
-import { QuestionFormDialog } from './question-form-dialog';
+import { QuestionInlineForm } from './question-inline-form';
+import { QuestionJsonImport } from './question-json-import';
+import { QUESTION_AI_PROMPT } from '@/lib/question-ai-prompt';
 
 const STATUS_STYLES = {
   draft: 'bg-muted text-muted-foreground',
@@ -20,7 +23,6 @@ const STATUS_STYLES = {
 export function PaperDetail({ paper, questions = [], backHref }) {
   const router = useRouter();
   const api = useApi();
-  const [addOpen, setAddOpen] = React.useState(false);
 
   const handleAdd = async (data) => {
     await api.papers.createQuestionForPaper(paper.id, data);
@@ -35,6 +37,13 @@ export function PaperDetail({ paper, questions = [], backHref }) {
   const handleDelete = async (id) => {
     await api.questions.deleteQuestion(id);
     router.refresh();
+  };
+
+  const handleCopyPrompt = () => {
+    navigator.clipboard.writeText(QUESTION_AI_PROMPT);
+    toast.success(
+      'AI prompt copied -- paste it into your AI tool along with the paper images.'
+    );
   };
 
   return (
@@ -64,24 +73,34 @@ export function PaperDetail({ paper, questions = [], backHref }) {
             </div>
           </div>
           <Button
-            onClick={() => setAddOpen(true)}
-            className="font-roboto bg-primary hover:bg-primary/90 border font-bold shadow-none"
+            variant="outline"
+            onClick={handleCopyPrompt}
+            className="font-roboto border font-bold shadow-none"
           >
-            <Plus className="h-4 w-4" /> Add Question
+            <Bot className="h-4 w-4" /> Copy AI Prompt
           </Button>
         </div>
       </div>
+
+      <Tabs defaultValue="form">
+        <TabsList variant="pill" className="w-fit">
+          <TabsTrigger value="form">Add Question</TabsTrigger>
+          <TabsTrigger value="json">Paste JSON</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="form">
+          <QuestionInlineForm onAdd={handleAdd} />
+        </TabsContent>
+
+        <TabsContent value="json">
+          <QuestionJsonImport onAdd={handleAdd} />
+        </TabsContent>
+      </Tabs>
 
       <QuestionsTable
         questions={questions}
         onUpdate={handleUpdate}
         onDelete={handleDelete}
-      />
-
-      <QuestionFormDialog
-        open={addOpen}
-        onOpenChange={setAddOpen}
-        onSubmit={handleAdd}
       />
     </div>
   );
