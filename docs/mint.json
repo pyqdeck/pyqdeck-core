@@ -18,10 +18,6 @@
     {
       "name": "Backend API",
       "url": "https://backend.pyqdeck.in/"
-    },
-    {
-      "name": "API Docs",
-      "url": "https://backend.pyqdeck.in/api-docs"
     }
   ],
   "topbarCtaButton": {
@@ -38,85 +34,56 @@
       "name": "Storybook",
       "icon": "book-open",
       "url": "https://storybook.pyqdeck.in"
-    },
-    {
-      "name": "Status",
-      "icon": "signal",
-      "url": "https://status.pyqdeck.in/"
     }
   ],
   "navigation": [
     {
-      "group": "System Overview",
+      "group": "Getting Started",
       "pages": [
-        "system-overview/architecture",
-        "system-overview/testing"
-      ]
-    },
-    {
-      "group": "Developer Guides",
-      "pages": [
-        "guides/getting-started",
-        "guides/contributing",
-        "guides/coding-standards"
-      ]
-    },
-    {
-      "group": "Backend Deep-dive",
-      "pages": [
-        "backend/architecture",
-        "backend/models-database",
-        "backend/auth",
-        "backend/error-handling",
-        "backend/file-upload",
-        "backend/validation"
-      ]
-    },
-    {
-      "group": "Frontend Deep-dive",
-      "pages": [
-        "frontend/architecture",
-        "frontend/component-architecture",
-        "frontend/state-management",
-        "frontend/studio",
-        "frontend/sdk-integration",
-        "frontend/styling"
-      ]
-    },
-    {
-      "group": "Core Workflows",
-      "pages": [
-        "workflows/auth-flow",
-        "workflows/data-pipeline",
-        "workflows/sdk-flow"
+        "getting-started/installation",
+        "getting-started/development-setup",
+        "getting-started/project-structure"
       ]
     },
     {
       "group": "API Reference",
       "pages": [
-        "api-reference/overview",
-        "api-reference/universities",
-        "api-reference/branches",
-        "api-reference/semesters",
-        "api-reference/subjects",
-        "api-reference/subject-offerings",
-        "api-reference/syllabus",
-        "api-reference/papers",
-        "api-reference/questions",
-        "api-reference/solutions",
-        "api-reference/bookmarks",
-        "api-reference/users",
-        "api-reference/search"
+        "api/overview",
+        "api/authentication",
+        "api/errors",
+        "api/universities",
+        "api/branches",
+        "api/semesters",
+        "api/subjects",
+        "api/subject-offerings",
+        "api/syllabus",
+        "api/papers",
+        "api/questions",
+        "api/solutions",
+        "api/bookmarks",
+        "api/users",
+        "api/search",
+        "api/ai-services"
       ]
     },
     {
-      "group": "Infrastructure",
+      "group": "Backend Deep-dive",
+      "pages": ["backend/architecture", "backend/database", "backend/services"]
+    },
+    {
+      "group": "Frontend Deep-dive",
       "pages": [
-        "infrastructure/deployment",
-        "infrastructure/monitoring",
-        "infrastructure/email",
-        "infrastructure/database",
-        "infrastructure/security"
+        "frontend/architecture",
+        "frontend/components",
+        "frontend/state-management"
+      ]
+    },
+    {
+      "group": "Contributing",
+      "pages": [
+        "contributing/pull-request-guide",
+        "contributing/coding-standards",
+        "contributing/storybook-guide"
       ]
     }
   ],

@@ -59,7 +59,7 @@ graph TD
 
 - `backend/`: Express API with Mongoose models, controllers, and comprehensive Vitest suites.
 - `frontend/`: Next.js application with a type-safe SDK generated from the backend OpenAPI spec.
-- `docs/`: Mintlify-based internal engineering documentation.
+- `docs/`: Comprehensive engineering documentation (organized into Getting Started, API, Backend, Frontend, and Contributing).
 
 ---
 
@@ -67,12 +67,15 @@ graph TD
 
 We use **Storybook** for UI components and **Mintlify** for full engineering documentation.
 
-### Internal Engineering Docs
+### Documentation Structure
 
-Our internal docs site covers API references, architecture, and local development flows.
+Our documentation is organized to be beginner-friendly and comprehensive. See the [docs/README.md](./docs/README.md) for a full overview.
 
-- **Live Site**: [docs.pyqdeck.in](https://docs.pyqdeck.in/)
-- **Tech**: Mintlify with OpenAPI synchronization.
+- **[Getting Started](./docs/getting-started/installation.md)**: Prerequisites, local setup, and project structure.
+- **[API Reference](./docs/api/overview.md)**: Detailed endpoint documentation with examples.
+- **[Backend Deep-dive](./docs/backend/architecture.md)**: 5-layer architecture and database schema.
+- **[Frontend Deep-dive](./docs/frontend/architecture.md)**: React patterns, state management, and SDK integration.
+- **[Contributing](./docs/contributing/pull-request-guide.md)**: Standards, branch naming, and Storybook guide.
 
 ### Component Library
 

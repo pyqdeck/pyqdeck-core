@@ -72,6 +72,8 @@ To add a new resource, follow the 5-layer pattern:
 
 ## Next Steps
 
-- Explore the [monorepo architecture](/system-overview/architecture)
-- Learn about the [data pipeline](/workflows/data-pipeline)
-- Review [testing standards](/system-overview/testing)
+- Explore the [monorepo architecture](/getting-started/project-structure)
+- Review the [API Authentication](/api/authentication) guide
+- Learn about [database models](/backend/database)
+
+For more details on business logic orchestration, see the [Backend Services](/backend/services) documentation.

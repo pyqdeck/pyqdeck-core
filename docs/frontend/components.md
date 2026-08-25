@@ -25,6 +25,23 @@ We use **shadcn/ui** for our base component library. These are accessible, unsty
 - **Philosophy**: We "own" these components. They are copied into the codebase and can be customized as needed.
 - **Consistency**: All high-level components should use these primitives (Button, Card, Input, etc.) to ensure a consistent look and feel.
 
+### Radix UI 'asChild' Pattern
+
+Our UI components utilize the **Radix UI Slot** primitive to implement the `asChild` prop pattern. This allows for flexible tag composition while maintaining styles and accessibility features.
+
+When `asChild` is true, the component will not render its own default HTML tag but will instead clone its child and pass its props and styles to it.
+
+```jsx
+// Example: Using a Button as a Link
+<Button asChild>
+  <Link href="/dashboard">Go to Dashboard</Link>
+</Button>
+```
+
+### Border Radius & 'data-slot'
+
+To manage complex CSS variants and border-radius consistency in compound components, we use the `data-slot` attribute pattern. Components are tagged with attributes like `data-slot="button"`, allowing parent components to target them precisely via CSS selectors.
+
 ## Storybook Setup
 
 Storybook is used as a workshop for building and documenting components in isolation.
